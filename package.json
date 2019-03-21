@@ -1,0 +1,30 @@
+{
+  "name": "bulk-data-tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "walk.js",
+  "scripts": {
+    "test": "lab -v tests/*.test.js",
+    "test:watch": "nodemon -e js,json -x 'npm test'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smart-on-fhir/bulk-data-tools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smart-on-fhir/bulk-data-tools/issues"
+  },
+  "homepage": "https://github.com/smart-on-fhir/bulk-data-tools#readme",
+  "dependencies": {
+    "json2csv": "^4.3.5",
+    "walk": "^2.3.14"
+  },
+  "devDependencies": {
+    "code": "^5.2.4",
+    "lab": "^18.0.2",
+    "nodemon": "^1.18.10"
+  }
+}
