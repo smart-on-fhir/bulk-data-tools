@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">bulk-data-tools/csv.js | My Library</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="this is awesome library"><meta property="og:type" content="website"><meta property="og:url" content="http://my-library.org"><meta property="og:site_name" content="My Library"><meta property="og:title" content="My Library"><meta property="og:image" content="http://my-library.org/logo.png"><meta property="og:description" content="this is awesome library"><meta property="og:author" content="https://twitter.com/foo"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="My Library"><meta property="twitter:description" content="this is awesome library"><meta property="twitter:image" content="http://my-library.org/logo.png"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/foo/bar"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">bulk-data-tools/csv.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const { forEachLine } = require(&quot;./ndjson&quot;);
+
+function strPad(str, length = 0) {
+    let strLen = str.length;
+    while (strLen &lt; length) {
+        str += &quot; &quot;;
+        strLen += 1;
+    }
+    return str;
+}
+
+/**
+ * Tests if the given argument is an object
+ * @param {*} x The value to test
+ * @returns {Boolean}
+ */
+function isObject(x)
+{
+    return x &amp;&amp; typeof x == &quot;object&quot;;
+}
+
+/**
+ * Walks thru an object (ar array) and returns the value found at the
+ * provided path. This function is very simple so it intentionally does not
+ * support any argument polymorphism, meaning that the path can only be a
+ * dot-separated string. If the path is invalid returns undefined.
+ * @param {Object} obj The object (or Array) to walk through
+ * @param {String} [path=&quot;&quot;] The path (eg. &quot;a.b.4.c&quot;)
+ * @returns {*} Whatever is found in the path or undefined
+ */
+function getPath(obj, path = &quot;&quot;)
+{
+    return path.split(&quot;.&quot;).reduce((out, key) =&gt; out ? out[key] : undefined, obj);
+}
+
+/**
+ * Escapes a value as CSV value
+ * - If it contains a double quote, new line or separator (typically a comma),
+ *   the value is quoted
+ * - any contained quotes are escaped with another quote
+ * - undefined is converted to empty string
+ * - everything else is converted to string (but is not quoted)
+ * @param {*} value The value to escape 
+ * @param {String} [separator=&quot;,&quot;] A separator character like `,` or `;`
+ * @returns {String} The escaped value
+ */
+function escapeCsvValue(value, separator = &quot;,&quot;)
+{
+    let out = value === undefined ? &quot;&quot; : String(value);
+    out = out.replace(/&quot;/g, &apos;&quot;&quot;&apos;);
+    if (out.indexOf(separator) &gt; -1 || out.search(/\r|\n|&quot;/) &gt; -1) {
+        out = `&quot;${out}&quot;`;
+    }
+    return out;
+}
+
+/**
+ * Returns a flattened array of the structure of an object or array.
+ * For example:
+ * ```js
+ * {a:1, b:{c:2,d:3}, e:4} -&gt; [&quot;a&quot;, &quot;b.c&quot;, &quot;b.d&quot;, &quot;e&quot;]
+ * {a:1, b:[ 2, 3 ], e: 4} -&gt; [&quot;a&quot;, &quot;b.0&quot;, &quot;b.1&quot;, &quot;e&quot;]
+ * [1, {a: 3, b: 4}, 2, 3] -&gt; [&quot;0&quot;, &quot;1.a&quot;, &quot;1.b&quot;, &quot;2&quot;, &quot;3&quot;]
+ * ```
+ * @param {Object|Array} obj The object to inspect
+ * @param {String} _prefix Path prefix that if provided, will be prepended to
+ * each key. Please do not use this argument. The function will pass it to
+ * itself on recursive calls.
+ * @returns {String[]}
+ */
+function flatObjectKeys(obj, _prefix)
+{
+    let out = [];
+
+    for (const key in obj) {
+        const prefix = [_prefix, key].filter(Boolean).join(&quot;.&quot;);
+        const value = obj[key];
+        if (isObject(value)) {
+            out = out.concat(flatObjectKeys(value, prefix));
+        } else {
+            out.push(prefix);
+        }
+    }
+
+    return out;
+}
+
+/**
+ * Merges the second argument into the first one but also throws if an object
+ * property is about to be overridden with scalar (or the opposite).
+ * @param {Object} obj1 
+ * @param {Object} obj2 
+ * @throws {Error} If a path in one object points to scalar value and the same
+ * path in the other object points to an object (or the opposite).
+ * @returns {Object} Returns the extended first argument
+ */
+function mergeStrict(obj1, obj2)
+{
+    for (const key in obj2) {
+        const source = obj2[key];
+        const target = obj1[key];
+
+        if (isObject(source)) {
+            if (target === undefined) {
+                obj1[key] = Array.isArray(source) ? [] : {};
+            }
+            
+            if (!isObject(obj1[key])) {
+                throw new Error(
+                    &quot;Unable to merge incompatible objects&quot; +
+                    &quot; (array or object with scalar value)&quot;
+                );
+            }
+
+            obj1[key] = mergeStrict(obj1[key], source);
+        }
+        else {
+            obj1[key] = source;
+        }
+    }
+
+    return obj1;
+}
+
+function csvHeaderFromJson(json)
+{
+    function loop(data) {
+        let out = {};
+
+        for (const key in data) {
+            const value = data[key];
+            if (isObject(value)) {
+                out[key] = loop(value);
+            } else {
+                out[key] = 1;
+            }
+        }
+
+        return out;
+    }
+
+    return loop(json);
+}
+
+/**
+ * Loops over an array of objects or arrays (rows) and builds a header that
+ * matches the structure of the rows.
+ * @param {Object[]|Array[]} array The array of row objects or arrays
+ * @param {Object} options
+ * @param {Boolean} options.fast If true, assumes that all rows have the same
+ * structure and only use the first one to build the header.
+ * @returns {String[]} The header as an array of strings
+ */
+function csvHeaderFromArray(array, options = {})
+{
+    if (options.fast) {
+        return flatObjectKeys(csvHeaderFromJson(array[0]));
+    }
+
+    let out = {};
+    array.forEach(json =&gt; {
+        out = mergeStrict(out, csvHeaderFromJson(json));
+    });
+    return flatObjectKeys(out);
+}
+
+function jsonArrayToCsv(array, { fast = false, separator = &quot;,&quot;, eol = &quot;\r\n&quot; } = {})
+{
+    const header = csvHeaderFromArray(array, { fast });
+    const body   = array.map(json =&gt; {
+        return header.map(path =&gt; escapeCsvValue(getPath(json, path))).join(separator);
+    });
+    return header.map(h =&gt; escapeCsvValue(h)).join(separator) +
+        eol + body.join(eol);
+}
+
+function jsonArrayToTsv(array, { fast = false, separator = &quot;\t&quot;, eol = &quot;\r\n&quot; } = {})
+{
+    return jsonArrayToCsv(array, { fast, separator, eol });
+}
+
+function jsonToCsv(json, { separator = &quot;,&quot;, eol = &quot;\r\n&quot; } = {})
+{
+    const header = flatObjectKeys(csvHeaderFromJson(json));
+    const body   = header.map(path =&gt; escapeCsvValue(getPath(json, path)));
+    return header.map(h =&gt; escapeCsvValue(h)).join(separator) +
+        eol + body.join(separator);
+}
+
+function jsonToTsv(json, { separator = &quot;\t&quot;, eol = &quot;\r\n&quot; } = {})
+{
+    return jsonToCsv(json, { separator, eol });
+}
+
+class DelimitedFormatter
+{
+    constructor()
+    {
+        this.options = {
+            delimiter: &quot;,&quot;,
+            eol: &quot;\r\n&quot;
+        };
+    }
+
+    addLine() {}
+}
+
+module.exports = {
+    csvHeaderFromJson,
+    csvHeaderFromArray,
+    flatObjectKeys,
+    jsonToCsv,
+    jsonToTsv,
+    jsonArrayToCsv,
+    jsonArrayToTsv
+};
+
+
+// NdJsonToCSV(&quot;../sample-apps-stu3/fhir-downloader/downloads/2.Immunization.ndjson&quot;);
+// NdJsonToCSV(&quot;../sample-apps-stu3/fhir-downloader/downloads/3.Procedure.ndjson&quot;);</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

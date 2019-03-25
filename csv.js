@@ -9,466 +9,215 @@ function strPad(str, length = 0) {
     return str;
 }
 
-class CSVHeaderCell
+/**
+ * Tests if the given argument is an object
+ * @param {*} x The value to test
+ * @returns {Boolean}
+ */
+function isObject(x)
 {
-    constructor({ name, children, path } = { name: "" })
-    {
-        this.path     = path;
-        this.label    = name     || "";
-        this.children = children || null;
-        this.colspan  = 1;
-    }
-
-    toString()
-    {
-        return strPad(this.label, 13 * this.colspan);
-    }
+    return x && typeof x == "object";
 }
 
-class CSVHeaderRow
+/**
+ * Walks thru an object (ar array) and returns the value found at the
+ * provided path. This function is very simple so it intentionally does not
+ * support any argument polymorphism, meaning that the path can only be a
+ * dot-separated string. If the path is invalid returns undefined.
+ * @param {Object} obj The object (or Array) to walk through
+ * @param {String} [path=""] The path (eg. "a.b.4.c")
+ * @returns {*} Whatever is found in the path or undefined
+ */
+function getPath(obj, path = "")
+{
+    return path.split(".").reduce((out, key) => out ? out[key] : undefined, obj);
+}
+
+/**
+ * Escapes a value as CSV value
+ * - If it contains a double quote, new line or separator (typically a comma),
+ *   the value is quoted
+ * - any contained quotes are escaped with another quote
+ * - undefined is converted to empty string
+ * - everything else is converted to string (but is not quoted)
+ * @param {*} value The value to escape 
+ * @param {String} [separator=","] A separator character like `,` or `;`
+ * @returns {String} The escaped value
+ */
+function escapeCsvValue(value, separator = ",")
+{
+    let out = value === undefined ? "" : String(value);
+    out = out.replace(/"/g, '""');
+    if (out.indexOf(separator) > -1 || out.search(/\r|\n|"/) > -1) {
+        out = `"${out}"`;
+    }
+    return out;
+}
+
+/**
+ * Returns a flattened array of the structure of an object or array.
+ * For example:
+ * ```js
+ * {a:1, b:{c:2,d:3}, e:4} -> ["a", "b.c", "b.d", "e"]
+ * {a:1, b:[ 2, 3 ], e: 4} -> ["a", "b.0", "b.1", "e"]
+ * [1, {a: 3, b: 4}, 2, 3] -> ["0", "1.a", "1.b", "2", "3"]
+ * ```
+ * @param {Object|Array} obj The object to inspect
+ * @param {String} _prefix Path prefix that if provided, will be prepended to
+ * each key. Please do not use this argument. The function will pass it to
+ * itself on recursive calls.
+ * @returns {String[]}
+ */
+function flatObjectKeys(obj, _prefix)
+{
+    let out = [];
+
+    for (const key in obj) {
+        const prefix = [_prefix, key].filter(Boolean).join(".");
+        const value = obj[key];
+        if (isObject(value)) {
+            out = out.concat(flatObjectKeys(value, prefix));
+        } else {
+            out.push(prefix);
+        }
+    }
+
+    return out;
+}
+
+/**
+ * Merges the second argument into the first one but also throws if an object
+ * property is about to be overridden with scalar (or the opposite).
+ * @param {Object} obj1 
+ * @param {Object} obj2 
+ * @throws {Error} If a path in one object points to scalar value and the same
+ * path in the other object points to an object (or the opposite).
+ * @returns {Object} Returns the extended first argument
+ */
+function mergeStrict(obj1, obj2)
+{
+    for (const key in obj2) {
+        const source = obj2[key];
+        const target = obj1[key];
+
+        if (isObject(source)) {
+            if (target === undefined) {
+                obj1[key] = Array.isArray(source) ? [] : {};
+            }
+            
+            if (!isObject(obj1[key])) {
+                throw new Error(
+                    "Unable to merge incompatible objects" +
+                    " (array or object with scalar value)"
+                );
+            }
+
+            obj1[key] = mergeStrict(obj1[key], source);
+        }
+        else {
+            obj1[key] = source;
+        }
+    }
+
+    return obj1;
+}
+
+function csvHeaderFromJson(json)
+{
+    function loop(data) {
+        let out = {};
+
+        for (const key in data) {
+            const value = data[key];
+            if (isObject(value)) {
+                out[key] = loop(value);
+            } else {
+                out[key] = 1;
+            }
+        }
+
+        return out;
+    }
+
+    return loop(json);
+}
+
+/**
+ * Loops over an array of objects or arrays (rows) and builds a header that
+ * matches the structure of the rows.
+ * @param {Object[]|Array[]} array The array of row objects or arrays
+ * @param {Object} options
+ * @param {Boolean} options.fast If true, assumes that all rows have the same
+ * structure and only use the first one to build the header.
+ * @returns {String[]} The header as an array of strings
+ */
+function csvHeaderFromArray(array, options = {})
+{
+    if (options.fast) {
+        return flatObjectKeys(csvHeaderFromJson(array[0]));
+    }
+
+    let out = {};
+    array.forEach(json => {
+        out = mergeStrict(out, csvHeaderFromJson(json));
+    });
+    return flatObjectKeys(out);
+}
+
+function jsonArrayToCsv(array, { fast = false, separator = ",", eol = "\r\n" } = {})
+{
+    const header = csvHeaderFromArray(array, { fast });
+    const body   = array.map(json => {
+        return header.map(path => escapeCsvValue(getPath(json, path))).join(separator);
+    });
+    return header.map(h => escapeCsvValue(h)).join(separator) +
+        eol + body.join(eol);
+}
+
+function jsonArrayToTsv(array, { fast = false, separator = "\t", eol = "\r\n" } = {})
+{
+    return jsonArrayToCsv(array, { fast, separator, eol });
+}
+
+function jsonToCsv(json, { separator = ",", eol = "\r\n" } = {})
+{
+    const header = flatObjectKeys(csvHeaderFromJson(json));
+    const body   = header.map(path => escapeCsvValue(getPath(json, path)));
+    return header.map(h => escapeCsvValue(h)).join(separator) +
+        eol + body.join(separator);
+}
+
+function jsonToTsv(json, { separator = "\t", eol = "\r\n" } = {})
+{
+    return jsonToCsv(json, { separator, eol });
+}
+
+class DelimitedFormatter
 {
     constructor()
     {
-        this.cells = [];
-    }
-
-    forEachCell(callback, scope)
-    {
-        return this.cells.forEach(callback, scope);
-    }
-
-    normalize()
-    {
-        for (let i = 0; i < this.cells.length; i++) {
-            if (this.cells[i] === undefined) {
-                this.cells[i] = new CSVHeaderCell();
-            }
-        }
-    }
-
-    toString()
-    {
-        return "| " + this.cells.map(c => c === undefined ? new CSVHeaderCell() : c).join(" | ") + " |";
-    }
-
-    addCell(cell, parentCellIndex)
-    {
-        this.cells.push(cell);
-    }
-
-    isEmpty()
-    {
-        return !this.cells.some(cell => !!cell.label);
-    }
-}
-
-class CSVHeader
-{
-    constructor(rows = [])
-    {
-        this.rows = [];
-        this.setData(rows);
-    }
-
-    setData(data)
-    {
-        const firstRow = new CSVHeaderRow();
-        this.rows.push(firstRow);
-        data.forEach(cellData => {
-            firstRow.addCell(new CSVHeaderCell(cellData));
-        }, this);
-
-        const addNextRow = (parentRow) => {
-            const nextRow = new CSVHeaderRow();
-
-            for (let i = 0; i < parentRow.cells.length; i++) {
-                const children = parentRow.cells[i].children || [];
-
-                if (children.length) {
-                    children.forEach((child, childIndex) => {
-                        nextRow.addCell(new CSVHeaderCell(child));
-                        if (childIndex > 0) {
-                            parentRow.cells.splice(i + childIndex, 0, new CSVHeaderCell({}));
-                            i += 1;
-                        }
-                    });
-                } else {
-                    nextRow.addCell(new CSVHeaderCell({}));
-                }
-            }
-            
-            // parentRow.forEachCell(({ label, children }, parentColIndex) => {
-            //     if (!label) {
-            //         return;
-            //     }
-            //     if (Array.isArray(children) && children.length) {
-            //         children.forEach((child, childIndex) => {
-            //             nextRow.addCell(new CSVHeaderCell(child));
-            //             if (childIndex > 0) {
-            //                 parentRow.cells.splice(parentColIndex + childIndex, 0, new CSVHeaderCell({}));
-            //             }
-            //         });
-            //     } else {
-            //         nextRow.addCell(new CSVHeaderCell({}));
-            //     }
-            // }, this);
-
-            if (!nextRow.isEmpty()) {
-                this.rows.push(nextRow);
-                addNextRow(nextRow);
-            }
+        this.options = {
+            delimiter: ",",
+            eol: "\r\n"
         };
-
-        addNextRow(firstRow);
     }
 
-    addRow(data)
-    {
-        const row = new CSVHeaderRow(data);
-        this.rows.push(row);
-        return row;
-    }
-
-    normalize()
-    {
-        this.rows.forEach(row => row.normalize());
-        return this;
-    }
-
-    addCell(rowIndex, colIndex, cell)
-    {
-        let row = this.rows[rowIndex];
-        if (!row) {
-            row = new CSVHeaderRow();
-            this.rows[rowIndex] = row;
-        }
-
-        // if (row.cells[colIndex] === undefined) {
-            row.cells[colIndex] = cell;
-        // } else {
-            // row.cells.splice(colIndex, 1, cell);
-        // }
-        // if (colIndex > 0) {
-        //     while (rowIndex > 0) {
-        //     //     --rowIndex;
-        //         this.addCell(--rowIndex, colIndex, new CSVHeaderCell());
-        //     }
-        // }
-    }
-
-    toString()
-    {
-        return this.rows.join("\n");
-    }
-}
-
-function getHeader(obj, pathPrefix) {
-    let header = [];
-    for (let name in obj) {
-        const path = [pathPrefix, name].filter(Boolean).join(".");
-        const entry = { name, path };
-
-        if (obj[name] && typeof obj[name] == "object") {
-            entry.children = getHeader(obj[name], path);
-        }
-        
-        header.push(entry);
-    }
-    return header;
-}
-
-// TODO
-function compileHeader(header) {
-    const rows = [[]];
-
-    function addRow() {
-        const parentRow = rows[rows.length - 1];
-        const childRow = [];
-        let isEmpty = true;
-        parentRow.forEach((parentCol, parentColIndex) => {
-            if (parentCol.children) {
-                isEmpty = false;
-                parentCol.children.forEach((child, i) => {
-                    childRow.push({
-                        ...child,
-                        toString() { return child.name; }
-                    });
-                    if (i > 0) {
-                        parentRow.splice(parentColIndex, 0, {
-                            toString() { return ""; }
-                        })
-                    }
-                });
-            } else {
-                childRow.push({
-                    toString() { return ""; }
-                });
-            }
-        })
-
-        if (!isEmpty) {
-            rows.push(childRow);
-            return true;
-        }
-
-        return false;
-    }
-    
-
-    // Loop on first level
-    header.forEach((entry, colIndex) => {
-        rows[0].push({
-            ...entry,
-            toString() { return this.name; }
-        });
-
-        if (entry.children) {
-            addRow(entry.children);
-        }
-    });
-
-    let nextRow;
-    do {
-        nextRow = addRow();
-    } while (nextRow);
-
-    return rows;
-}
-
-// =============================================================================
-function getHeader3(obj) {
-    let header = [];
-    function loop3(obj, rowIndex = 0, colIndex = 0)
-    {
-        if (!header[rowIndex]) {
-            header[rowIndex] = [];
-        }
-
-        // Go to the left and fill in blanks if needed
-        let ci = colIndex - 1;
-        while (ci >= 0) {
-            const val = header[rowIndex][ci];
-            if (val === undefined) {
-                header[rowIndex][ci] = "...";
-            }
-            ci--;
-        }
-
-        ci = colIndex;
-        for (const key in obj) {
-            // header[rowIndex][ci] = key;
-            header[rowIndex].push(key);
-
-            const value = obj[key];
-            if (value && typeof value == "object") {
-                loop3(value, rowIndex + 1, ci);
-            }
-
-            if (ci - colIndex > 0) {
-                let ri = rowIndex;
-                while (ri > 0) {
-                    header[--ri].splice(ci, 0, "...");
-                }
-            }
-
-            ci += 1
-        }
-
-        return header;
-    }
-
-    loop3(obj)
-
-    const x = Math.max.apply(Math, header.map(row => row.length));
-
-    header = header.map(row => {
-        while (row.length < x) row.push("...");
-        return row;
-    });
-
-    return header;
-}
-
-
-function loop(rowIndex, colIndex, obj, header)
-{
-    let hasNextRow = false;
-
-    // Build the first row -----------------------------------------------------
-    for (const key in obj) {
-        const value = obj[key];
-        const data  = { name: key };
-        if (value && typeof value == "object") {
-            data.children = value;
-            hasNextRow = true
-        }
-        header.addCell(rowIndex, colIndex, new CSVHeaderCell(data));
-        colIndex += 1
-    }
-
-    // Additional rows ---------------------------------------------------------
-    while (hasNextRow) {
-        hasNextRow = false;
-        const thisRow = header.rows[rowIndex];
-        rowIndex++;
-
-        // Cells
-        for (let i = 0; i < thisRow.cells.length; i++) {
-            const cell = thisRow.cells[i];
-        
-            // Cells that have children - recursion
-            if (cell.children) {
-                let childIndex = 0;
-                for (const key in cell.children)
-                {
-                    // console.log(key)
-                    const value = cell.children[key];
-                    const data  = { name: key };
-                    if (value && typeof value == "object") {
-                        data.children = value;
-                        hasNextRow = true;
-                    }
-                    
-                    header.addCell(rowIndex, i + childIndex, new CSVHeaderCell(data));
-
-                    // If this cell has more than one child, go up and append
-                    // one cell after the current one
-                    if (childIndex > 0) {
-                        let _rowIndex = rowIndex - 1;
-                        while (_rowIndex >= 0) {
-                            // header.rows[_rowIndex].cells[i + childIndex].colspan += 1;
-                            header.rows[_rowIndex].cells.splice(
-                                // i + childIndex,
-                                i + 1,
-                                0,
-                                new CSVHeaderCell()
-                            );
-                            _rowIndex--
-                        }
-                        
-                    }
-
-                    i += childIndex;
-
-                    childIndex += 1;
-                }
-
-                
-            }
-
-            // Cells that don't have children - just add empty cell below
-            else {
-                header.addCell(rowIndex, i, new CSVHeaderCell({ name: "" }));
-            }
-        }
-    }
-
-    // loop(rowIndex, colIndex, obj, header)
-
-    // return header.rows[rowIndex];
-}
-
-function loop2(rowIndex, header)
-{
-    const childRow  = new CSVHeaderRow();
-    const parentRow = header.rows[rowIndex];
-
-    parentRow.forEachCell((cell, colIndex) => {
-        if (cell.children) {
-            let propIndex = 0;
-            for (const name in cell.children) {
-                childRow.addCell(new CSVHeaderCell({ name }));
-                // header.addCell(rowIndex + 1, colIndex, new CSVHeaderCell({ name }))
-                if (++propIndex > 1) {
-                    header.addCell(rowIndex, colIndex + propIndex, new CSVHeaderCell())
-                }
-            }
-        } else {
-            childRow.addCell(new CSVHeaderCell({}));
-        }
-    });
-
-    if (!childRow.isEmpty()) {
-        rowIndex = header.rows.push(childRow);
-        // loop2(rowIndex, header)
-    }
-}
-
-function NdJsonToCSV(filePath) {
-    let header = new CSVHeader();
-
-    forEachLine(filePath, (line, i) => {
-        const json = JSON.parse(line);
-
-        
-
-        // console.log
-        if (i > 0) {
-            return;
-        }
-
-        // console.log(JSON.stringify(json, null, 4));
-        // loop(0, 0, json, header)
-        console.log(
-            getHeader3(json).map(row => {
-                return "|" + row.map(cell => strPad(cell || " ", 13)).join("|") + "|";
-            }).join("\n")
-        );
-        
-
-        
-        // loop2(0, header)
-        // ---------------------------------------------------------------------
-
-        // const row = header.addRow();
-        // for (const key in json) {
-        //     const value = json[key];
-        //     row.addCell(new CSVHeaderCell({
-        //         name    : key,
-        //         children: value && typeof value == "object" ? value : undefined,
-        //         path    : undefined
-        //     }));
-        // }
-
-        // const nextRow = header.addRow();
-        // for (const key in json) {
-        //     const value = json[key];
-        //     if (value && typeof value == "object") {
-        //         for (const key2 in value) {
-        //             nextRow.addCell(new CSVHeaderCell({
-        //                 name    : key2
-        //             }));
-        //         }
-        //     } else {
-        //         nextRow.addCell(new CSVHeaderCell({
-        //             name: ""
-        //         }));    
-        //     }
-            
-            
-        // }
-
-
-        // Object.assign(header, getHeader(json));
-    }, () => {
-        // console.log(JSON.stringify(compileHeader(header).map(String), null, 2));
-        // console.log(JSON.stringify(header, null, 4));
-        // console.log(new CSVHeader(header).toString());
-        // console.log(header.normalize().toString());
-        // console.log(header.join(",") + "\n");
-
-        // forEachLine(filePath, line => {
-        //     const json = JSON.parse(line);
-        //     const csvLine = header.map(prop => json[prop]);
-        //     console.log(csvLine.join(","));
-        // });
-    })
+    addLine() {}
 }
 
 module.exports = {
-    NdJsonToCSV
+    csvHeaderFromJson,
+    csvHeaderFromArray,
+    flatObjectKeys,
+    jsonToCsv,
+    jsonToTsv,
+    jsonArrayToCsv,
+    jsonArrayToTsv,
+    getPath,
+    escapeCsvValue,
+    mergeStrict
 };
 
 
 // NdJsonToCSV("../sample-apps-stu3/fhir-downloader/downloads/2.Immunization.ndjson");
-NdJsonToCSV("../sample-apps-stu3/fhir-downloader/downloads/3.Procedure.ndjson");
+// NdJsonToCSV("../sample-apps-stu3/fhir-downloader/downloads/3.Procedure.ndjson");

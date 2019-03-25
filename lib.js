@@ -56,7 +56,7 @@ function readableFileSize(bytes, { precision, fixed, useBinary } = {}) {
  * @memberof Utils
  * @param {*} x The argument to convert
  * @param {*} defaultValue The fall-back return value. This is going to be
- *                         converted to integer too.
+ * converted to integer too.
  * @return {Number} The resulting integer.
  */
 function intVal( x, defaultValue ) {
@@ -67,6 +67,15 @@ function intVal( x, defaultValue ) {
     return out;
 }
 
+/**
+ * Returns the float representation of the first argument or the
+ * "defaultValue" if the int conversion is not possible.
+ * @memberof Utils
+ * @param {*} x The argument to convert
+ * @param {*} defaultValue The fall-back return value. This is going to be
+ * converted to float too.
+ * @return {Number} The resulting integer.
+ */
 function floatVal( x, defaultValue ) {
     var out = parseFloat(x);
     if ( isNaN(out) || !isFinite(out) ) {

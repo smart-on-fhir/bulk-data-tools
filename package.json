@@ -5,7 +5,8 @@
   "main": "walk.js",
   "scripts": {
     "test": "lab -v tests/*.test.js",
-    "test:watch": "nodemon -e js,json -x 'npm test'"
+    "test:watch": "nodemon -e js,json -x 'npm test'",
+    "doc": "esdoc"
   },
   "repository": {
     "type": "git",
@@ -19,11 +20,15 @@
   },
   "homepage": "https://github.com/smart-on-fhir/bulk-data-tools#readme",
   "dependencies": {
+    "commander": "^2.19.0",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "json2csv": "^4.3.5",
     "walk": "^2.3.14"
   },
   "devDependencies": {
     "code": "^5.2.4",
+    "esdoc": "^1.1.0",
+    "esdoc-standard-plugin": "^1.0.0",
     "lab": "^18.0.2",
     "nodemon": "^1.18.10"
   }

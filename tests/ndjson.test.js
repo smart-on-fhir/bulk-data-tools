@@ -1,14 +1,18 @@
-const Lab        = require("lab");
-const { expect } = require("code");
+const Lab            = require("lab");
+const { expect }     = require("code");
+const { LineStream } = require("../ndjson");
 
 const lab = exports.lab = Lab.script();
-const { describe, it, beforeEach, afterEach } = lab;
+const { describe, it } = lab;
 
 
 describe("ndjson.js", () => {
 
     describe("LineStream", () => {
-        it ("TODO");
+        it ("handles multiple new lines per chunk");
+        it ("handles one new line per multiple chunks", () => {
+            const stream = new LineStream();
+        });
     });
 
     describe("NdJsonStream", () => {
