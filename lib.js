@@ -92,11 +92,71 @@ function uFloat( x, defaultValue ) {
     return Math.max(floatVal( x, defaultValue ), 0);
 }
 
+/**
+ * Tests if the given argument is an object
+ * @param {*} x The value to test
+ * @returns {Boolean}
+ */
+function isObject(x)
+{
+    return x && typeof x == "object";
+}
+
+function setPath(obj, path, value)
+{
+    const segments = Array.isArray(path) ? path : String(path).split(".");
+
+    if (!segments.length) {
+        throw new Error("Path cannot be empty");
+    }
+
+    const key = segments.shift();
+
+    if (segments.length) {
+
+        // Create intermediate object or array properties
+        if (!obj.hasOwnProperty(key)) {
+            if (segments[0].match(/^\d+$/)) {
+                obj[key] = [];
+            } else {
+                obj[key] = {};
+            }
+        }
+        
+        // Step in
+        return setPath(obj[key], segments, value);
+    }
+
+    if (obj.hasOwnProperty(key)) {
+        const target         = obj[key];
+        const sourceIsObject = isObject(value);
+        const targetIsObject = isObject(target);
+
+        if (sourceIsObject !== targetIsObject) {
+            throw new Error(
+                "Unable to merge incompatible objects" +
+                " (array or object with scalar value)"
+            );
+        }
+
+        if (Array.isArray(value) !== Array.isArray(target)) {
+            throw new Error(
+                "Unable to merge incompatible objects" +
+                " (cannot mix arrays with objects)"
+            );
+        }
+    }
+
+    obj[key] = value;
+}
+
 module.exports = {
     uFloat,
     uInt,
     intVal,
     floatVal,
     readableFileSize,
-    roundToPrecision
+    roundToPrecision,
+    setPath,
+    isObject
 };

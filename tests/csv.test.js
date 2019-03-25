@@ -7,6 +7,8 @@ const { describe, it, beforeEach, afterEach } = lab;
 
 
 describe("csv.js", () => {
+    // console.log(csv.parseDelimitedLine('"a""b""c"'))
+    // return;
 
     describe("mergeStrict", () => {
         it ("throws on incompatible objects", () => {
@@ -15,37 +17,37 @@ describe("csv.js", () => {
             expect(() => csv.mergeStrict(
                 { a: 1, b: 2, c: 3        },
                 { a: 1, b: 2, c: { d: 5 } }
-            )).to.throw();
+            ), "Override scalar value with object").to.throw();
 
             // don't override object with scalar
             expect(() => csv.mergeStrict(
                 { a: 1, b: 2, c: { d: 5 } },
                 { a: 1, b: 2, c: 3        }
-            )).to.throw();
+            ), "Override object with scalar value").to.throw();
             
             // don't override scalar with array
             expect(() => csv.mergeStrict(
                 { a: 1, b: 2, c: 3     },
                 { a: 1, b: 2, c: [ 5 ] }
-            )).to.throw();
+            ), "Override scalar value with array").to.throw();
 
             // don't override array with scalar
             expect(() => csv.mergeStrict(
                 { a: 1, b: 2, c: [ 5 ] },
                 { a: 1, b: 2, c: 3     }
-            )).to.throw();
+            ), "Override array with scalar value").to.throw();
 
             // don't override array with object
             expect(() => csv.mergeStrict(
                 { a: 1, b: 2, c: [ 5 ]    },
                 { a: 1, b: 2, c: { d: 5 } }
-            )).to.throw();
+            ), "Override array with object").to.throw();
 
             // don't override object with array
             expect(() => csv.mergeStrict(
                 { a: 1, b: 2, c: { d: 5 } },
                 { a: 1, b: 2, c: [ 5 ]    }
-            )).to.throw();
+            ), "Override object with array").to.throw();
         });
     })
 
@@ -271,6 +273,7 @@ describe("csv.js", () => {
             );
         });
     });
+
     describe("jsonArrayToTsv", () => {
         it ("from flat objects", () => {
             expect(csv.jsonArrayToTsv([
@@ -322,4 +325,10 @@ describe("csv.js", () => {
         });
     });
 
+    describe("parseDelimitedLine", () => {
+        expect(csv.parseDelimitedLine("a,b,c", ",")).to.equal(["a", "b", "c"]);
+        expect(csv.parseDelimitedLine("a;b;c", ";")).to.equal(["a", "b", "c"]);
+        expect(csv.parseDelimitedLine('"a,b",c', ",")).to.equal(["a,b", "c"]);
+        expect(csv.parseDelimitedLine('"a""b""c"')).to.equal(['a"b"c']);        
+    });
 });

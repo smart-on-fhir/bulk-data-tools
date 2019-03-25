@@ -1,4 +1,5 @@
 const { forEachLine } = require("./ndjson");
+const { isObject } = require("./lib");
 
 function strPad(str, length = 0) {
     let strLen = str.length;
@@ -7,16 +8,6 @@ function strPad(str, length = 0) {
         strLen += 1;
     }
     return str;
-}
-
-/**
- * Tests if the given argument is an object
- * @param {*} x The value to test
- * @returns {Boolean}
- */
-function isObject(x)
-{
-    return x && typeof x == "object";
 }
 
 /**
@@ -97,18 +88,27 @@ function flatObjectKeys(obj, _prefix)
 function mergeStrict(obj1, obj2)
 {
     for (const key in obj2) {
-        const source = obj2[key];
-        const target = obj1[key];
+        const source         = obj2[key];
+        const target         = obj1[key];
+        const sourceIsObject = isObject(source);
+        const targetIsObject = isObject(target);
 
-        if (isObject(source)) {
+        if (target && sourceIsObject !== targetIsObject) {
+            throw new Error(
+                "Unable to merge incompatible objects" +
+                " (array or object with scalar value)"
+            );
+        }
+
+        if (sourceIsObject) {
             if (target === undefined) {
                 obj1[key] = Array.isArray(source) ? [] : {};
             }
             
-            if (!isObject(obj1[key])) {
+            if (Array.isArray(source) !== Array.isArray(obj1[key])) {
                 throw new Error(
                     "Unable to merge incompatible objects" +
-                    " (array or object with scalar value)"
+                    " (mix array and object)"
                 );
             }
 
@@ -192,17 +192,73 @@ function jsonToTsv(json, { separator = "\t", eol = "\r\n" } = {})
     return jsonToCsv(json, { separator, eol });
 }
 
-class DelimitedFormatter
+/**
+ * Splits the line into cells using the provided delimiter (or by comma by
+ * default) and returns the cells array. supports quoted strings and escape
+ * sequences.
+ * @param {String} line The line to parse
+ * @param {String} delimiter The delimiter to use (defaults to ",")
+ * @returns {String[]} The cells as array of strings
+ */
+function parseDelimitedLine(line, delimiter = ",")
 {
-    constructor()
-    {
-        this.options = {
-            delimiter: ",",
-            eol: "\r\n"
-        };
+    let out        = [],
+        idx        = 0,
+        len        = line.length,
+        char       = "",
+        expect     = null,
+        buffer     = "";
+
+    while (idx < len) {
+        char = line[idx++];
+        switch (char) {
+
+        // String
+        case '"':
+
+            // begin string
+            if (!expect) {
+                expect = char;
+                break;
+            }
+
+            // Escaped quote - continue string
+            if (expect === char && line[idx] === char) {
+                buffer += char;
+                idx++;
+                break;
+            }
+
+            // Close string
+            expect = null;
+            out.push(buffer);
+            buffer = "";
+            idx++
+            break;
+
+        // delimiter
+        case delimiter:
+            if (!expect) {
+                out.push(buffer);
+                buffer = "";
+            }
+            else {
+                buffer += char;
+            }
+            break;
+
+        default:
+            buffer += char;
+            break;
+        }
     }
 
-    addLine() {}
+    if (buffer) {
+        out.push(buffer);
+        buffer = "";
+    }
+
+    return out.map(o => o.trim());
 }
 
 module.exports = {
@@ -215,9 +271,7 @@ module.exports = {
     jsonArrayToTsv,
     getPath,
     escapeCsvValue,
-    mergeStrict
+    mergeStrict,
+    parseDelimitedLine
 };
 
-
-// NdJsonToCSV("../sample-apps-stu3/fhir-downloader/downloads/2.Immunization.ndjson");
-// NdJsonToCSV("../sample-apps-stu3/fhir-downloader/downloads/3.Procedure.ndjson");
