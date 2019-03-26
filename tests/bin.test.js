@@ -14,7 +14,7 @@ describe("bin", () => {
         it ("csv to csv", (cb) => {
             return new Promise((resolve, reject) => {
                 exec(
-                    `node ./bin/bulk_data --input-type delimited --output-type ` +
+                    `node ./bin/bulk_data --output-type ` +
                     `delimited --input tests/mocks/sample.1.csv`,
                     (error, stdout, stderr) => {
                         if (error) {
@@ -33,16 +33,40 @@ describe("bin", () => {
                 );
             });
         });
-        // it ("csv to tsv", () => {
-        //     const cmd = `bulk-data --input-type delimited --output-type delimited --delimiter TAB`;
-        // });
+
+        it ("csv to tsv", () => {
+            return new Promise((resolve, reject) => {
+                exec([
+                        `node ./bin/bulk_data`,
+                        `--output-type delimited`,
+                        `--output-delimiter TAB`,
+                        `--input tests/mocks/sample.1.csv`
+                    ].join(" "),
+                    (error, stdout, stderr) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        if (stderr) {
+                            return reject(new Error(stderr));
+                        }
+                        try {
+                            expect(stdout).to.equal(`a\tb\tc\r\n1\t2\t3\r\n4\t5\t6`);
+                            resolve();
+                        } catch (ex) {
+                            reject(ex);
+                        }
+                    }
+                );
+            });
+        });
+
         // it ("csv to json", () => {
         //     const cmd = `bulk-data --input-type delimited --output-type json`;
         // });
         it ("csv to ndjson", () => {
             return new Promise((resolve, reject) => {
                 exec(
-                    `node ./bin/bulk_data --input-type delimited --output-type ` +
+                    `node ./bin/bulk_data --output-type ` +
                     `ndjson --input tests/mocks/sample.1.csv`,
                     (error, stdout, stderr) => {
                         if (error) {
@@ -68,7 +92,7 @@ describe("bin", () => {
         it ("tsv to csv", () => {
             return new Promise((resolve, reject) => {
                 exec(
-                    `node ./bin/bulk_data --input-type delimited --output-type ` +
+                    `node ./bin/bulk_data --output-type ` +
                     `delimited --input tests/mocks/sample.1.tsv delimiter TAB`,
                     (error, stdout, stderr) => {
                         if (error) {
@@ -87,17 +111,44 @@ describe("bin", () => {
                 );
             });
         });
-        // it ("tsv to tsv", () => {
-        //     const cmd = `bulk-data --input-type delimited --output-type delimited`;
-        // });
+
+        it ("tsv to tsv", () => {
+            return new Promise((resolve, reject) => {
+                exec([
+                        `node ./bin/bulk_data`,
+                        `--output-type delimited`,
+                        `--input-delimiter TAB`,
+                        `--output-delimiter TAB`,
+                        `--input tests/mocks/sample.1.tsv`
+                    ].join(" "),
+                    (error, stdout, stderr) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        if (stderr) {
+                            return reject(new Error(stderr));
+                        }
+                        try {
+                            expect(stdout).to.equal(`a\tb\tc\r\n1\t2\t3\r\n4\t5\t6`);
+                            resolve();
+                        } catch (ex) {
+                            reject(ex);
+                        }
+                    }
+                );
+            });
+        });
         // it ("tsv to json", () => {
         //     const cmd = `bulk-data --input-type delimited --output-type delimited`;
         // });
         it ("tsv to ndjson", () => {
             return new Promise((resolve, reject) => {
-                exec(
-                    `node ./bin/bulk_data --input-type delimited --output-type ` +
-                    `ndjson --input tests/mocks/sample.1.tsv --delimiter TAB`,
+                exec([
+                        `node ./bin/bulk_data`,
+                        `--output-type ndjson`,
+                        `--input-delimiter TAB`,
+                        `--input tests/mocks/sample.1.tsv`
+                    ].join(" "),
                     (error, stdout, stderr) => {
                         if (error) {
                             return reject(error);
