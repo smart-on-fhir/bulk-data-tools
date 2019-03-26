@@ -40,7 +40,7 @@ class LineStream extends Transform
             let match;
             while ((match = /(\r\n|\n)+/.exec(this._buffer)) !== null) {
                 const line = this._buffer.substr(0, match.index);
-                this.push(line);
+                this.push(line, "utf8");
                 this._buffer = this._buffer.substr(match.index + match[1].length);
             }
             next();

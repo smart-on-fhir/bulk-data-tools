@@ -1,4 +1,3 @@
-const { forEachLine } = require("./ndjson");
 const { isObject } = require("./lib");
 
 function strPad(str, length = 0) {
@@ -258,7 +257,7 @@ function parseDelimitedLine(line, delimiter = ",")
         buffer = "";
     }
 
-    return out.map(o => o.trim());
+    return out;//.map(o => o.trim());
 }
 
 module.exports = {

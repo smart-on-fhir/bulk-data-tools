@@ -2,96 +2,80 @@
 
 const app = require("commander");
 const FS  = require("fs");
-const { Transform } = require("stream");
-const {
-    NdJsonStream,
-    LineStream,
-    NdJsonToDelimited,
-    NdJsonToDelimitedHeader
-} = require("../ndjson");
+const { Transform, PassThrough } = require("stream");
+const DelimitedToObject = require("../streams/DelimitedToObject");
+const ObjectToJson      = require("../streams/ObjectToJson");
+const JsonToObject      = require("../streams/JsonToObject")
+const ObjectToNdJson    = require("../streams/ObjectToNdJson");
+const BytesToLines      = require("../streams/BytesToLines");
+const BytesToJson       = require("../streams/BytesToJson");
+const { NdJsonToDelimited, NdJsonToDelimitedHeader } = require("../ndjson");
  
 app
     .version('0.1.0')
-    .usage('[options] <file ...>')
-    .option('--input-type [type]' , "The type of input (json, ndjson, delimited)", "ndjson")
-    .option('--output-type [type]', "The type of output (json, ndjson, delimited)", "ndjson")
-    .option('--eol [value]', "The line separator (CRLF, LF)", "CRLF")
-    .option('--delimiter [value]', 'The delimiter (e.g. ",", "TAB", ";"...)', ",")
-    .option('--input [path]', 'Path to input directory or file')
-    .option('--output [path]', 'Path to output directory or file')
-    .option('--fast', 'Only use the first line in ndjson to compute the header')
+    // .usage('[options] <file ...>'                                                            )
+    .option('--input [path]'      , 'Path to input directory or file'                        )
+    .option('--output [path]'     , 'Path to output directory or file'                       )
+    .option('--input-type [type]' , "The type of input (json, ndjson, delimited)" , "ndjson" )
+    .option('--output-type [type]', "The type of output (json, ndjson, delimited)", "ndjson" )
+    .option('--eol [value]'       , "The line separator (CRLF, LF)"               , "CRLF"   )
+    .option('--delimiter [value]' , 'The delimiter (e.g. ",", "TAB", ";"...)'     , ","      )
+    .option('--fast'              , 'Only use the first line in ndjson to compute the header')
     .parse(process.argv);
 
-function createInputStream() {
-    return app.input ? FS.createReadStream(app.input, "utf8") : process.stdin;
-}
-
-// Create the output stream
-const outputStream = app.output ? FS.createWriteStream(app.output, "utf8") : process.stdout;
-
-// inputType
-// outputType
-
-const jsonStream   = new NdJsonStream();
-const headerStream = new NdJsonToDelimitedHeader();
-const bodyStream   = new NdJsonToDelimited({
+const delimitedOptions = {
     eol      : app.eol.replace(/CR/i, "\r").replace(/LF/i, "\n"),
     delimiter: app.delimiter.replace(/TAB/i, "\t")
-});
+};
 
-jsonStream.on("finish", function() {
-    console.log("jsonStream ENDED");
-});
+// console.log(delimitedOptions)
 
-headerStream.on("finish", function() {
-    console.log("headerStream ENDED");
-});
+function createInputStream({ skipLines } = {}) {
+    const stream = app.input ? FS.createReadStream(app.input, "utf8") : process.stdin;
+    switch (app.inputType) {
+        case "delimited":
+            return stream
+                .pipe(new BytesToLines({ skipLines }))       // outputs line strings
+                .pipe(new DelimitedToObject(delimitedOptions)); // outputs json objects
+        case "json":
+            return stream
+                .pipe(new BytesToJson())        // outputs single json string
+                .pipe(new JsonToObject());      // outputs single json object
+        case "ndjson":
+            return stream
+                .pipe(new BytesToLines({ skipLines }))       // outputs line strings
+                .pipe(new JsonToObject());      // outputs json objects
+        default:
+            throw new Error(`Unknown input-type parameter "${app.inputType}"`);
+    }
+}
 
-bodyStream.on("finish", function() {
-    console.log("bodyStream ENDED");
-});
+const outputStream = app.output ?
+    FS.createWriteStream(app.output, "utf8") :
+    process.stdout;
 
-outputStream.on("finish", function() {
-    console.log("outputStream ENDED");
-});
 
-// Header Pipeline -------------------------------------------------------------
-const headerPipeline = createInputStream()
-    .pipe(new LineStream())
-    .pipe(jsonStream)
-    .pipe(headerStream)
-    .pipe(outputStream, {end: false});
+switch (app.outputType) {
+    case "delimited": {
+        const headerStream = new NdJsonToDelimitedHeader(delimitedOptions);
 
-    headerPipeline.once("finish", function() {
-        console.log("headerPipeline ENDED");
-    });
+        headerStream.once("finish", function() {
+            createInputStream({ skipLines: 1 })
+                .pipe(new NdJsonToDelimited(delimitedOptions))
+                .pipe(outputStream);
+        });
 
-    
+        createInputStream().pipe(headerStream).pipe(outputStream, { end: false });
+    }
+    break;
+    case "json":
+        createInputStream().pipe(new ObjectToJson()).pipe(outputStream);
+    break;
+    case "ndjson":
+        createInputStream().pipe(new ObjectToNdJson()).pipe(outputStream);
+    break;
+    default:
+        throw new Error(`Unknown output-type parameter "${app.outputType}"`);
+    break;
+}
 
-    headerStream.once("finish", function() {
-        createInputStream()
-            .pipe(new LineStream())
-            .pipe(new NdJsonStream())
-            .pipe(bodyStream)
-            .pipe(outputStream);
-    });
-
-    
-// -----------------------------------------------------------------------------
-
-// createInputStream()
-//     .pipe(new LineStream())
-//     .pipe(new NdJsonStream())
-//     .pipe(new NdJsonToDelimited({
-//         fast     : app.fast,
-//         eol      : app.eol.replace(/CR/i, "\r").replace(/LF/i, "\n"),
-//         delimiter: app.delimiter.replace(/TAB/i, "\t")
-//     }))
-//     .pipe(outputStream);
-
-// inputStream.pipe(outputStream);
-// console.log(app);
-
-// if (!process.argv.slice(2).length) {
-//     app.help();
-// }
