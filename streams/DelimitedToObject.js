@@ -20,7 +20,6 @@ class DelimitedToObject extends Transform
         };
 
         // console.log("0000" + JSON.stringify(options))
-        
         this.header = null;
     }
 

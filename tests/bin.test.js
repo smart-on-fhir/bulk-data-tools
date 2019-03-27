@@ -60,9 +60,29 @@ describe("bin", () => {
             });
         });
 
-        // it ("csv to json", () => {
-        //     const cmd = `bulk-data --input-type delimited --output-type json`;
-        // });
+        it ("csv to json", () => {
+            return new Promise((resolve, reject) => {
+                exec(
+                    `node ./bin/bulk_data --output-type ` +
+                    `json --input tests/mocks/sample.1.csv`,
+                    (error, stdout, stderr) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        if (stderr) {
+                            return reject(new Error(stderr));
+                        }
+                        try {
+                            expect(stdout).to.equal(`[{"a":1,"b":2,"c":3},{"a":4,"b":5,"c":6}]`);
+                            resolve();
+                        } catch (ex) {
+                            reject(ex);
+                        }
+                    }
+                );
+            });
+        });
+
         it ("csv to ndjson", () => {
             return new Promise((resolve, reject) => {
                 exec(
@@ -138,9 +158,30 @@ describe("bin", () => {
                 );
             });
         });
-        // it ("tsv to json", () => {
-        //     const cmd = `bulk-data --input-type delimited --output-type delimited`;
-        // });
+
+        it ("tsv to json", () => {
+            return new Promise((resolve, reject) => {
+                exec(
+                    `node ./bin/bulk_data --input-delimiter TAB --input-type tsv --output-type ` +
+                    `json --input tests/mocks/sample.1.tsv`,
+                    (error, stdout, stderr) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        if (stderr) {
+                            return reject(new Error(stderr));
+                        }
+                        try {
+                            expect(stdout).to.equal(`[{"a":1,"b":2,"c":3},{"a":4,"b":5,"c":6}]`);
+                            resolve();
+                        } catch (ex) {
+                            reject(ex);
+                        }
+                    }
+                );
+            });
+        });
+
         it ("tsv to ndjson", () => {
             return new Promise((resolve, reject) => {
                 exec([

@@ -9,17 +9,17 @@ const JsonToObject      = require("../streams/JsonToObject")
 const ObjectToNdJson    = require("../streams/ObjectToNdJson");
 const BytesToLines      = require("../streams/BytesToLines");
 const BytesToJson       = require("../streams/BytesToJson");
+const ObjectToJsonArray = require("../streams/ObjectToJsonArray");
 const { NdJsonToDelimited, NdJsonToDelimitedHeader } = require("../ndjson");
- 
+
 app
     .version('0.1.0')
-    // .usage('[options] <file ...>'                                                            )
-    .option('--input [path]'      , 'Path to input directory or file'                        )
-    .option('--output [path]'     , 'Path to output directory or file'                       )
-    .option('--input-type [type]' , "The type of input (json, ndjson, delimited, auto)" , "auto" )
-    .option('--output-type [type]', "The type of output (json, ndjson, delimited, auto)", "auto" )
+    .option('--input [path]'      , "Path to input directory or file"                        )
+    .option('--output [path]'     , "Path to output directory or file"                       )
+    .option('--input-type [type]' , "The type of input (json, ndjson, delimited, auto)" , "auto")
+    .option('--output-type [type]', "The type of output (json, ndjson, delimited, auto)", "auto")
     .option('--eol [value]'       , "The line separator (CRLF, LF)"               , "CRLF"   )
-    
+
     .option(
         "--output-delimiter [value]",
         'The delimiter (e.g. ",", "TAB", ";"...) to use when generating the ' +
@@ -133,7 +133,11 @@ switch (app.outputType) {
     }
     break;
     case "json":
-        createInputStream().pipe(new ObjectToJson()).pipe(outputStream);
+        if (getInputType() === "json") {
+            createInputStream().pipe(new ObjectToJson()).pipe(outputStream);
+        } else {
+            createInputStream().pipe(new ObjectToJsonArray()).pipe(outputStream);
+        }
     break;
     case "ndjson":
         createInputStream().pipe(new ObjectToNdJson()).pipe(outputStream);
