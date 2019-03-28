@@ -27,7 +27,7 @@ class BytesToLines extends Transform
     _transform(chunk, _encoding, next)
     {
         try {
-            this._buffer += chunk;
+            this._buffer += chunk + "";
             
             let match;
             while ((match = /(\r\n|\n)+/.exec(this._buffer)) !== null) {

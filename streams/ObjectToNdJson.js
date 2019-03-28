@@ -2,7 +2,7 @@ const { Transform } = require("stream");
 
 class ObjectToNdJson extends Transform
 {
-    constructor(options = {})
+    constructor(options = { prependEol: false })
     {
         super({
             objectMode: true,
@@ -11,14 +11,15 @@ class ObjectToNdJson extends Transform
         });
 
         this.counter = 0;
+        this.options = options;
     }
 
     _transform(obj, _encoding, next)
     {
         // console.log(obj)
         try {
-            if (++this.counter > 1) {
-                this.push("\r\n");    
+            if (this.options.prependEol || ++this.counter > 1) {
+                this.push("\r\n");
             }
             // this.push(obj);
             const json = JSON.stringify(obj);

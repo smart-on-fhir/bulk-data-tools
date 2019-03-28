@@ -20,22 +20,25 @@ function forEachFile(options, cb)
 
     const walker = Walk.walk(options.dir, { followLinks: options.followLinks });
 
-    let job = Promise.resolve();
+    return new Promise(resolve => {
 
-    walker.on("file", (root, fileStats, next) => {
-        let path = Path.resolve(root, fileStats.name);
-        if (options.filter && !options.filter(path)) {
-            return next();
-        }
-        job = job.then(() => cb(path, fileStats)).then(next);
+        let job = Promise.resolve();
+
+        walker.on("file", (root, fileStats, next) => {
+            let path = Path.resolve(root, fileStats.name);
+            if (options.filter && !options.filter(path)) {
+                return next();
+            }
+            job = job.then(() => cb(path, fileStats)).then(next);
+        });
+
+        walker.on("errors", (root, nodeStatsArray, next) => {
+            console.error(`Error at ${root}: $nodeStatsArray.error`);
+            next();
+        });
+
+        walker.on("end", () => resolve());
     });
-
-    walker.on("errors", (root, nodeStatsArray, next) => {
-        console.error(`Error at ${root}: $nodeStatsArray.error`);
-        next();
-    });
-
-    return job;
 }
 
 function forEachFileOfType(root, ext, cb)
@@ -46,8 +49,12 @@ function forEachFileOfType(root, ext, cb)
     }, cb);
 }
 
-forEachFileOfType("../leap-bulk-data-server", "js", (path, stats) => {
-    console.log(`${path} - ${Lib.readableFileSize(stats.size)}`);
-});
+// forEachFileOfType("../leap-bulk-data-server", "js", (path, stats) => {
+//     console.log(`${path} - ${Lib.readableFileSize(stats.size)}`);
+// });
 
-module.exports = forEachFile;
+module.exports = {
+    forEachFile,
+    forEachFileOfType
+};
+
