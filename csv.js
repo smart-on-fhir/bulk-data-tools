@@ -53,7 +53,7 @@ function escapeCsvValue(value, separator = ",")
  * [1, {a: 3, b: 4}, 2, 3] -> ["0", "1.a", "1.b", "2", "3"]
  * ```
  * @param {Object|Array} obj The object to inspect
- * @param {String} _prefix Path prefix that if provided, will be prepended to
+ * @param {String} [_prefix] Path prefix that if provided, will be prepended to
  * each key. Please do not use this argument. The function will pass it to
  * itself on recursive calls.
  * @returns {String[]}
@@ -146,7 +146,7 @@ function csvHeaderFromJson(json)
  * matches the structure of the rows.
  * @param {Object[]|Array[]} array The array of row objects or arrays
  * @param {Object} options
- * @param {Boolean} options.fast If true, assumes that all rows have the same
+ * @param {Boolean} [options.fast] If true, assumes that all rows have the same
  * structure and only use the first one to build the header.
  * @returns {String[]} The header as an array of strings
  */

@@ -7,7 +7,9 @@ const Lib  = require("./lib");
  * Walks a folder recursively
  * @param {Object} options
  * @param {String} options.dir The directory to walk. Defaults to `.`.
- * @param {*} cb 
+ * @param {(path: String)=>Boolean} [options.filter] Optional filter function.
+ * @param {Boolean} [options.followLinks = false] Follow symlinks.
+ * @param {(path, fileStats) => Promise<any>|void} cb 
  */
 function forEachFile(options, cb)
 {
