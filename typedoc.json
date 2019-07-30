@@ -1,9 +1,0 @@
-{
-    "mode": "modules",
-    "out": "docs",
-    "exclude": "node_modules",
-    "externalPattern": "node_modules",
-    "excludeExternals": true,
-    "includeDeclarations": true,
-    "ignoreCompilerErrors": true
-}
