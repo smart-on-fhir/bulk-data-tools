@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -63,6 +61,68 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="bulk-data-tools">bulk-data-tools</h1>
+				<h2 id="converting-data-between-different-formats">Converting data between different formats</h2>
+				<p>The input can be ane of:</p>
+				<ul>
+					<li><code>String</code><ul>
+							<li>JSON string (e.g. the result of reading a <code>.json</code> file)</li>
+							<li>NDJSON string (e.g. the result of reading a <code>.ndjson</code> file)</li>
+							<li>String in some delimited format (e.g. the result of reading a <code>.csv</code> or <code>.tsv</code> file)</li>
+							<li>Absolute path to file (json, ndjson, csv or tsv)</li>
+							<li>Absolute path to directory containing some of the files above</li>
+						</ul>
+					</li>
+					<li><code>Object</code><ul>
+							<li>Any object or array that can be serialized as JSON</li>
+						</ul>
+					</li>
+				</ul>
+				<p>|                   | json                   |
+					|-------------------|------------------------|
+					|object             | N/A |
+					|array              | N/A |
+					|JSON String        | Parses a json string and converts it to object |
+					|NDJSON String      | Parses an ndjson string and converts it to an array of objects |
+					|CSV String         | Parses a csv string and converts it to an array of objects where the first item is the header and the rest are rows
+					|TSV String         | Parses a tsv string and converts it to an array of objects where the first item is the header and the rest are rows |
+					|Path to JSON file  | Parses a json file contents as JSON and converts it to object
+					|Path to NDJSON file| Parses an ndjson file contents as JSON and converts it to object
+					|Path to CSV file   |
+					|Path to TSV file   |
+				|Path to directory  |</p>
+				<h2 id="working-with-files">Working with files</h2>
+				<p>The library provides a few methods that can be very useful for reading and parsing large files.</p>
+				<ul>
+					<li>To read an entire file use one of the built-in node function.</li>
+					<li>To read a file by iterating over the lines use the <code>readLine</code> function.</li>
+					<li>To read a file as stream use the .</li>
+				</ul>
+				<h2 id="examples">Examples</h2>
+				<h3 id="recursively-read-a-directory-and-update-all-the-json-files">Recursively read a directory and update all the json files</h3>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> files = filterFiles(<span class="hljs-string">"/path/to/dir"</span>, /\.json$/i);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> file <span class="hljs-keyword">of</span> files) {
+    <span class="hljs-keyword">const</span> json = <span class="hljs-built_in">JSON</span>.parse(fs.readFileSync(file, <span class="hljs-string">"utf8"</span>));
+    json.lastModified = <span class="hljs-built_in">Date</span>.now();
+    fs.writeFileSync(file, <span class="hljs-built_in">JSON</span>.stringify(json));
+}</code></pre>
+				<h3 id="recursively-read-a-directory-parse-all-the-ndjson-files-and-combine-them-into-another-ndjson-file">Recursively read a directory, parse all the ndjson files and combine them into another ndjson file</h3>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> entries = <span class="hljs-keyword">new</span> NDJSONDirectory(<span class="hljs-string">"/path/to/dir"</span>).entries;
+<span class="hljs-keyword">let</span> lineCount = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> entries) {
+    fs.appendFileSync(
+        path,
+        (++lineCount === <span class="hljs-number">1</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">"\r\n"</span>) + <span class="hljs-built_in">JSON</span>.stringify(entry)
+    );
+}</code></pre>
+				<h3 id="read-an-ndjson-file-and-spread-each-line-into-its-own-json-file">Read an ndjson file and spread each line into its own json file</h3>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> entries = <span class="hljs-keyword">new</span> NDJSONFile(<span class="hljs-string">"/path/to/ndjson"</span>).entries;
+<span class="hljs-keyword">let</span> lineCount = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> entries) {
+    fs.writeFileSync(
+        <span class="hljs-string">`/base/path/file-<span class="hljs-subst">${++lineCount}</span>.json`</span>,
+        <span class="hljs-built_in">JSON</span>.stringify(entry)
+    );
+}</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -70,9 +130,6 @@
 				<ul>
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-not-exported">
-						<a href="modules/bulkdatatools.html">Bulk<wbr>Data<wbr>Tools</a>
 					</li>
 				</ul>
 			</nav>
@@ -87,20 +144,14 @@
 					<li class=" tsd-kind-class">
 						<a href="classes/bytestolines.html" class="tsd-kind-icon">Bytes<wbr>ToLines</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
+					<li class=" tsd-kind-class">
 						<a href="classes/csv.html" class="tsd-kind-icon">CSV</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/collection.html" class="tsd-kind-icon">Collection</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/delimitedtoobject.html" class="tsd-kind-icon">Delimited<wbr>ToObject</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
-						<a href="classes/directoryinput.html" class="tsd-kind-icon">Directory<wbr>Input</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
-						<a href="classes/fileinput.html" class="tsd-kind-icon">File<wbr>Input</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
-						<a href="classes/input.html" class="tsd-kind-icon">Input</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/jsonarraytodelimitedheader.html" class="tsd-kind-icon">Json<wbr>Array<wbr>ToDelimited<wbr>Header</a>
@@ -110,6 +161,21 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/linestream.html" class="tsd-kind-icon">Line<wbr>Stream</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/ndjson.html" class="tsd-kind-icon">NDJSON</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/ndjsonarray.html" class="tsd-kind-icon">NDJSONArray</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/ndjsondirectory.html" class="tsd-kind-icon">NDJSONDirectory</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/ndjsonfile.html" class="tsd-kind-icon">NDJSONFile</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/ndjsonstring.html" class="tsd-kind-icon">NDJSONString</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/ndjsonstream.html" class="tsd-kind-icon">Nd<wbr>Json<wbr>Stream</a>
@@ -125,33 +191,6 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/objecttondjson.html" class="tsd-kind-icon">Object<wbr>ToNd<wbr>Json</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="interfaces/iarraytodelimitedoptions.html" class="tsd-kind-icon">IArray<wbr>ToDelimited<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="interfaces/idelimitedtoobjectoptions.html" class="tsd-kind-icon">IDelimited<wbr>ToObject<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="interfaces/ijsonarraytodelimitedheaderoptions.html" class="tsd-kind-icon">IJson<wbr>Array<wbr>ToDelimited<wbr>Header<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="interfaces/indjsontodelimitedoptions.html" class="tsd-kind-icon">INd<wbr>Json<wbr>ToDelimited<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="interfaces/iobjecttondjsonoptions.html" class="tsd-kind-icon">IObject<wbr>ToNd<wbr>Json<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="interfaces/iwalkoptions.html" class="tsd-kind-icon">IWalk<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-is-not-exported">
-						<a href="globals.html#errorback" class="tsd-kind-icon">Error<wbr>Back</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-is-not-exported">
-						<a href="globals.html#filefilter" class="tsd-kind-icon">File<wbr>Filter</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-is-not-exported">
-						<a href="globals.html#walkcallback" class="tsd-kind-icon">Walk<wbr>Callback</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#csvheaderfromarray" class="tsd-kind-icon">csv<wbr>Header<wbr>From<wbr>Array</a>

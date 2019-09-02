@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CSV | Bulk Data Tools</title>
+	<title>Collection | Bulk Data Tools</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,10 +52,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="csv.html">CSV</a>
+					<a href="collection.html">Collection</a>
 				</li>
 			</ul>
-			<h1>Class CSV</h1>
+			<h1>Class Collection</h1>
 		</div>
 	</div>
 </header>
@@ -65,11 +65,12 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This class represents a CSV object. An instance can be created from
-							different kinds of input using the static methods starting with <code>from</code> and
-							converted to other kinds of output using the instance methods starting with
-							<code>to</code>. This class is designed to handle large files or directories by using
-						iterators and reading files one line at a time.</p>
+						<p>This class represents a collection of data entries. An instance can be
+							created from different kinds of input using the static methods starting with
+							<code>from</code> (that are available on the subclasses) and converted to other kinds of
+							output using the instance methods starting with <code>to</code>. This class is designed
+							to handle large files or directories by using iterators and reading files one
+						line at a time.</p>
 					</div>
 				</div>
 			</section>
@@ -77,7 +78,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CSV</span>
+						<span class="target">Collection</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="ndjson.html" class="tsd-signature-type">NDJSON</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -85,50 +91,46 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="csv.html#_entries" class="tsd-kind-icon">_entries</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="csv.html#_lines" class="tsd-kind-icon">_lines</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="collection.html#_entries" class="tsd-kind-icon">_entries</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="collection.html#_lines" class="tsd-kind-icon">_lines</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="csv.html#entries" class="tsd-kind-icon">entries</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="csv.html#lines" class="tsd-kind-icon">lines</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="csv.html#setentries" class="tsd-kind-icon">set<wbr>Entries</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="csv.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="csv.html#fromarray" class="tsd-kind-icon">from<wbr>Array</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="csv.html#fromdirectory" class="tsd-kind-icon">from<wbr>Directory</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="csv.html#fromfile" class="tsd-kind-icon">from<wbr>File</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="csv.html#fromstring" class="tsd-kind-icon">from<wbr>String</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="csv.html#fromstringarray" class="tsd-kind-icon">from<wbr>String<wbr>Array</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="csv.html#parseline" class="tsd-kind-icon">parse<wbr>Line</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="collection.html#entries" class="tsd-kind-icon">entries</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="collection.html#lines" class="tsd-kind-icon">lines</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="collection.html#setentries" class="tsd-kind-icon">set<wbr>Entries</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="collection.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="collection.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="collection.html#tofile" class="tsd-kind-icon">to<wbr>File</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="collection.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="collection.html#tostringarray" class="tsd-kind-icon">to<wbr>String<wbr>Array</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="_entries" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _entries</h3>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _entries</h3>
 					<div class="tsd-signature tsd-kind-icon">_entries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;[].values</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/csv/CSV.ts:29</li>
+							<li>Defined in src/Collection.ts:25</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The internal entries iterator. Here, an entry means a line represented as
-								an array of strings for each cell value. There is one array or entry for
-								each csv line. In some cases iterating over lines is simple. For example,
-								if we create an instance from string or array we already have all the
-								lines. However, if the input is a file, the entries iterator will be a
-							function that reads and parses one line at a time.</p>
+							<p>The internal entries iterator. In some cases iterating over lines is
+								simple. For example, if we create an instance from string or array we
+								already have all the lines. However, if the input is a file, the entries
+							iterator will be a function that reads and parses one line at a time.</p>
 						</div>
 					</div>
 					<div class="tsd-type-declaration">
@@ -147,13 +149,13 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="_lines" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _lines</h3>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _lines</h3>
 					<div class="tsd-signature tsd-kind-icon">_lines<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;[].values</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/csv/CSV.ts:19</li>
+							<li>Defined in src/Collection.ts:17</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -193,13 +195,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/csv/CSV.ts:67</li>
+									<li>Defined in src/Collection.ts:64</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>The entries iterator of the instance. Yields lines as JSON-serialize-able
-									objects.</p>
+									<p>The entries iterator of the instance. Yields lines as objects.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -216,12 +217,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/csv/CSV.ts:58</li>
+									<li>Defined in src/Collection.ts:56</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>The lines iterator of the instance. Yields lines as JSON strings.</p>
+									<p>The lines iterator of the instance. Yields lines as strings.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -232,19 +233,21 @@
 					<a name="setentries" class="tsd-anchor"></a>
 					<h3>set<wbr>Entries</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Entries<span class="tsd-signature-symbol">(</span>entriesIterator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Entries<span class="tsd-signature-symbol">(</span>entriesIterator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="collection.html" class="tsd-signature-type">Collection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/csv/CSV.ts:49</li>
+									<li>Defined in src/Collection.ts:47</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets the entries iterator of the instance. Useful while composing an
-									instance from different sources</p>
+										instance from different sources. The &quot;entries&quot; might be JSON objects
+										representing NDJSON lines or JS arrays of strings representing a line
+									in CSV or TSV file.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -265,7 +268,7 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="collection.html" class="tsd-signature-type">Collection</a></h4>
 							<p>The instance to allow chaining</p>
 						</li>
 					</ul>
@@ -274,18 +277,18 @@
 					<a name="setlines" class="tsd-anchor"></a>
 					<h3>set<wbr>Lines</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Lines<span class="tsd-signature-symbol">(</span>linesIterator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Lines<span class="tsd-signature-symbol">(</span>linesIterator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="collection.html" class="tsd-signature-type">Collection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/csv/CSV.ts:37</li>
+									<li>Defined in src/Collection.ts:33</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets the lines iterator of the instance. Useful while composing an
+									<p>Sets the entries iterator of the instance. Useful while composing an
 									instance from different sources</p>
 								</div>
 							</div>
@@ -310,227 +313,111 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="collection.html" class="tsd-signature-type">Collection</a></h4>
 							<p>The instance to allow chaining</p>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="fromarray" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>Array</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjson.html" class="tsd-signature-type">NDJSON</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="toarray" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> to<wbr>Array</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Array<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/csv/CSV.ts:176</li>
+									<li>Defined in src/Collection.ts:91</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>If we happen to have the entire csv as array, we can create a CSV
-									instance like so:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = NDJSON.fromArray([ {}, {} ]);
-ndjson.lines();   <span class="hljs-comment">// Lines iterator</span>
-ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
+									<p>Converts the contents of the collection to array of &quot;values&quot;. The
+										subclasses must implement this depending on the output format they
+									represent.</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>arr: <span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An array of objects that can be serialized as JSON</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="ndjson.html" class="tsd-signature-type">NDJSON</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="fromdirectory" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>Directory</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Directory<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjson.html" class="tsd-signature-type">NDJSON</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tofile" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> to<wbr>File</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="collection.html" class="tsd-signature-type">Collection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/csv/CSV.ts:216</li>
+									<li>Defined in src/Collection.ts:97</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates and returns an NDJSON instance from directory path. This will
-										walk (recursively) through the directory and collect all the files having
-										a <code>.ndjson</code> extension. The <code>lines</code> and <code>entries</code> iterators will yield
-									results from all those files combined. Example:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = NDJSON.fromDirectory(<span class="hljs-string">"/path/to/directory/containing/ndjson/files"</span>);
-ndjson.lines();   <span class="hljs-comment">// Lines iterator</span>
-ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
+									<p>Writes the collection to a file. The subclasses must implement this
+									depending on the output format they represent.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Absolute path to directory</p>
-									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="ndjson.html" class="tsd-signature-type">NDJSON</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="collection.html" class="tsd-signature-type">Collection</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="fromfile" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>File</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/csv/CSV.ts:265</li>
+									<li>Defined in src/Collection.ts:77</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates and returns a CSV instance from a file path. Example:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> csv = CSV.fromFile(<span class="hljs-string">"/path/to/file.csv"</span>);
-csv.lines();   <span class="hljs-comment">// Lines iterator</span>
-csv.entries(); <span class="hljs-comment">// Entries iterator</span></code></pre>
+									<p>Serializes the contents of the collection to a string. The subclasses
+									must implement this depending on the output format they represent.</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>path: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Absolute path to CSV file</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="fromstring" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>String<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, delimiter<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tostringarray" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> to<wbr>String<wbr>Array</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/csv/CSV.ts:156</li>
+									<li>Defined in src/Collection.ts:84</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>If we have the entire csv as a string, we can create an instance
-									of CSV which will provide the <code>lines</code> and <code>entries</code> iterators like so:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> csv = CSV.fromString(<span class="hljs-string">"a,b\n1,2"</span>);
-csv.lines();   <span class="hljs-comment">// Lines iterator</span>
-csv.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
+									<p>Converts the contents of the collection to an array of strings. The
+										subclasses must implement this depending on the output format they
+									represent.</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>input: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The input string that can be parsed as CSV</p>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> delimiter: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;,&quot;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="fromstringarray" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>String<wbr>Array</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjson.html" class="tsd-signature-type">NDJSON</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in src/csv/CSV.ts:195</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>If we have the entire ndjson as array of strings, we can create an NDJSON
-									instance like so:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = NDJSON.fromStringArray([<span class="hljs-string">"{}"</span>, <span class="hljs-string">"{}"</span> ]);
-ndjson.lines();   <span class="hljs-comment">// Lines iterator</span>
-ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>arr: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An array of strings that can be parsed as JSON</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="ndjson.html" class="tsd-signature-type">NDJSON</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="parseline" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> parse<wbr>Line</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">parse<wbr>Line<span class="tsd-signature-symbol">(</span>line<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, delimiter<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in src/csv/CSV.ts:80</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Splits the line into cells using the provided delimiter (or by comma by
-										default) and returns the cells array. supports quoted strings and escape
-									sequences.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>line: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The line to parse</p>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> delimiter: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;,&quot;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The delimiter to use (defaults to &quot;,&quot;)</p>
-									</div>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
-							<p>The cells as array of strings</p>
 						</li>
 					</ul>
 				</section>
@@ -549,43 +436,37 @@ ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="csv.html" class="tsd-kind-icon">CSV</a>
+						<a href="collection.html" class="tsd-kind-icon">Collection</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="csv.html#_entries" class="tsd-kind-icon">_entries</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="collection.html#_entries" class="tsd-kind-icon">_entries</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="csv.html#_lines" class="tsd-kind-icon">_lines</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="csv.html#entries" class="tsd-kind-icon">entries</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="collection.html#_lines" class="tsd-kind-icon">_lines</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="csv.html#lines" class="tsd-kind-icon">lines</a>
+								<a href="collection.html#entries" class="tsd-kind-icon">entries</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="csv.html#setentries" class="tsd-kind-icon">set<wbr>Entries</a>
+								<a href="collection.html#lines" class="tsd-kind-icon">lines</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="csv.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a>
+								<a href="collection.html#setentries" class="tsd-kind-icon">set<wbr>Entries</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="csv.html#fromarray" class="tsd-kind-icon">from<wbr>Array</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="collection.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="csv.html#fromdirectory" class="tsd-kind-icon">from<wbr>Directory</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="collection.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="csv.html#fromfile" class="tsd-kind-icon">from<wbr>File</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="collection.html#tofile" class="tsd-kind-icon">to<wbr>File</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="csv.html#fromstring" class="tsd-kind-icon">from<wbr>String</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="collection.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="csv.html#fromstringarray" class="tsd-kind-icon">from<wbr>String<wbr>Array</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="csv.html#parseline" class="tsd-kind-icon">parse<wbr>Line</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="collection.html#tostringarray" class="tsd-kind-icon">to<wbr>String<wbr>Array</a>
 							</li>
 						</ul>
 					</li>
