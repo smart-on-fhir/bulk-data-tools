@@ -154,3 +154,58 @@ function* readLine(filePath) {
     }
 }
 exports.readLine = readLine;
+function csvToArray() { }
+exports.csvToArray = csvToArray;
+function csvToJson() { }
+exports.csvToJson = csvToJson;
+function csvToNdJson() { }
+exports.csvToNdJson = csvToNdJson;
+// InputDirectory      - A directory (it's path as string) to collect input from
+// ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄ - optional filter by file type
+// └─ files            - A file iterator (of file paths)
+//    ├─ lines         - Line iterator (as string)
+//    └─ entries       - Iterator of JSON object or scalar values (e.g. parsed line)
+//       │
+//       ├┄┄┄┄┄┄┄┄┄┄┄┄ - optional data manipulation
+//       │
+//    ┌─ entries       - Iterator of JSON object or scalar values
+//    ├─ lines         - Line iterator (as string)
+// ┌─ OutputFile       - A file (it's path as string) to write output at
+// ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄ - optional postprocessing to generate a filename (spread to multiple files)
+// OutputDirectory     - A directory (it's path as string) to write output at
+class Input {
+}
+class DirectoryInput {
+    constructor(dir) {
+        this.path = dir;
+    }
+    *files() {
+        const files = walkSync(this.path);
+        for (const file of files) {
+            yield new FileInput(file);
+        }
+    }
+}
+class FileInput {
+    constructor(dir) {
+        this.path = dir;
+    }
+    lines() {
+        return readLine(this.path);
+    }
+}
+// CSV file to JSON array
+// CSV file to JSON array
+class CSV {
+    getHeader() { }
+    readLine() { }
+}
+// =============================================================================
+// NDJSON file to CSV file
+// NDJSON object to CSV file
+// NDJSON object to CSV object
+// const input = new Input({
+//     src: [],
+//     filter(o => ouput.resourceType == "Patient")
+// });
+// const ouput = new Output({ dst: [] });
