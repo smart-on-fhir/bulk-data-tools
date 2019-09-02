@@ -3,25 +3,25 @@
 const app = require("commander");
 const FS  = require("fs");
 const { Transform, PassThrough } = require("stream");
-const DelimitedToObject          = require("../streams/DelimitedToObject");
-const ObjectToJson               = require("../streams/ObjectToJson");
-const JsonToObject               = require("../streams/JsonToObject")
-const ObjectToNdJson             = require("../streams/ObjectToNdJson");
-const BytesToLines               = require("../streams/BytesToLines");
-const BytesToJson                = require("../streams/BytesToJson");
-const ObjectToJsonArray          = require("../streams/ObjectToJsonArray");
-const NdJsonToDelimitedHeader    = require("../streams/NdJsonToDelimitedHeader");
-const JsonArrayToDelimitedHeader = require("../streams/JsonArrayToDelimitedHeader");
-const NdJsonToDelimited          = require("../streams/NdJsonToDelimited");
-const ArrayToDelimited           = require("../streams/ArrayToDelimited");
+const DelimitedToObject          = require("../src/streams/DelimitedToObject");
+const ObjectToJson               = require("../src/streams/ObjectToJson");
+const JsonToObject               = require("../src/streams/JsonToObject")
+const ObjectToNdJson             = require("../src/streams/ObjectToNdJson");
+const BytesToLines               = require("../src/streams/BytesToLines");
+const BytesToJson                = require("../src/streams/BytesToJson");
+const ObjectToJsonArray          = require("../src/streams/ObjectToJsonArray");
+const NdJsonToDelimitedHeader    = require("../src/streams/NdJsonToDelimitedHeader");
+const JsonArrayToDelimitedHeader = require("../src/streams/JsonArrayToDelimitedHeader");
+const NdJsonToDelimited          = require("../src/streams/NdJsonToDelimited");
+const ArrayToDelimited           = require("../src/streams/ArrayToDelimited");
 
 app
-    .version('0.1.0')
-    .option('--input [path]'      , "Path to input directory or file"                        )
-    .option('--output [path]'     , "Path to output directory or file"                       )
-    .option('--input-type [type]' , "The type of input (json, ndjson, delimited, auto)" , "auto")
-    .option('--output-type [type]', "The type of output (json, ndjson, delimited, auto)", "auto")
-    .option('--eol [value]'       , "The line separator (CRLF, LF)"               , "CRLF"   )
+    .version("0.1.0")
+    .option("--input [path]"      , "Path to input directory or file"                        )
+    .option("--output [path]"     , "Path to output directory or file"                       )
+    .option("--input-type [type]" , "The type of input (json, ndjson, delimited, auto)" , "auto")
+    .option("--output-type [type]", "The type of output (json, ndjson, delimited, auto)", "auto")
+    .option("--eol [value]"       , "The line separator (CRLF, LF)"               , "CRLF"   )
 
     .option(
         "--output-delimiter [value]",
@@ -36,7 +36,7 @@ app
         'input. Ignored if --input-type is not "delimited".'
     )
 
-    .option('--fast', 'Only use the first line in ndjson to compute the header')
+    .option("--fast", "Only use the first line in ndjson to compute the header")
 
     .parse(process.argv);
 
@@ -67,13 +67,13 @@ function getOptionsForDelimitedInput() {
         switch (getInputType()) {
             case "tsv":
                 delimiter = "TAB";
-            break;
+                break;
             case "csv":
                 delimiter = ",";
-            break;
+                break;
             default:
                 delimiter = ",";
-            break;
+                break;
         }
     }
 
@@ -138,11 +138,11 @@ switch (descriptor) {
                 .pipe(outputStream);
         });
 
-        return inputStream
+        return (inputStream
             .pipe(new BytesToLines())
             .pipe(new DelimitedToObject())
             .pipe(headerStream)
-            .pipe(outputStream, { end: false });
+            .pipe(outputStream, { end: false }));
     }
 
     case "csv-to-tsv": {

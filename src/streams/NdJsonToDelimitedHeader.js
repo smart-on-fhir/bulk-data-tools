@@ -6,7 +6,7 @@ const {
     flatObjectKeys
 } = require("../csv");
 
-class NdJsonToDelimitedHeader extends Transform
+export class NdJsonToDelimitedHeader extends Transform
 {
     constructor(options = {})
     {

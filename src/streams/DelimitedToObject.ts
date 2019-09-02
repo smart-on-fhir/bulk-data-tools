@@ -1,13 +1,29 @@
-const { Transform } = require("stream");
-const { setPath } = require("../lib");
-const { parseDelimitedLine } = require("../csv");
+import { Transform }          from "stream";
+import { setPath }            from "../lib";
+import { parseDelimitedLine } from "../csv";
+
+
+interface IDelimitedToObjectOptions
+{
+    /**
+     * What should be used to delimit cell values
+     */
+    delimiter: string;
+}
 
 /**
  * This is designed to piped to LineStream
  */
-class DelimitedToObject extends Transform
+export default class DelimitedToObject extends Transform
 {
-    constructor(options = {})
+    /**
+     * The options that this instance uses
+     */
+    protected options: IDelimitedToObjectOptions;
+
+    protected header: string[] | null;
+
+    constructor(options?: IDelimitedToObjectOptions)
     {
         super({
             writableObjectMode: true,
@@ -23,7 +39,13 @@ class DelimitedToObject extends Transform
         this.header = null;
     }
 
-    _transform(line, _encoding, next)
+    /**
+     * Takes a line as string and outputs a JSON object
+     * @param line The input CSV or TSV line as string
+     * @param _encoding The encoding is ignored (utf8 is assumed)
+     * @param next The callback that is provided internally
+     */
+    public _transform(line: string, _encoding: string, next: (e?: Error) => void)
     {
         if (!this.header) {
             this.header = parseDelimitedLine(line + "", this.options.delimiter);
@@ -33,7 +55,7 @@ class DelimitedToObject extends Transform
         try {
             const json = {};
             const values = parseDelimitedLine(line + "", this.options.delimiter);
-            // console.log(this.options.delimiter, "===> ", values) 
+            // console.log(this.options.delimiter, "===> ", values)
             this.header.forEach((path, i) => {
                 let value = values[i];
                 try {
@@ -50,6 +72,3 @@ class DelimitedToObject extends Transform
         }
     }
 }
-
-module.exports = DelimitedToObject;
-

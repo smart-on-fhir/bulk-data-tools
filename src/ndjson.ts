@@ -1,20 +1,22 @@
-const { Transform } = require("stream");
-const FS            = require("fs");
-const Path          = require("path");
-const Util = require("util");
-const {
+import { Transform } from "stream";
+import FS            from "fs";
+import Path          from "path";
+import Util          from "util";
+import {
     csvHeaderFromJson,
     escapeCsvValue,
     mergeStrict,
     getPath,
     flatObjectKeys
-} = require("./csv");
+} from "./csv";
 
 /**
  * Transforms stream of bytes to stream of lines as strings
  */
-class LineStream extends Transform
+export class LineStream extends Transform
 {
+    private _buffer: string;
+
     constructor()
     {
         super({
@@ -32,12 +34,13 @@ class LineStream extends Transform
      * @param {String} _encoding Ignored because the output is in object mode
      * @param {Function} next The callback to be called when done
      */
-    _transform(chunk, _encoding, next)
+    protected _transform(chunk: string, _encoding: string, next: (error?: Error) => void)
     {
         try {
             this._buffer += chunk;
-            
+
             let match;
+            // tslint:disable-next-line:no-conditional-assignment
             while ((match = /(\r\n|\n)+/.exec(this._buffer)) !== null) {
                 const line = this._buffer.substr(0, match.index);
                 this.push(line, "utf8");
@@ -53,7 +56,7 @@ class LineStream extends Transform
 /**
  * Transforms stream of JSON strings to stream of JSON objects
  */
-class NdJsonStream extends Transform
+export class NdJsonStream extends Transform
 {
     constructor()
     {
@@ -77,7 +80,7 @@ class NdJsonStream extends Transform
     }
 }
 
-class NdJsonToDelimitedHeader extends Transform
+export class NdJsonToDelimitedHeader extends Transform
 {
     constructor(options = {})
     {
@@ -120,7 +123,7 @@ class NdJsonToDelimitedHeader extends Transform
     }
 }
 
-class NdJsonToDelimited extends Transform
+export class NdJsonToDelimited extends Transform
 {
     constructor(options = {})
     {
@@ -179,7 +182,7 @@ exports.NdJsonToDelimitedHeader = NdJsonToDelimitedHeader;
  * @param {Function} callback The callback function
  * @param {Function} onFinish Optional onFinish callback
  */
-exports.forEachLine = function forEachLine(filePath, callback, onFinish)
+exports.forEachLine = function forEachLine(filePath: string, callback, onFinish)
 {
     const lineStream = FS.createReadStream(filePath, {
         encoding: "utf8",
@@ -192,10 +195,10 @@ exports.forEachLine = function forEachLine(filePath, callback, onFinish)
         lineStream.once("finish", () => onFinish(index));
     }
 
-    lineStream.on('data', data => {
-        callback(data, index++)
+    lineStream.on("data", data => {
+        callback(data, index++);
     });
-}
+};
 
 
 

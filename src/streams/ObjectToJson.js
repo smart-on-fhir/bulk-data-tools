@@ -1,6 +1,6 @@
 const { Transform } = require("stream");
 
-class ObjectToNdJson extends Transform
+export class ObjectToJson extends Transform
 {
     constructor(options = {})
     {
@@ -9,17 +9,12 @@ class ObjectToNdJson extends Transform
             // writableObjectMode: false,
             // readableObjectMode: true
         });
-
-        this.counter = 0;
     }
 
     _transform(obj, _encoding, next)
     {
         // console.log(obj)
         try {
-            if (++this.counter > 1) {
-                this.push("\r\n");    
-            }
             // this.push(obj);
             const json = JSON.stringify(obj);
             this.push(json);
@@ -30,5 +25,5 @@ class ObjectToNdJson extends Transform
     }
 }
 
-module.exports = ObjectToNdJson;
+module.exports = ObjectToJson;
 

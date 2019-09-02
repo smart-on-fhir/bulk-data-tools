@@ -1,27 +1,10 @@
-const { isObject } = require("./lib");
+import {
+    isObject,
+    strPad,
+    getPath
+} from "./lib";
 
-function strPad(str, length = 0) {
-    let strLen = str.length;
-    while (strLen < length) {
-        str += " ";
-        strLen += 1;
-    }
-    return str;
-}
 
-/**
- * Walks thru an object (ar array) and returns the value found at the
- * provided path. This function is very simple so it intentionally does not
- * support any argument polymorphism, meaning that the path can only be a
- * dot-separated string. If the path is invalid returns undefined.
- * @param {Object} obj The object (or Array) to walk through
- * @param {String} [path=""] The path (eg. "a.b.4.c")
- * @returns {*} Whatever is found in the path or undefined
- */
-function getPath(obj, path = "")
-{
-    return path.split(".").reduce((out, key) => out ? out[key] : undefined, obj);
-}
 
 /**
  * Escapes a value as CSV value
@@ -30,11 +13,11 @@ function getPath(obj, path = "")
  * - any contained quotes are escaped with another quote
  * - undefined is converted to empty string
  * - everything else is converted to string (but is not quoted)
- * @param {*} value The value to escape 
+ * @param {*} value The value to escape
  * @param {String} [separator=","] A separator character like `,` or `;`
  * @returns {String} The escaped value
  */
-function escapeCsvValue(value, separator = ",")
+export function escapeCsvValue(value: any, separator: string = ","): string
 {
     let out = value === undefined ? "" : String(value);
     out = out.replace(/"/g, '""');
@@ -53,14 +36,14 @@ function escapeCsvValue(value, separator = ",")
  * [1, {a: 3, b: 4}, 2, 3] -> ["0", "1.a", "1.b", "2", "3"]
  * ```
  * @param {Object|Array} obj The object to inspect
- * @param {String} _prefix Path prefix that if provided, will be prepended to
- * each key. Please do not use this argument. The function will pass it to
+ * @param {String} [_prefix] A path prefix that if provided, will be prepended
+ * to each key. Please do not use this argument. The function will pass it to
  * itself on recursive calls.
  * @returns {String[]}
  */
-function flatObjectKeys(obj, _prefix)
+export function flatObjectKeys(obj: BulkDataTools.IAnyObject, _prefix?: string)
 {
-    let out = [];
+    let out: string[] = [];
 
     for (const key in obj) {
         const prefix = [_prefix, key].filter(Boolean).join(".");
@@ -78,13 +61,14 @@ function flatObjectKeys(obj, _prefix)
 /**
  * Merges the second argument into the first one but also throws if an object
  * property is about to be overridden with scalar (or the opposite).
- * @param {Object} obj1 
- * @param {Object} obj2 
+ * @param {BulkDataTools.IAnyObject} obj1 The object which should be extended
+ * @param {BulkDataTools.IAnyObject} obj2 The object which should be merged into
+ * the other one
  * @throws {Error} If a path in one object points to scalar value and the same
  * path in the other object points to an object (or the opposite).
- * @returns {Object} Returns the extended first argument
+ * @returns {BulkDataTools.IAnyObject} Returns the extended first argument
  */
-function mergeStrict(obj1, obj2)
+export function mergeStrict(obj1: BulkDataTools.IAnyObject, obj2: BulkDataTools.IAnyObject): BulkDataTools.IAnyObject
 {
     for (const key in obj2) {
         const source         = obj2[key];
@@ -103,7 +87,7 @@ function mergeStrict(obj1, obj2)
             if (target === undefined) {
                 obj1[key] = Array.isArray(source) ? [] : {};
             }
-            
+
             if (Array.isArray(source) !== Array.isArray(obj1[key])) {
                 throw new Error(
                     "Unable to merge incompatible objects" +
@@ -121,10 +105,10 @@ function mergeStrict(obj1, obj2)
     return obj1;
 }
 
-function csvHeaderFromJson(json)
+export function csvHeaderFromJson(json: BulkDataTools.IAnyObject): BulkDataTools.IAnyObject
 {
-    function loop(data) {
-        let out = {};
+    function loop(data: BulkDataTools.IAnyObject) {
+        const out: BulkDataTools.IAnyObject = {};
 
         for (const key in data) {
             const value = data[key];
@@ -150,7 +134,7 @@ function csvHeaderFromJson(json)
  * structure and only use the first one to build the header.
  * @returns {String[]} The header as an array of strings
  */
-function csvHeaderFromArray(array, options = {})
+export function csvHeaderFromArray(array, options = {})
 {
     if (options.fast) {
         return flatObjectKeys(csvHeaderFromJson(array[0]));
@@ -163,7 +147,7 @@ function csvHeaderFromArray(array, options = {})
     return flatObjectKeys(out);
 }
 
-function jsonArrayToCsv(array, { fast = false, separator = ",", eol = "\r\n" } = {})
+export function jsonArrayToCsv(array, { fast = false, separator = ",", eol = "\r\n" } = {})
 {
     const header = csvHeaderFromArray(array, { fast });
     const body   = array.map(json => {
@@ -173,12 +157,12 @@ function jsonArrayToCsv(array, { fast = false, separator = ",", eol = "\r\n" } =
         eol + body.join(eol);
 }
 
-function jsonArrayToTsv(array, { fast = false, separator = "\t", eol = "\r\n" } = {})
+export function jsonArrayToTsv(array, { fast = false, separator = "\t", eol = "\r\n" } = {})
 {
     return jsonArrayToCsv(array, { fast, separator, eol });
 }
 
-function jsonToCsv(json, { separator = ",", eol = "\r\n" } = {})
+export function jsonToCsv(json, { separator = ",", eol = "\r\n" } = {})
 {
     const header = flatObjectKeys(csvHeaderFromJson(json));
     const body   = header.map(path => escapeCsvValue(getPath(json, path)));
@@ -186,7 +170,7 @@ function jsonToCsv(json, { separator = ",", eol = "\r\n" } = {})
         eol + body.join(separator);
 }
 
-function jsonToTsv(json, { separator = "\t", eol = "\r\n" } = {})
+export function jsonToTsv(json, { separator = "\t", eol = "\r\n" } = {})
 {
     return jsonToCsv(json, { separator, eol });
 }
@@ -199,14 +183,15 @@ function jsonToTsv(json, { separator = "\t", eol = "\r\n" } = {})
  * @param {String} delimiter The delimiter to use (defaults to ",")
  * @returns {String[]} The cells as array of strings
  */
-function parseDelimitedLine(line, delimiter = ",")
+export function parseDelimitedLine(line: string, delimiter = ",")
 {
-    let out        = [],
-        idx        = 0,
-        len        = line.length,
-        char       = "",
-        expect     = null,
-        buffer     = "";
+    const out: string[] = [];
+    const len: number   = line.length;
+
+    let idx    = 0,
+        char   = "",
+        expect = null,
+        buffer = "";
 
     while (idx < len) {
         char = line[idx++];
@@ -232,7 +217,7 @@ function parseDelimitedLine(line, delimiter = ",")
             expect = null;
             out.push(buffer);
             buffer = "";
-            idx++
+            idx++;
             break;
 
         // delimiter
@@ -257,20 +242,7 @@ function parseDelimitedLine(line, delimiter = ",")
         buffer = "";
     }
 
-    return out;//.map(o => o.trim());
+    return out;
 }
 
-module.exports = {
-    csvHeaderFromJson,
-    csvHeaderFromArray,
-    flatObjectKeys,
-    jsonToCsv,
-    jsonToTsv,
-    jsonArrayToCsv,
-    jsonArrayToTsv,
-    getPath,
-    escapeCsvValue,
-    mergeStrict,
-    parseDelimitedLine
-};
 
