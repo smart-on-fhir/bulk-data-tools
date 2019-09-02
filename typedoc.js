@@ -34,7 +34,7 @@ module.exports = {
     excludeProtected: false,
 
     // Prevent symbols that are not exported from being documented.
-    excludeNotExported: false,
+    excludeNotExported: true,
 
     // Specifies whether categorization will be done at the group level.
     categorizeByGroup: true,
