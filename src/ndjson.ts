@@ -22,7 +22,7 @@ export class LineStream extends Transform
         super({
             writableObjectMode: true,
             readableObjectMode: false,
-            // encoding: "utf8"
+            encoding: "utf8"
         });
 
         this._buffer = "";
@@ -179,8 +179,8 @@ exports.NdJsonToDelimitedHeader = NdJsonToDelimitedHeader;
 /**
  * Given a file path reads it as stream and calls the callback for each line
  * @param {String} filePath Path to ndjson file
- * @param {Function} callback The callback function
- * @param {Function} onFinish Optional onFinish callback
+ * @param {Function} [callback] The callback function
+ * @param {Function} [onFinish] Optional onFinish callback
  */
 exports.forEachLine = function forEachLine(filePath: string, callback, onFinish)
 {
@@ -195,10 +195,14 @@ exports.forEachLine = function forEachLine(filePath: string, callback, onFinish)
         lineStream.once("finish", () => onFinish(index));
     }
 
-    lineStream.on("data", data => {
-        callback(data, index++);
-    });
-};
+    if (callback) {
+        lineStream.on('data', async data => {
+            await callback(data, index++);
+        });
+    }
+
+    return lineStream;
+}
 
 
 

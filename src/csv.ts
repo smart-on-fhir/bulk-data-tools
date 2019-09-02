@@ -130,7 +130,7 @@ export function csvHeaderFromJson(json: BulkDataTools.IAnyObject): BulkDataTools
  * matches the structure of the rows.
  * @param {Object[]|Array[]} array The array of row objects or arrays
  * @param {Object} options
- * @param {Boolean} options.fast If true, assumes that all rows have the same
+ * @param {Boolean} [options.fast] If true, assumes that all rows have the same
  * structure and only use the first one to build the header.
  * @returns {String[]} The header as an array of strings
  */
