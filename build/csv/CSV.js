@@ -3,16 +3,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const lib_1 = require("../lib");
 const Collection_1 = __importDefault(require("../Collection"));
+const lib_1 = require("../lib");
 /**
- * This class represents a CSV object. An instance can be created from
- * different kinds of input using the static methods starting with `from` and
- * converted to other kinds of output using the instance methods starting with
- * `to`. This class is designed to handle large files or directories by using
+ * This class represents a collection in delimited format.
+ * - An instance can be created from different kinds of input using the static
+ * methods starting with `from` and converted to other kinds of output using the
+ * instance methods starting with `to`.
+ * - This class is designed to handle large files or directories by using
  * iterators and reading files one line at a time.
+ * - The `entries` iterator will yield json objects for each line.
  */
 class CSV extends Collection_1.default {
+    constructor() {
+        super(...arguments);
+        /**
+         * The value delimiter to use while parsing and serializing.
+         */
+        this._delimiter = ",";
+        /**
+         * The line separator to use while converting to string.
+         */
+        this._eol = "\r\n";
+    }
     /**
      * Converts the contents of the collection to array of "values". The
      * subclasses must implement this depending on the output format they
@@ -26,59 +39,26 @@ class CSV extends Collection_1.default {
         return out;
     }
     /**
-     * Splits the line into cells using the provided delimiter (or by comma by
-     * default) and returns the cells array. supports quoted strings and escape
-     * sequences.
-     * @param line The line to parse
-     * @param delimiter The delimiter to use (defaults to ",")
-     * @returns The cells as array of strings
+     * Serializes the contents of the collection to a string. The subclasses
+     * must implement this depending on the output format they represent.
      */
-    static parseLine(line, delimiter = ",") {
-        const out = [];
-        const len = line.length;
-        let idx = 0, char = "", expect = null, buffer = "";
-        while (idx < len) {
-            char = line[idx++];
-            switch (char) {
-                // String
-                case '"':
-                    // begin string
-                    if (!expect) {
-                        expect = char;
-                        break;
-                    }
-                    // Escaped quote - continue string
-                    if (expect === char && line[idx] === char) {
-                        buffer += char;
-                        idx++;
-                        break;
-                    }
-                    // Close string
-                    expect = null;
-                    out.push(buffer);
-                    buffer = "";
-                    idx++;
-                    break;
-                // delimiter
-                case delimiter:
-                    if (!expect) {
-                        out.push(buffer);
-                        buffer = "";
-                    }
-                    else {
-                        buffer += char;
-                    }
-                    break;
-                default:
-                    buffer += char;
-                    break;
-            }
-        }
-        if (buffer) {
-            out.push(buffer);
-            buffer = "";
-        }
-        return out;
+    toString() {
+        return "";
+    }
+    /**
+     * Converts the contents of the collection to an array of strings. The
+     * subclasses must implement this depending on the output format they
+     * represent.
+     */
+    toStringArray() {
+        return [];
+    }
+    /**
+     * Writes the collection to a file. The subclasses must implement this
+     * depending on the output format they represent.
+     */
+    toFile(path, options) {
+        return this;
     }
     // =========================================================================
     // Input Methods
@@ -87,52 +67,74 @@ class CSV extends Collection_1.default {
      * If we have the entire csv as a string, we can create an instance
      * of CSV which will provide the `lines` and `entries` iterators like so:
      * ```js
-     * const csv = CSV.fromString("a,b\n1,2");
-     * csv.lines();   // Lines iterator
-     * csv.entries(); // JSON iterator
+     * const csv = CSV.fromString("a,b\n1,2\r\n3,4");
+     * csv.lines();   // Lines iterator -> "1,2", "3,4"
+     * csv.entries(); // JSON iterator  -> { a: "1", b: "2" }, { a: "3", b: "4" }
      * ```
-     * @param input The input string that can be parsed as CSV
+     * @param input The input string that can be parsed as CSV or TSV
      */
     static fromString(input, delimiter = ",") {
-        const lines = input.split(/\r?\n/);
-        const out = new CSV();
-        const entries = lines.map(l => CSV.parseLine(l, delimiter));
-        out.setLines(() => lines.values());
-        out.setEntries(() => entries.values());
-        return out;
+        const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        return CSV.fromStringArray(lines);
     }
     /**
-     * If we happen to have the entire csv as array, we can create a CSV
-     * instance like so:
+     * If we have the entire collection as an array of string lines, we can
+     * create an instance like so:
      * ```js
-     * const csv = CSV.fromArray([ {}, {} ]);
-     * csv.lines();   // Lines iterator
-     * csv.entries(); // JSON iterator
+     * const csv = CSV.fromStringArray(["a,b", "1,2", "3,4"]);
+     * csv.lines();   // Lines iterator -> "1,2", "3,4"
+     * csv.entries(); // JSON iterator  -> { a: "1", b: "2" }, { a: "3", b: "4" }
      * ```
-     * @param arr An array of objects that can be serialized as JSON
-     */
-    static fromArray(arr) {
-        const out = new CSV();
-        const lines = arr.map(l => JSON.stringify(l));
-        out.setLines(() => lines.values());
-        out.setEntries(() => arr.values());
-        return out;
-    }
-    /**
-     * If we have the entire ndjson as array of strings, we can create an NDJSON
-     * instance like so:
-     * ```js
-     * const ndjson = NDJSON.fromStringArray(["{}", "{}" ]);
-     * ndjson.lines();   // Lines iterator
-     * ndjson.entries(); // JSON iterator
-     * ```
-     * @param arr An array of strings that can be parsed as JSON
+     * The fist line is used as header!
+     * @param arr An array of strings that can be parsed as CSV or TSV
      */
     static fromStringArray(arr) {
-        const out = new NDJSON();
-        const entries = arr.map(l => JSON.parse(l));
-        out.setLines(() => entries.map(o => JSON.stringify(o)).values());
-        out.setEntries(() => entries.values());
+        // Create the output instance
+        const out = new CSV();
+        // Split into lines
+        const lines = arr.map(l => l.trim()).filter(Boolean);
+        if (lines.length > 0) {
+            // Use the first line as header
+            const header = lib_1.parseDelimitedLine(lines.shift());
+            // lines will exclude the first line (assumed to be the header)
+            out.setLines(() => lines.values());
+            // Entries are the json objects representing each line
+            out.setEntries(function* () {
+                for (const l of lines) {
+                    const entry = {};
+                    const line = lib_1.parseDelimitedLine(l);
+                    header.forEach((key, index) => {
+                        entry[key] = line[index];
+                    });
+                    yield entry;
+                }
+            });
+        }
+        return out;
+    }
+    /**
+     * If we happen to have the entire csv as array of objects, we can create an
+     * instance like so:
+     * ```js
+     * const csv = CSV.fromArray([{ a: "1", b: "2" }, { a: "3", b: "4" }]);
+     * csv.lines();   // Lines iterator -> "1,2", "3,4"
+     * csv.entries(); // JSON iterator  -> { a: "1", b: "2" }, { a: "3", b: "4" }
+     * ```
+     * In this case we already have entries and we only need to handle their
+     * serialization in the `lines` iterator.
+     * @param arr An array of objects that can be serialized as JSON
+     */
+    static fromArray(arr, strict = false) {
+        const out = new CSV();
+        out.setEntries(() => arr.values());
+        const header = lib_1.delimitedHeaderFromArray(arr, { fast: !strict });
+        out.setLines(function* () {
+            for (const entry of arr) {
+                yield header
+                    .map(key => lib_1.escapeDelimitedValue(entry[key]))
+                    .join(",");
+            }
+        });
         return out;
     }
     /**
@@ -141,7 +143,7 @@ class CSV extends Collection_1.default {
      * a `.ndjson` extension. The `lines` and `entries` iterators will yield
      * results from all those files combined. Example:
      * ```js
-     * const ndjson = NDJSON.fromDirectory("/path/to/directory/containing/ndjson/files");
+     * const ndjson = CSV.fromDirectory("/path/to/directory/containing/ndjson/files");
      * ndjson.lines();   // Lines iterator
      * ndjson.entries(); // JSON iterator
      * ```
@@ -149,11 +151,11 @@ class CSV extends Collection_1.default {
      */
     static fromDirectory(path) {
         const files = lib_1.filterFiles(path, /\.ndjson$/i);
-        const out = new NDJSON();
+        const out = new CSV();
         function* lines() {
             for (const filePath of files) {
                 try {
-                    const ndjson = NDJSON.fromFile(filePath);
+                    const ndjson = CSV.fromFile(filePath);
                     const _lines = ndjson.lines();
                     for (const line of _lines) {
                         yield line;
@@ -167,7 +169,7 @@ class CSV extends Collection_1.default {
         function* entries() {
             for (const filePath of files) {
                 try {
-                    const ndjson = NDJSON.fromFile(filePath);
+                    const ndjson = CSV.fromFile(filePath);
                     const _entries = ndjson.entries();
                     for (const entry of _entries) {
                         yield entry;
@@ -183,18 +185,24 @@ class CSV extends Collection_1.default {
         return out;
     }
     /**
-     * Creates and returns a CSV instance from a file path. Example:
+     * Creates and returns an instance from a file path. The `lines` and
+     * `entries` iterators will read the file one line at a time. Example:
      * ```js
      * const csv = CSV.fromFile("/path/to/file.csv");
      * csv.lines();   // Lines iterator
      * csv.entries(); // Entries iterator
      * ```
-     * @param path Absolute path to CSV file
+     * @param path Absolute path to CSV or TSV file
      */
     static fromFile(path) {
         function* lines() {
             const _lines = lib_1.readLine(path);
+            let headerSkip;
             for (let line of _lines) {
+                if (!headerSkip) {
+                    headerSkip = 1;
+                    continue;
+                }
                 line = line.trim();
                 if (line) {
                     yield line;
@@ -202,8 +210,19 @@ class CSV extends Collection_1.default {
             }
         }
         function* entries(delimiter = ",") {
-            for (const line of lines()) {
-                yield CSV.parseLine(line);
+            let header;
+            for (const line of lib_1.readLine(path)) {
+                const arr = lib_1.parseDelimitedLine(line.trim());
+                if (!header) {
+                    header = arr;
+                }
+                else {
+                    const entry = {};
+                    header.forEach((key, index) => {
+                        entry[key] = arr[index];
+                    });
+                    yield entry;
+                }
             }
         }
         const out = new CSV();

@@ -1,9 +1,11 @@
 import { Transform } from "stream";
-import { getPath }   from "../lib";
 import {
-    csvHeaderFromJson,
-    escapeCsvValue,
+    getPath,
+    escapeDelimitedValue,
     flatObjectKeys
+}   from "../lib";
+import {
+    csvHeaderFromJson
 } from "../csv";
 
 
@@ -81,14 +83,14 @@ export default class NdJsonToDelimited extends Transform
 
             if (this.options.fast && this.count === 0) {
                 this.header = flatObjectKeys(csvHeaderFromJson(json));
-                this.push(this.header.map((path: string) => escapeCsvValue(path)).join(this.options.delimiter));
+                this.push(this.header.map((path: string) => escapeDelimitedValue(path)).join(this.options.delimiter));
                 this.push(this.options.eol);
             }
 
             this.count += 1;
 
             this.push(
-                this.header.map((path: string) => escapeCsvValue(getPath(json, path)))
+                this.header.map((path: string) => escapeDelimitedValue(getPath(json, path)))
                     .join(this.options.delimiter)
             );
 

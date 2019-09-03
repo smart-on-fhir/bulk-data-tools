@@ -173,7 +173,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Transform.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3eb55f2/src/ndjson.ts#L127">src/ndjson.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1796964/src/ndjson.ts#L134">src/ndjson.ts:134</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -208,7 +208,8 @@
 					<div class="tsd-signature tsd-kind-icon">count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3eb55f2/src/streams/NdJsonToDelimited.ts#L40">src/streams/NdJsonToDelimited.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1796964/src/ndjson.ts#L134">src/ndjson.ts:134</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1796964/src/streams/NdJsonToDelimited.ts#L42">src/streams/NdJsonToDelimited.ts:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -223,7 +224,8 @@
 					<div class="tsd-signature tsd-kind-icon">header<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IAnyObject</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3eb55f2/src/streams/NdJsonToDelimited.ts#L45">src/streams/NdJsonToDelimited.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1796964/src/ndjson.ts#L133">src/ndjson.ts:133</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1796964/src/streams/NdJsonToDelimited.ts#L47">src/streams/NdJsonToDelimited.ts:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -238,7 +240,8 @@
 					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">INdJsonToDelimitedOptions</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3eb55f2/src/streams/NdJsonToDelimited.ts#L35">src/streams/NdJsonToDelimited.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1796964/src/ndjson.ts#L132">src/ndjson.ts:132</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1796964/src/streams/NdJsonToDelimited.ts#L37">src/streams/NdJsonToDelimited.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -496,14 +499,14 @@
 					<a name="_transform" class="tsd-anchor"></a>
 					<h3>_transform</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">_transform<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, _encoding<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">_transform<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnyObject</span>, _encoding<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides Transform._transform</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3eb55f2/src/ndjson.ts#L146">src/ndjson.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1796964/src/ndjson.ts#L154">src/ndjson.ts:154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -514,7 +517,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>json: <span class="tsd-signature-type">any</span></h5>
+									<h5>json: <span class="tsd-signature-type">IAnyObject</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>The current line as JSON object</p>
@@ -522,7 +525,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>_encoding: <span class="tsd-signature-type">any</span></h5>
+									<h5>_encoding: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>The encoding (ignored)</p>
@@ -530,12 +533,30 @@
 									</div>
 								</li>
 								<li>
-									<h5>next: <span class="tsd-signature-type">any</span></h5>
+									<h5>next: <span class="tsd-signature-type">function</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>The callback function</p>
 										</div>
 									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>error<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagOptional">Optional</span> error: <span class="tsd-signature-type">Error</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>

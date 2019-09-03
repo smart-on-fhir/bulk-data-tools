@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const stream_1 = require("stream");
 const lib_1 = require("../lib");
-const csv_1 = require("../csv");
 /**
  * This is designed to piped to LineStream
  */
@@ -27,12 +26,12 @@ class DelimitedToObject extends stream_1.Transform {
      */
     _transform(line, _encoding, next) {
         if (!this.header) {
-            this.header = csv_1.parseDelimitedLine(line + "", this.options.delimiter);
+            this.header = lib_1.parseDelimitedLine(line + "", this.options.delimiter);
             return next();
         }
         try {
             const json = {};
-            const values = csv_1.parseDelimitedLine(line + "", this.options.delimiter);
+            const values = lib_1.parseDelimitedLine(line + "", this.options.delimiter);
             // console.log(this.options.delimiter, "===> ", values)
             this.header.forEach((path, i) => {
                 let value = values[i];

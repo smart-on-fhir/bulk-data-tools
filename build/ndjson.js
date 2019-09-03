@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const stream_1 = require("stream");
 const fs_1 = __importDefault(require("fs"));
 const csv_1 = require("./csv");
+const lib_1 = require("./lib");
 /**
  * Transforms stream of bytes to stream of lines as strings
  */
@@ -80,7 +81,7 @@ class NdJsonToDelimitedHeader extends stream_1.Transform {
     }
     _transform(json, _encoding, next) {
         try {
-            csv_1.mergeStrict(this.header, csv_1.csvHeaderFromJson(json));
+            lib_1.mergeStrict(this.header, csv_1.csvHeaderFromJson(json));
             next();
         }
         catch (error) {
@@ -89,8 +90,8 @@ class NdJsonToDelimitedHeader extends stream_1.Transform {
     }
     _flush(next) {
         try {
-            const header = csv_1.flatObjectKeys(this.header);
-            this.push(header.map(path => csv_1.escapeCsvValue(path)).join(this.options.delimiter));
+            const header = lib_1.flatObjectKeys(this.header);
+            this.push(header.map(path => lib_1.escapeDelimitedValue(path)).join(this.options.delimiter));
             this.push(this.options.eol);
             next();
         }
@@ -121,12 +122,12 @@ class NdJsonToDelimited extends stream_1.Transform {
                 this.push(this.options.eol);
             }
             if (this.options.fast && this.count === 0) {
-                this.header = csv_1.flatObjectKeys(csv_1.csvHeaderFromJson(json));
-                this.push(this.header.map(path => csv_1.escapeCsvValue(path)).join(this.options.delimiter));
+                this.header = lib_1.flatObjectKeys(csv_1.csvHeaderFromJson(json));
+                this.push(this.header.map((path) => lib_1.escapeDelimitedValue(path)).join(this.options.delimiter));
                 this.push(this.options.eol);
             }
             this.count += 1;
-            this.push(this.header.map(path => csv_1.escapeCsvValue(csv_1.getPath(json, path)))
+            this.push(this.header.map((path) => lib_1.escapeDelimitedValue(lib_1.getPath(json, path)))
                 .join(this.options.delimiter));
             next();
         }
@@ -156,7 +157,7 @@ exports.forEachLine = function forEachLine(filePath, callback, onFinish) {
         lineStream.once("finish", () => onFinish(index));
     }
     if (callback) {
-        lineStream.on('data', async (data) => {
+        lineStream.on("data", async (data) => {
             await callback(data, index++);
         });
     }

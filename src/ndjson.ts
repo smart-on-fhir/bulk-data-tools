@@ -1,14 +1,15 @@
 import { Transform } from "stream";
 import FS            from "fs";
-import Path          from "path";
-import Util          from "util";
 import {
-    csvHeaderFromJson,
-    escapeCsvValue,
-    mergeStrict,
-    getPath,
-    flatObjectKeys
+    csvHeaderFromJson
 } from "./csv";
+
+import {
+    escapeDelimitedValue,
+    flatObjectKeys,
+    mergeStrict,
+    getPath
+} from "./lib";
 
 /**
  * Transforms stream of bytes to stream of lines as strings
@@ -34,7 +35,7 @@ export class LineStream extends Transform
      * @param {String} _encoding Ignored because the output is in object mode
      * @param {Function} next The callback to be called when done
      */
-    protected _transform(chunk: string, _encoding: string, next: (error?: Error) => void)
+    public _transform(chunk: string, _encoding: string, next: (error?: Error) => void)
     {
         try {
             this._buffer += chunk;
@@ -68,7 +69,7 @@ export class NdJsonStream extends Transform
     }
 
 
-    _transform(chunk, _encoding, next)
+    public _transform(chunk: string, _encoding: string, next: (error?: Error) => void)
     {
         try {
             const json = JSON.parse(chunk);
@@ -82,6 +83,9 @@ export class NdJsonStream extends Transform
 
 export class NdJsonToDelimitedHeader extends Transform
 {
+    protected options: BulkDataTools.IAnyObject;
+    protected header: BulkDataTools.IAnyObject;
+
     constructor(options = {})
     {
         super({
@@ -98,7 +102,7 @@ export class NdJsonToDelimitedHeader extends Transform
         this.header = {};
     }
 
-    _transform(json, _encoding, next)
+    public _transform(json: BulkDataTools.IAnyObject, _encoding: string, next: (error?: Error) => void)
     {
         try {
             mergeStrict(this.header, csvHeaderFromJson(json));
@@ -108,12 +112,12 @@ export class NdJsonToDelimitedHeader extends Transform
         }
     }
 
-    _flush(next)
+    public _flush(next: (error?: Error) => void)
     {
         try {
             const header = flatObjectKeys(this.header);
             this.push(
-                header.map(path => escapeCsvValue(path)).join(this.options.delimiter)
+                header.map(path => escapeDelimitedValue(path)).join(this.options.delimiter)
             );
             this.push(this.options.eol);
             next();
@@ -125,6 +129,10 @@ export class NdJsonToDelimitedHeader extends Transform
 
 export class NdJsonToDelimited extends Transform
 {
+    protected options: BulkDataTools.IAnyObject;
+    protected header: BulkDataTools.IAnyObject;
+    protected count: number;
+
     constructor(options = {})
     {
         super({
@@ -143,7 +151,7 @@ export class NdJsonToDelimited extends Transform
     }
 
 
-    _transform(json, _encoding, next)
+    public _transform(json: BulkDataTools.IAnyObject, _encoding: string, next: (error?: Error) => void)
     {
         try {
 
@@ -153,14 +161,14 @@ export class NdJsonToDelimited extends Transform
 
             if (this.options.fast && this.count === 0) {
                 this.header = flatObjectKeys(csvHeaderFromJson(json));
-                this.push(this.header.map(path => escapeCsvValue(path)).join(this.options.delimiter));
+                this.push(this.header.map((path: string) => escapeDelimitedValue(path)).join(this.options.delimiter));
                 this.push(this.options.eol);
             }
 
             this.count += 1;
 
             this.push(
-                this.header.map(path => escapeCsvValue(getPath(json, path)))
+                this.header.map((path: string) => escapeDelimitedValue(getPath(json, path)))
                     .join(this.options.delimiter)
             );
 
@@ -182,7 +190,11 @@ exports.NdJsonToDelimitedHeader = NdJsonToDelimitedHeader;
  * @param {Function} [callback] The callback function
  * @param {Function} [onFinish] Optional onFinish callback
  */
-exports.forEachLine = function forEachLine(filePath: string, callback, onFinish)
+exports.forEachLine = function forEachLine(
+    filePath: string,
+    callback?: (data: string, index: number) => void,
+    onFinish?: (index: number) => void
+)
 {
     const lineStream = FS.createReadStream(filePath, {
         encoding: "utf8",
@@ -196,7 +208,7 @@ exports.forEachLine = function forEachLine(filePath: string, callback, onFinish)
     }
 
     if (callback) {
-        lineStream.on('data', async data => {
+        lineStream.on("data", async data => {
             await callback(data, index++);
         });
     }

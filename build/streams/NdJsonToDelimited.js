@@ -34,12 +34,12 @@ class NdJsonToDelimited extends stream_1.Transform {
                 this.push(this.options.eol);
             }
             if (this.options.fast && this.count === 0) {
-                this.header = csv_1.flatObjectKeys(csv_1.csvHeaderFromJson(json));
-                this.push(this.header.map((path) => csv_1.escapeCsvValue(path)).join(this.options.delimiter));
+                this.header = lib_1.flatObjectKeys(csv_1.csvHeaderFromJson(json));
+                this.push(this.header.map((path) => lib_1.escapeDelimitedValue(path)).join(this.options.delimiter));
                 this.push(this.options.eol);
             }
             this.count += 1;
-            this.push(this.header.map((path) => csv_1.escapeCsvValue(lib_1.getPath(json, path)))
+            this.push(this.header.map((path) => lib_1.escapeDelimitedValue(lib_1.getPath(json, path)))
                 .join(this.options.delimiter));
             next();
         }

@@ -1,6 +1,5 @@
-import { Transform }          from "stream";
-import { setPath }            from "../lib";
-import { parseDelimitedLine } from "../csv";
+import { Transform }                   from "stream";
+import { setPath, parseDelimitedLine } from "../lib";
 
 
 interface IDelimitedToObjectOptions

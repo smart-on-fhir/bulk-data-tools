@@ -324,9 +324,9 @@ describe("csv", () => {
     });
 
     describe("parseDelimitedLine", () => {
-        expect(csv.parseDelimitedLine("a,b,c", ","  )).to.equal(["a", "b", "c"]);
-        expect(csv.parseDelimitedLine("a;b;c", ";"  )).to.equal(["a", "b", "c"]);
-        expect(csv.parseDelimitedLine('"a,b",c', ",")).to.equal(["a,b", "c"   ]);
-        expect(csv.parseDelimitedLine('"a""b""c"'   )).to.equal(['a"b"c'      ]);
+        expect(lib.parseDelimitedLine("a,b,c", ","  )).to.equal(["a", "b", "c"]);
+        expect(lib.parseDelimitedLine("a;b;c", ";"  )).to.equal(["a", "b", "c"]);
+        expect(lib.parseDelimitedLine('"a,b",c', ",")).to.equal(["a,b", "c"   ]);
+        expect(lib.parseDelimitedLine('"a""b""c"'   )).to.equal(['a"b"c'      ]);
     });
 });

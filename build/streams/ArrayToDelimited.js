@@ -38,10 +38,10 @@ class ArrayToDelimited extends stream_1.Transform {
             const eol = this.options.eol;
             const header = csv_1.csvHeaderFromArray(array);
             const body = array.map(json => {
-                return header.map(path => csv_1.escapeCsvValue(lib_1.getPath(json, path)))
+                return header.map(path => lib_1.escapeDelimitedValue(lib_1.getPath(json, path)))
                     .join(separator);
             });
-            this.push(header.map(h => csv_1.escapeCsvValue(h)).join(separator));
+            this.push(header.map(h => lib_1.escapeDelimitedValue(h)).join(separator));
             this.push(eol + body.join(eol));
             next();
         }

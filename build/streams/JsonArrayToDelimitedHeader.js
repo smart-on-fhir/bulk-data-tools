@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const stream_1 = require("stream");
 const csv_1 = require("../csv");
+const lib_1 = require("../lib");
 /**
  * Takes a JS Array and turns it into a delimited header that can be used as a
  * header line in CSV ot TSV files.
@@ -40,7 +41,7 @@ class JsonArrayToDelimitedHeader extends stream_1.Transform {
     _flush(next) {
         try {
             const header = csv_1.csvHeaderFromArray(this.array);
-            this.push(header.map(path => csv_1.escapeCsvValue(path)).join(this.options.delimiter));
+            this.push(header.map(path => lib_1.escapeDelimitedValue(path)).join(this.options.delimiter));
             this.push(this.options.eol);
             next();
         }

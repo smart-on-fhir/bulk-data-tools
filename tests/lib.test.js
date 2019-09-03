@@ -243,4 +243,78 @@ describe("lib", () => {
             expect(lib.strPad("x   ", -2)).to.equal("x   " );
         });
     });
+
+    describe("delimitedHeaderFromArray", () => {
+
+        it ("from similar objects", () => {
+            expect(lib.delimitedHeaderFromArray([
+                { a: 1, b: 2 },
+                { a: 1, b: 2 }
+            ])).to.equal(["a", "b"]);
+        });
+
+        it ("from similar objects fast", () => {
+            expect(lib.delimitedHeaderFromArray([
+                { a: 1, b: 2 },
+                { a: 1, b: 2 }
+            ], { fast: true })).to.equal(["a", "b"]);
+        });
+
+        it ("from different objects", () => {
+            expect(lib.delimitedHeaderFromArray([
+                { a: 1, b: 2              },
+                { a: 1, b: 2, c: { d: 5 } },
+                {       b: 2              }
+            ])).to.equal(["a", "b", "c.d"]);
+        });
+
+        it ("from different objects fast", () => {
+            expect(lib.delimitedHeaderFromArray([
+                { a: 1, b: 2 },
+                { a: 1, b: 2, c: { d: 5 } }
+            ], { fast: true })).to.equal(["a", "b"]);
+        });
+
+        it ("from similar arrays", () => {
+            expect(lib.delimitedHeaderFromArray([
+                [ 1, 2 ],
+                [ 1, 2 ]
+            ])).to.equal(["0", "1"]);
+        });
+
+        it ("from similar arrays fast", () => {
+            expect(lib.delimitedHeaderFromArray([
+                [ 1, 2 ],
+                [ 1, 2 ]
+            ], { fast: true })).to.equal(["0", "1"]);
+        });
+
+        it ("from different arrays", () => {
+            expect(lib.delimitedHeaderFromArray([
+                [ 1, 2 ],
+                [ 1, 2, 3 ],
+                [ 5 ]
+            ])).to.equal(["0", "1", "2"]);
+        });
+
+        it ("from different arrays fast", () => {
+            expect(lib.delimitedHeaderFromArray([
+                [ 1, 2 ],
+                [ 1, 2, 3 ],
+                [ 5 ]
+            ], { fast: true })).to.equal(["0", "1"]);
+        });
+
+        it ("throws on incompatible rows", () => {
+            expect(() => lib.delimitedHeaderFromArray([
+                { a: 1, b: 2, c: 3        },
+                { a: 1, b: 2, c: { d: 5 } }
+            ])).to.throw();
+
+            expect(() => lib.delimitedHeaderFromArray([
+                { a: 1, b: 2, c: 3     },
+                { a: 1, b: 2, c: [ 5 ] }
+            ])).to.throw();
+        });
+    });
 });

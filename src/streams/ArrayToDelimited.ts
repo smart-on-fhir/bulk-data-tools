@@ -1,8 +1,7 @@
 import { Transform } from "stream";
-import { getPath } from "../lib";
+import { getPath, escapeDelimitedValue } from "../lib";
 import {
-    csvHeaderFromArray,
-    escapeCsvValue
+    csvHeaderFromArray
 } from "../csv";
 
 interface IArrayToDelimitedOptions {
@@ -77,11 +76,11 @@ export class ArrayToDelimited extends Transform
             const eol       = this.options.eol;
             const header    = csvHeaderFromArray(array);
             const body      = array.map(json => {
-                return header.map(path => escapeCsvValue(getPath(json, path)))
+                return header.map(path => escapeDelimitedValue(getPath(json, path)))
                     .join(separator);
             });
 
-            this.push(header.map(h => escapeCsvValue(h)).join(separator));
+            this.push(header.map(h => escapeDelimitedValue(h)).join(separator));
             this.push(eol + body.join(eol));
 
             next();

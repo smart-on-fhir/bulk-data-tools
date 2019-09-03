@@ -31,11 +31,20 @@ function expectCSV(obj, expectedEntries, expectedLines) {
 describe("CSV", () => {
 
     it("entries", () => {
-        const obj = CSV.fromArray([
-            ["a", "b"],
-            ["1", "2"]
-        ]);
-        expectCSV(obj, [["a", "b"], ["1", "2"]], ['"a","b"', '"1", "2"']);
+        const obj = CSV.fromString("a,b\r\n1,2\r\n3,4");
+        expectCSV(
+            obj,
+            [
+                // ["a", "b"],
+                { a: "1", b: "2" },
+                { a: "3", b: "4" }
+            ],
+            [
+                // "a,b",
+                "1,2",
+                "3,4"
+            ]
+        );
     });
 
     // // describe("lines", () => {
@@ -69,10 +78,14 @@ describe("CSV", () => {
     //     expect(obj.toStringArray()).to.equal(['{"a":1}']);
     // });
 
-    // it("fromArray", () => {
-    //     const obj = NDJSON.fromArray([{ a: 1 }]);
-    //     expectNdJson(obj, [{ a: 1 }], ['{"a":1}']);
-    // });
+    it("fromArray", () => {
+        const obj = CSV.fromArray([{ a: "1", b: "2" }, { a: "3", b: "4" }]);
+        expectCSV(
+            obj,
+            [{ a: "1", b: "2" }, { a: "3", b: "4" }],
+            ["1,2", "3,4"]
+        );
+    });
 
     // it("fromDirectory", () => {
     //     const obj = NDJSON.fromDirectory(__dirname + "/mocks");
@@ -118,34 +131,38 @@ describe("CSV", () => {
     //     ]);
     // });
 
-    // it("fromFile", () => {
-    //     const obj = NDJSON.fromFile(__dirname + "/mocks/two-lines.ndjson");
-    //     expectNdJson(
-    //         obj,
-    //         [
-    //             {"a": 1, "b": 2, "c": "3"},
-    //             {"a": 1, "b": 2, "c": "3"}
-    //         ],
-    //         [
-    //             '{"a":1,"b":2,"c":"3"}',
-    //             '{"a":1,"b":2,"c":"3"}'
-    //         ]
-    //     );
-    // });
+    it("fromFile", () => {
+        const obj = CSV.fromFile(__dirname + "/mocks/sample.1.csv");
+        expectCSV(
+            obj,
+            [
+                { "a": "1", "b": "2", "c": "3" },
+                { "a": "4", "b": "5", "c": "6" }
+            ],
+            [
+                "1,2,3",
+                "4,5,6"
+            ]
+        );
+    });
 
-    // it("fromString", () => {
-    //     const obj = NDJSON.fromString('{"a":1}\n{"a":2}\r\n{"a":3}');
-    //     expectNdJson(
-    //         obj,
-    //         [{a: 1}, {a: 2}, {a: 3}],
-    //         ['{"a":1}', '{"a":2}', '{"a":3}']
-    //     );
-    // });
+    it("fromString", () => {
+        const obj = CSV.fromString("a,b\n1,2\n3,4");
+        expectCSV(
+            obj,
+            [{ a: "1", b: "2" }, { a: "3", b: "4" }],
+            ["1,2", "3,4"]
+        );
+    });
 
-    // it("fromStringArray", () => {
-    //     const obj = NDJSON.fromStringArray(['{ "a": 1 }']);
-    //     expectNdJson(obj, [{ a: 1 }], ['{"a":1}']);
-    // });
+    it("fromStringArray", () => {
+        const obj = CSV.fromStringArray(["a,b", "1,2", "3,4"]);
+        expectCSV(
+            obj,
+            [{ a: "1", b: "2" }, { a: "3", b: "4" }],
+            ["1,2", "3,4"]
+        );
+    });
 
     // // describe("LineStream", () => {
     // //     it ("handles multiple new lines per chunk");

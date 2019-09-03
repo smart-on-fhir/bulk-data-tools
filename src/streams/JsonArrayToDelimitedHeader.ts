@@ -1,8 +1,7 @@
 import { Transform } from "stream";
-import {
-    csvHeaderFromArray,
-    escapeCsvValue
-} from "../csv";
+import { csvHeaderFromArray } from "../csv";
+import { escapeDelimitedValue } from "../lib";
+
 
 interface IJsonArrayToDelimitedHeaderOptions
 {
@@ -77,7 +76,7 @@ export default class JsonArrayToDelimitedHeader extends Transform
         try {
             const header = csvHeaderFromArray(this.array);
             this.push(
-                header.map(path => escapeCsvValue(path)).join(this.options.delimiter)
+                header.map(path => escapeDelimitedValue(path)).join(this.options.delimiter)
             );
             this.push(this.options.eol);
             next();
