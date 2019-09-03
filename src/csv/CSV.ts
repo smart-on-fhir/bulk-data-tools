@@ -1,4 +1,5 @@
 import { filterFiles, readLine } from "../lib";
+import Collection from "../Collection";
 
 
 /**
@@ -8,65 +9,20 @@ import { filterFiles, readLine } from "../lib";
  * `to`. This class is designed to handle large files or directories by using
  * iterators and reading files one line at a time.
  */
-export default class CSV
+export default class CSV extends Collection
 {
     /**
-     * The internal lines iterator. In some cases iterating over lines is simple.
-     * For example, if we create an instance from string or array we already
-     * have all the lines. However, if the input is a file, the lines iterator
-     * will be a function that reads one line at a time.
+     * Converts the contents of the collection to array of "values". The
+     * subclasses must implement this depending on the output format they
+     * represent.
      */
-    private _lines: () => IterableIterator<string> = [].values;
-
-    /**
-     * The internal entries iterator. Here, an entry means a line represented as
-     * an array of strings for each cell value. There is one array or entry for
-     * each csv line. In some cases iterating over lines is simple. For example,
-     * if we create an instance from string or array we already have all the
-     * lines. However, if the input is a file, the entries iterator will be a
-     * function that reads and parses one line at a time.
-     */
-    private _entries: () => IterableIterator<BulkDataTools.IAnyObject> = [].values;
-
-    /**
-     * Sets the lines iterator of the instance. Useful while composing an
-     * instance from different sources
-     * @param linesIterator The iterator to use
-     * @returns The instance to allow chaining
-     */
-    public setLines(linesIterator: () => IterableIterator<string>): CSV
+    public toArray(): BulkDataTools.IAnyObject[]
     {
-        this._lines = linesIterator;
-        return this;
-    }
-
-    /**
-     * Sets the entries iterator of the instance. Useful while composing an
-     * instance from different sources
-     * @param linesIterator The iterator to use
-     * @returns The instance to allow chaining
-     */
-    public setEntries(entriesIterator: () => IterableIterator<BulkDataTools.IAnyObject>): CSV
-    {
-        this._entries = entriesIterator;
-        return this;
-    }
-
-    /**
-     * The lines iterator of the instance. Yields lines as JSON strings.
-     */
-    public lines(): IterableIterator<string>
-    {
-        return this._lines();
-    }
-
-    /**
-     * The entries iterator of the instance. Yields lines as JSON-serialize-able
-     * objects.
-     */
-    public entries(): IterableIterator<BulkDataTools.IAnyObject>
-    {
-        return this._entries();
+        const out = [];
+        for (const entry of this._entries()) {
+            out.push(entry);
+        }
+        return out;
     }
 
     /**
@@ -167,15 +123,15 @@ export default class CSV
      * If we happen to have the entire csv as array, we can create a CSV
      * instance like so:
      * ```js
-     * const ndjson = NDJSON.fromArray([ {}, {} ]);
-     * ndjson.lines();   // Lines iterator
-     * ndjson.entries(); // JSON iterator
+     * const csv = CSV.fromArray([ {}, {} ]);
+     * csv.lines();   // Lines iterator
+     * csv.entries(); // JSON iterator
      * ```
      * @param arr An array of objects that can be serialized as JSON
      */
-    public static fromArray(arr: BulkDataTools.IAnyObject[]): NDJSON
+    public static fromArray(arr: BulkDataTools.IAnyObject[]): CSV
     {
-        const out = new NDJSON();
+        const out = new CSV();
         const lines = arr.map(l => JSON.stringify(l));
         out.setLines(() => lines.values());
         out.setEntries(() => arr.values());

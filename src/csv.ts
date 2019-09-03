@@ -1,6 +1,6 @@
 import {
     isObject,
-    strPad,
+    flatObjectKeys,
     getPath
 } from "./lib";
 
@@ -13,9 +13,9 @@ import {
  * - any contained quotes are escaped with another quote
  * - undefined is converted to empty string
  * - everything else is converted to string (but is not quoted)
- * @param {*} value The value to escape
- * @param {String} [separator=","] A separator character like `,` or `;`
- * @returns {String} The escaped value
+ * @param value The value to escape
+ * @param [separator=","] A separator character like `,` or `;`
+ * @returns The escaped value
  */
 export function escapeCsvValue(value: any, separator: string = ","): string
 {
@@ -24,37 +24,6 @@ export function escapeCsvValue(value: any, separator: string = ","): string
     if (out.indexOf(separator) > -1 || out.search(/\r|\n|"/) > -1) {
         out = `"${out}"`;
     }
-    return out;
-}
-
-/**
- * Returns a flattened array of the structure of an object or array.
- * For example:
- * ```js
- * {a:1, b:{c:2,d:3}, e:4} -> ["a", "b.c", "b.d", "e"]
- * {a:1, b:[ 2, 3 ], e: 4} -> ["a", "b.0", "b.1", "e"]
- * [1, {a: 3, b: 4}, 2, 3] -> ["0", "1.a", "1.b", "2", "3"]
- * ```
- * @param {Object|Array} obj The object to inspect
- * @param {String} [_prefix] A path prefix that if provided, will be prepended
- * to each key. Please do not use this argument. The function will pass it to
- * itself on recursive calls.
- * @returns {String[]}
- */
-export function flatObjectKeys(obj: BulkDataTools.IAnyObject, _prefix?: string)
-{
-    let out: string[] = [];
-
-    for (const key in obj) {
-        const prefix = [_prefix, key].filter(Boolean).join(".");
-        const value = obj[key];
-        if (isObject(value)) {
-            out = out.concat(flatObjectKeys(value, prefix));
-        } else {
-            out.push(prefix);
-        }
-    }
-
     return out;
 }
 
@@ -128,14 +97,16 @@ export function csvHeaderFromJson(json: BulkDataTools.IAnyObject): BulkDataTools
 /**
  * Loops over an array of objects or arrays (rows) and builds a header that
  * matches the structure of the rows.
- * @param {Object[]|Array[]} array The array of row objects or arrays
- * @param {Object} options
- * @param {Boolean} [options.fast] If true, assumes that all rows have the same
+ * @param array The array of row objects or arrays
+ * @param options
+ * @param [options.fast] If true, assumes that all rows have the same
  * structure and only use the first one to build the header.
- * @returns {String[]} The header as an array of strings
+ * @returns The header as an array of strings
  */
-export function csvHeaderFromArray(array, options = {})
-{
+export function csvHeaderFromArray(
+    array: BulkDataTools.IAnyObject[],
+    options: { fast?: boolean } = {}
+): string[] {
     if (options.fast) {
         return flatObjectKeys(csvHeaderFromJson(array[0]));
     }
@@ -147,7 +118,7 @@ export function csvHeaderFromArray(array, options = {})
     return flatObjectKeys(out);
 }
 
-export function jsonArrayToCsv(array, { fast = false, separator = ",", eol = "\r\n" } = {})
+export function jsonArrayToCsv(array: BulkDataTools.IAnyObject[], { fast = false, separator = ",", eol = "\r\n" } = {})
 {
     const header = csvHeaderFromArray(array, { fast });
     const body   = array.map(json => {
@@ -157,12 +128,12 @@ export function jsonArrayToCsv(array, { fast = false, separator = ",", eol = "\r
         eol + body.join(eol);
 }
 
-export function jsonArrayToTsv(array, { fast = false, separator = "\t", eol = "\r\n" } = {})
+export function jsonArrayToTsv(array: BulkDataTools.IAnyObject[], { fast = false, separator = "\t", eol = "\r\n" } = {})
 {
     return jsonArrayToCsv(array, { fast, separator, eol });
 }
 
-export function jsonToCsv(json, { separator = ",", eol = "\r\n" } = {})
+export function jsonToCsv(json: BulkDataTools.IAnyObject, { separator = ",", eol = "\r\n" } = {})
 {
     const header = flatObjectKeys(csvHeaderFromJson(json));
     const body   = header.map(path => escapeCsvValue(getPath(json, path)));
@@ -170,7 +141,7 @@ export function jsonToCsv(json, { separator = ",", eol = "\r\n" } = {})
         eol + body.join(separator);
 }
 
-export function jsonToTsv(json, { separator = "\t", eol = "\r\n" } = {})
+export function jsonToTsv(json: BulkDataTools.IAnyObject, { separator = "\t", eol = "\r\n" } = {})
 {
     return jsonToCsv(json, { separator, eol });
 }
@@ -179,11 +150,11 @@ export function jsonToTsv(json, { separator = "\t", eol = "\r\n" } = {})
  * Splits the line into cells using the provided delimiter (or by comma by
  * default) and returns the cells array. supports quoted strings and escape
  * sequences.
- * @param {String} line The line to parse
- * @param {String} delimiter The delimiter to use (defaults to ",")
- * @returns {String[]} The cells as array of strings
+ * @param line The line to parse
+ * @param delimiter The delimiter to use (defaults to ",")
+ * @returns The cells as array of strings
  */
-export function parseDelimitedLine(line: string, delimiter = ",")
+export function parseDelimitedLine(line: string, delimiter: string = ","): string[]
 {
     const out: string[] = [];
     const len: number   = line.length;

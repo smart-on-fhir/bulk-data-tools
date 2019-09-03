@@ -94,7 +94,7 @@ export class NdJsonToDelimitedHeader extends Transform
             eol: "\r\n",
             ...options
         };
-        
+
         this.header = {};
     }
 
@@ -202,7 +202,7 @@ exports.forEachLine = function forEachLine(filePath: string, callback, onFinish)
     }
 
     return lineStream;
-}
+};
 
 
 

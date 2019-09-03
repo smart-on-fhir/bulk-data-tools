@@ -8,9 +8,9 @@ const lib_1 = require("./lib");
  * - any contained quotes are escaped with another quote
  * - undefined is converted to empty string
  * - everything else is converted to string (but is not quoted)
- * @param {*} value The value to escape
- * @param {String} [separator=","] A separator character like `,` or `;`
- * @returns {String} The escaped value
+ * @param value The value to escape
+ * @param [separator=","] A separator character like `,` or `;`
+ * @returns The escaped value
  */
 function escapeCsvValue(value, separator = ",") {
     let out = value === undefined ? "" : String(value);
@@ -21,35 +21,6 @@ function escapeCsvValue(value, separator = ",") {
     return out;
 }
 exports.escapeCsvValue = escapeCsvValue;
-/**
- * Returns a flattened array of the structure of an object or array.
- * For example:
- * ```js
- * {a:1, b:{c:2,d:3}, e:4} -> ["a", "b.c", "b.d", "e"]
- * {a:1, b:[ 2, 3 ], e: 4} -> ["a", "b.0", "b.1", "e"]
- * [1, {a: 3, b: 4}, 2, 3] -> ["0", "1.a", "1.b", "2", "3"]
- * ```
- * @param {Object|Array} obj The object to inspect
- * @param {String} [_prefix] A path prefix that if provided, will be prepended
- * to each key. Please do not use this argument. The function will pass it to
- * itself on recursive calls.
- * @returns {String[]}
- */
-function flatObjectKeys(obj, _prefix) {
-    let out = [];
-    for (const key in obj) {
-        const prefix = [_prefix, key].filter(Boolean).join(".");
-        const value = obj[key];
-        if (lib_1.isObject(value)) {
-            out = out.concat(flatObjectKeys(value, prefix));
-        }
-        else {
-            out.push(prefix);
-        }
-    }
-    return out;
-}
-exports.flatObjectKeys = flatObjectKeys;
 /**
  * Merges the second argument into the first one but also throws if an object
  * property is about to be overridden with scalar (or the opposite).
@@ -107,21 +78,21 @@ exports.csvHeaderFromJson = csvHeaderFromJson;
 /**
  * Loops over an array of objects or arrays (rows) and builds a header that
  * matches the structure of the rows.
- * @param {Object[]|Array[]} array The array of row objects or arrays
- * @param {Object} options
- * @param {Boolean} [options.fast] If true, assumes that all rows have the same
+ * @param array The array of row objects or arrays
+ * @param options
+ * @param [options.fast] If true, assumes that all rows have the same
  * structure and only use the first one to build the header.
- * @returns {String[]} The header as an array of strings
+ * @returns The header as an array of strings
  */
 function csvHeaderFromArray(array, options = {}) {
     if (options.fast) {
-        return flatObjectKeys(csvHeaderFromJson(array[0]));
+        return lib_1.flatObjectKeys(csvHeaderFromJson(array[0]));
     }
     let out = {};
     array.forEach(json => {
         out = mergeStrict(out, csvHeaderFromJson(json));
     });
-    return flatObjectKeys(out);
+    return lib_1.flatObjectKeys(out);
 }
 exports.csvHeaderFromArray = csvHeaderFromArray;
 function jsonArrayToCsv(array, { fast = false, separator = ",", eol = "\r\n" } = {}) {
@@ -138,7 +109,7 @@ function jsonArrayToTsv(array, { fast = false, separator = "\t", eol = "\r\n" } 
 }
 exports.jsonArrayToTsv = jsonArrayToTsv;
 function jsonToCsv(json, { separator = ",", eol = "\r\n" } = {}) {
-    const header = flatObjectKeys(csvHeaderFromJson(json));
+    const header = lib_1.flatObjectKeys(csvHeaderFromJson(json));
     const body = header.map(path => escapeCsvValue(lib_1.getPath(json, path)));
     return header.map(h => escapeCsvValue(h)).join(separator) +
         eol + body.join(separator);
@@ -152,9 +123,9 @@ exports.jsonToTsv = jsonToTsv;
  * Splits the line into cells using the provided delimiter (or by comma by
  * default) and returns the cells array. supports quoted strings and escape
  * sequences.
- * @param {String} line The line to parse
- * @param {String} delimiter The delimiter to use (defaults to ",")
- * @returns {String[]} The cells as array of strings
+ * @param line The line to parse
+ * @param delimiter The delimiter to use (defaults to ",")
+ * @returns The cells as array of strings
  */
 function parseDelimitedLine(line, delimiter = ",") {
     const out = [];

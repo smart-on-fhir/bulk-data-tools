@@ -12,19 +12,6 @@ The input can be ane of:
 - `Object`
     - Any object or array that can be serialized as JSON
 
-|                   | json                   |
-|-------------------|------------------------|
-|object             | N/A |
-|array              | N/A |
-|JSON String        | Parses a json string and converts it to object |
-|NDJSON String      | Parses an ndjson string and converts it to an array of objects |
-|CSV String         | Parses a csv string and converts it to an array of objects where the first item is the header and the rest are rows
-|TSV String         | Parses a tsv string and converts it to an array of objects where the first item is the header and the rest are rows |
-|Path to JSON file  | Parses a json file contents as JSON and converts it to object
-|Path to NDJSON file| Parses an ndjson file contents as JSON and converts it to object
-|Path to CSV file   |
-|Path to TSV file   |
-|Path to directory  |
 
 ## Working with files
 The library provides a few methods that can be very useful for reading and parsing large files.

@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const lib_1 = require("../lib");
+const Collection_1 = __importDefault(require("../Collection"));
 /**
  * This class represents a CSV object. An instance can be created from
  * different kinds of input using the static methods starting with `from` and
@@ -8,57 +12,18 @@ const lib_1 = require("../lib");
  * `to`. This class is designed to handle large files or directories by using
  * iterators and reading files one line at a time.
  */
-class CSV {
-    constructor() {
-        /**
-         * The internal lines iterator. In some cases iterating over lines is simple.
-         * For example, if we create an instance from string or array we already
-         * have all the lines. However, if the input is a file, the lines iterator
-         * will be a function that reads one line at a time.
-         */
-        this._lines = [].values;
-        /**
-         * The internal entries iterator. Here, an entry means a line represented as
-         * an array of strings for each cell value. There is one array or entry for
-         * each csv line. In some cases iterating over lines is simple. For example,
-         * if we create an instance from string or array we already have all the
-         * lines. However, if the input is a file, the entries iterator will be a
-         * function that reads and parses one line at a time.
-         */
-        this._entries = [].values;
-    }
+class CSV extends Collection_1.default {
     /**
-     * Sets the lines iterator of the instance. Useful while composing an
-     * instance from different sources
-     * @param linesIterator The iterator to use
-     * @returns The instance to allow chaining
+     * Converts the contents of the collection to array of "values". The
+     * subclasses must implement this depending on the output format they
+     * represent.
      */
-    setLines(linesIterator) {
-        this._lines = linesIterator;
-        return this;
-    }
-    /**
-     * Sets the entries iterator of the instance. Useful while composing an
-     * instance from different sources
-     * @param linesIterator The iterator to use
-     * @returns The instance to allow chaining
-     */
-    setEntries(entriesIterator) {
-        this._entries = entriesIterator;
-        return this;
-    }
-    /**
-     * The lines iterator of the instance. Yields lines as JSON strings.
-     */
-    lines() {
-        return this._lines();
-    }
-    /**
-     * The entries iterator of the instance. Yields lines as JSON-serialize-able
-     * objects.
-     */
-    entries() {
-        return this._entries();
+    toArray() {
+        const out = [];
+        for (const entry of this._entries()) {
+            out.push(entry);
+        }
+        return out;
     }
     /**
      * Splits the line into cells using the provided delimiter (or by comma by
@@ -140,14 +105,14 @@ class CSV {
      * If we happen to have the entire csv as array, we can create a CSV
      * instance like so:
      * ```js
-     * const ndjson = NDJSON.fromArray([ {}, {} ]);
-     * ndjson.lines();   // Lines iterator
-     * ndjson.entries(); // JSON iterator
+     * const csv = CSV.fromArray([ {}, {} ]);
+     * csv.lines();   // Lines iterator
+     * csv.entries(); // JSON iterator
      * ```
      * @param arr An array of objects that can be serialized as JSON
      */
     static fromArray(arr) {
-        const out = new NDJSON();
+        const out = new CSV();
         const lines = arr.map(l => JSON.stringify(l));
         out.setLines(() => lines.values());
         out.setEntries(() => arr.values());

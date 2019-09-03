@@ -1,5 +1,5 @@
-import FS, { Stats, readFileSync } from "fs";
-import Path          from "path";
+import FS, { readFileSync } from "fs";
+import Path                 from "path";
 
 /**
  * Rounds the given number @n using the specified precision.
@@ -110,10 +110,9 @@ export function uFloat(x: BulkDataTools.Numeric, defaultValue?: BulkDataTools.Nu
 
 /**
  * Tests if the given argument is an object
- * @param {*} x The value to test
- * @returns {Boolean}
+ * @param x The value to test
  */
-export function isObject(x: any)
+export function isObject(x: any): boolean
 {
     return !!x && typeof x == "object";
 }
@@ -291,7 +290,6 @@ export function* walkSync(dir: string): IterableIterator<string> {
     }
 }
 
-
 /**
  * Walks a directory recursively in a synchronous fashion and yields JSON
  * objects. Only `.json` and `.ndjson` files are parsed. Yields ane JSON object
@@ -315,4 +313,34 @@ export function* jsonEntries(dir: string)
             }
         }
     }
+}
+
+/**
+ * Returns a flattened array of the structure of an object or array.
+ * For example:
+ * ```js
+ * {a:1, b:{c:2,d:3}, e:4} -> ["a", "b.c", "b.d", "e"]
+ * {a:1, b:[ 2, 3 ], e: 4} -> ["a", "b.0", "b.1", "e"]
+ * [1, {a: 3, b: 4}, 2, 3] -> ["0", "1.a", "1.b", "2", "3"]
+ * ```
+ * @param obj The object to inspect
+ * @param [_prefix] A path prefix that if provided, will be prepended
+ * to each key. Please do not use this argument. The function will pass it to
+ * itself on recursive calls.
+ */
+export function flatObjectKeys(obj: BulkDataTools.IAnyObject, _prefix?: string): string[]
+{
+    let out: string[] = [];
+
+    for (const key in obj) {
+        const prefix = [_prefix, key].filter(Boolean).join(".");
+        const value = obj[key];
+        if (isObject(value)) {
+            out = out.concat(flatObjectKeys(value, prefix));
+        } else {
+            out.push(prefix);
+        }
+    }
+
+    return out;
 }

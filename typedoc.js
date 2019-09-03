@@ -46,6 +46,7 @@ module.exports = {
     // --defaultCategory         Specifies the default category for reflections without a category.
     // --disableOutputCheck      Should TypeDoc disable the testing and cleaning of the output directory?
     // --entryPoint              Specifies the fully qualified name of the root symbol. Defaults to global namespace.
+    entryPoint: "BulkData",
     // --gaID                    Set the Google Analytics tracking ID and activate tracking code.
     // --gaSite                  Set the site name for Google Analytics. Defaults to `auto`.
     // --gitRevision             Use specified revision instead of the last revision for linking to GitHub source files.
@@ -53,6 +54,7 @@ module.exports = {
     // --includes DIRECTORY      Specifies the location to look for included documents (use [[include:FILENAME]] in comments).
     // --json                    Specifies the location and file name a json file describing the project is written to.
     // --listInvalidSymbolLinks  Emits a list of broken symbol [[navigation]] links after documentation generation
+    listInvalidSymbolLinks: true,
     // --logger                  Specify the logger that should be used, 'none' or 'console'
     // --media DIRECTORY         Specifies the location with media files that should be copied to the output directory.
     // --options                 Specify a js option file that should be loaded. If not specified TypeDoc will look for 'typedoc.js' in the current directory.

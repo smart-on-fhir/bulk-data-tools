@@ -1,6 +1,7 @@
 const Lab        = require("lab");
 const { expect } = require("code");
 const csv        = require("../build/csv");
+const lib        = require("../build/lib");
 
 const lab = exports.lab = Lab.script();
 const { describe, it, beforeEach, afterEach } = lab;
@@ -51,19 +52,19 @@ describe("csv", () => {
     describe("csvHeaderFromJson", () => {
         it ("from flat object", () => {
             expect(
-                csv.flatObjectKeys(csv.csvHeaderFromJson({ a: 1, b: 2 }))
+                lib.flatObjectKeys(csv.csvHeaderFromJson({ a: 1, b: 2 }))
             ).to.equal(["a", "b"]);
         });
 
         it ("from flat array", () => {
             expect(
-                csv.flatObjectKeys(csv.csvHeaderFromJson([ 1, 2 ]))
+                lib.flatObjectKeys(csv.csvHeaderFromJson([ 1, 2 ]))
             ).to.equal(["0", "1"]);
         });
 
         it ("from nested object", () => {
             expect(
-                csv.flatObjectKeys(csv.csvHeaderFromJson({
+                lib.flatObjectKeys(csv.csvHeaderFromJson({
                     a: 1,
                     b: { b1: 2.1, b2: 2.2 },
                     c: 3
@@ -73,7 +74,7 @@ describe("csv", () => {
 
         it ("from nested array", () => {
             expect(
-                csv.flatObjectKeys(csv.csvHeaderFromJson([
+                lib.flatObjectKeys(csv.csvHeaderFromJson([
                     1,
                     [1, 2, 3],
                     3

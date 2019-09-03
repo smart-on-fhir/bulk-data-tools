@@ -108,8 +108,7 @@ function uFloat(x, defaultValue) {
 exports.uFloat = uFloat;
 /**
  * Tests if the given argument is an object
- * @param {*} x The value to test
- * @returns {Boolean}
+ * @param x The value to test
  */
 function isObject(x) {
     return !!x && typeof x == "object";
@@ -290,3 +289,31 @@ function* jsonEntries(dir) {
     }
 }
 exports.jsonEntries = jsonEntries;
+/**
+ * Returns a flattened array of the structure of an object or array.
+ * For example:
+ * ```js
+ * {a:1, b:{c:2,d:3}, e:4} -> ["a", "b.c", "b.d", "e"]
+ * {a:1, b:[ 2, 3 ], e: 4} -> ["a", "b.0", "b.1", "e"]
+ * [1, {a: 3, b: 4}, 2, 3] -> ["0", "1.a", "1.b", "2", "3"]
+ * ```
+ * @param obj The object to inspect
+ * @param [_prefix] A path prefix that if provided, will be prepended
+ * to each key. Please do not use this argument. The function will pass it to
+ * itself on recursive calls.
+ */
+function flatObjectKeys(obj, _prefix) {
+    let out = [];
+    for (const key in obj) {
+        const prefix = [_prefix, key].filter(Boolean).join(".");
+        const value = obj[key];
+        if (isObject(value)) {
+            out = out.concat(flatObjectKeys(value, prefix));
+        }
+        else {
+            out.push(prefix);
+        }
+    }
+    return out;
+}
+exports.flatObjectKeys = flatObjectKeys;
