@@ -9,7 +9,7 @@ const { describe, it } = lab;
  * Given a collection at @src asserts that its `entries` and `lines` iterators
  * yield the expected values
  * @param {Object} obj The CSV collection instance
- * @param {string[][]} expectedEntries The expected entries as an array of
+ * @param {Object[]} expectedEntries The expected entries as an array of
  *                                     arrays of strings
  * @param {string[]} expectedLines  The expected entries as an array of strings
  */
@@ -87,49 +87,24 @@ describe("CSV", () => {
         );
     });
 
-    // it("fromDirectory", () => {
-    //     const obj = NDJSON.fromDirectory(__dirname + "/mocks");
-    //     const outEntries = [];
-    //     const outLines = [];
-    //     const entries = obj.entries();
-    //     const lines = obj.lines();
-    //     for (const entry of entries) {
-    //         outEntries.push(entry);
-    //     }
-    //     for (const line of lines) {
-    //         outLines.push(line);
-    //     }
-    //     expect(outEntries.slice(0, 5)).to.equal([
-    //         { "a": 1, "b": 2, "c": "3" },
-    //         { "a": 1, "b": 2, "c": "3" },
-    //         { "a": 1, "b": 2, "c": "3" },
-    //         { "a": 1, "b": 2, "c": "3" },
-    //         {
-    //             "resourceType": "Immunization",
-    //             "id": "71cd78d2-30ba-4d59-93fe-779c9dfa2fe6",
-    //             "status": "completed",
-    //             "notGiven": false,
-    //             "vaccineCode": {
-    //                 "coding": [
-    //                     {
-    //                         "system": "http://hl7.org/fhir/sid/cvx",
-    //                         "code": "140",
-    //                         "display": "Influenza, seasonal, injectable, preservative free"
-    //                     }
-    //                 ],
-    //                 "text": "Influenza, seasonal, injectable, preservative free"
-    //             },
-    //             "patient": {
-    //                 "reference": "Patient/895cd302-bee7-4933-a8f1-674344a87035"
-    //             },
-    //             "encounter": {
-    //                 "reference": "Encounter/5d35659f-1f6b-4dc6-9f93-89b3099def65"
-    //             },
-    //             "date": "2015-09-09T14:32:40+00:00",
-    //             "primarySource": true
-    //         }
-    //     ]);
-    // });
+    it("fromDirectory", () => {
+        const obj = CSV.fromDirectory(__dirname + "/mocks/multi-csv");
+        expectCSV(
+            obj,
+            [
+                { "a": "1" , "b": "2" , "c": "3"  },
+                { "a": "4" , "b": "5" , "c": "6"  },
+                { "a": "10", "b": "20", "c": "30" },
+                { "a": "40", "b": "50", "c": "60" }
+            ],
+            [
+                "1,2,3",
+                "4,5,6",
+                "10,20,30",
+                "40,50,60"
+            ]
+        );
+    });
 
     it("fromFile", () => {
         const obj = CSV.fromFile(__dirname + "/mocks/sample.1.csv");
@@ -147,7 +122,7 @@ describe("CSV", () => {
     });
 
     it("fromString", () => {
-        const obj = CSV.fromString("a,b\n1,2\n3,4");
+        const obj = CSV.fromString("a, b\n1,2\r\n3 ,4");
         expectCSV(
             obj,
             [{ a: "1", b: "2" }, { a: "3", b: "4" }],

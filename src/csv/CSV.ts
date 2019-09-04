@@ -89,8 +89,7 @@ export default class CSV extends Collection
      */
     public static fromString(input: string, delimiter: string = ","): CSV
     {
-        const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-        return CSV.fromStringArray(lines);
+        return CSV.fromStringArray(input.split(/\r?\n/));
     }
 
     /**
@@ -118,7 +117,11 @@ export default class CSV extends Collection
             const header = parseDelimitedLine(lines.shift() as string);
 
             // lines will exclude the first line (assumed to be the header)
-            out.setLines(() => lines.values());
+            out.setLines(function *() {
+                for (const l of lines) {
+                    yield parseDelimitedLine(l).map(c => c.trim()).join(",");
+                }
+            });
 
             // Entries are the json objects representing each line
             out.setEntries(function *() {
@@ -168,24 +171,24 @@ export default class CSV extends Collection
     }
 
     /**
-     * Creates and returns an NDJSON instance from directory path. This will
-     * walk (recursively) through the directory and collect all the files having
-     * a `.ndjson` extension. The `lines` and `entries` iterators will yield
+     * Creates and returns an instance from directory path. This will walk
+     * (recursively) through the directory and collect all the files having
+     * a `.csv` extension. The `lines` and `entries` iterators will yield
      * results from all those files combined. Example:
      * ```js
-     * const ndjson = CSV.fromDirectory("/path/to/directory/containing/ndjson/files");
-     * ndjson.lines();   // Lines iterator
-     * ndjson.entries(); // JSON iterator
+     * const csv = CSV.fromDirectory("/path/to/directory/containing/csv/files");
+     * csv.lines();   // Lines iterator
+     * csv.entries(); // JSON iterator
      * ```
      * @param path Absolute path to directory
      */
     public static fromDirectory(path: string): CSV
     {
-        const files = filterFiles(path, /\.ndjson$/i);
         const out = new CSV();
 
         function *lines(): IterableIterator<string>
         {
+            const files = filterFiles(path, /\.csv$/i);
             for (const filePath of files) {
                 try {
                     const ndjson = CSV.fromFile(filePath);
@@ -201,6 +204,7 @@ export default class CSV extends Collection
 
         function *entries(): IterableIterator<BulkDataTools.IAnyObject>
         {
+            const files = filterFiles(path, /\.csv$/i);
             for (const filePath of files) {
                 try {
                     const ndjson = CSV.fromFile(filePath);
@@ -240,7 +244,8 @@ export default class CSV extends Collection
                     headerSkip = 1;
                     continue;
                 }
-                line = line.trim();
+                const arr = parseDelimitedLine(line.trim());
+                line = arr.map(c => c.trim()).join(",");
                 if (line) {
                     yield line;
                 }

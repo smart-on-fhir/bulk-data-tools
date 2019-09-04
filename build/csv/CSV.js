@@ -74,8 +74,7 @@ class CSV extends Collection_1.default {
      * @param input The input string that can be parsed as CSV or TSV
      */
     static fromString(input, delimiter = ",") {
-        const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-        return CSV.fromStringArray(lines);
+        return CSV.fromStringArray(input.split(/\r?\n/));
     }
     /**
      * If we have the entire collection as an array of string lines, we can
@@ -97,7 +96,11 @@ class CSV extends Collection_1.default {
             // Use the first line as header
             const header = lib_1.parseDelimitedLine(lines.shift());
             // lines will exclude the first line (assumed to be the header)
-            out.setLines(() => lines.values());
+            out.setLines(function* () {
+                for (const l of lines) {
+                    yield lib_1.parseDelimitedLine(l).map(c => c.trim()).join(",");
+                }
+            });
             // Entries are the json objects representing each line
             out.setEntries(function* () {
                 for (const l of lines) {
@@ -138,21 +141,21 @@ class CSV extends Collection_1.default {
         return out;
     }
     /**
-     * Creates and returns an NDJSON instance from directory path. This will
-     * walk (recursively) through the directory and collect all the files having
-     * a `.ndjson` extension. The `lines` and `entries` iterators will yield
+     * Creates and returns an instance from directory path. This will walk
+     * (recursively) through the directory and collect all the files having
+     * a `.csv` extension. The `lines` and `entries` iterators will yield
      * results from all those files combined. Example:
      * ```js
-     * const ndjson = CSV.fromDirectory("/path/to/directory/containing/ndjson/files");
-     * ndjson.lines();   // Lines iterator
-     * ndjson.entries(); // JSON iterator
+     * const csv = CSV.fromDirectory("/path/to/directory/containing/csv/files");
+     * csv.lines();   // Lines iterator
+     * csv.entries(); // JSON iterator
      * ```
      * @param path Absolute path to directory
      */
     static fromDirectory(path) {
-        const files = lib_1.filterFiles(path, /\.ndjson$/i);
         const out = new CSV();
         function* lines() {
+            const files = lib_1.filterFiles(path, /\.csv$/i);
             for (const filePath of files) {
                 try {
                     const ndjson = CSV.fromFile(filePath);
@@ -167,6 +170,7 @@ class CSV extends Collection_1.default {
             }
         }
         function* entries() {
+            const files = lib_1.filterFiles(path, /\.csv$/i);
             for (const filePath of files) {
                 try {
                     const ndjson = CSV.fromFile(filePath);
@@ -203,7 +207,8 @@ class CSV extends Collection_1.default {
                     headerSkip = 1;
                     continue;
                 }
-                line = line.trim();
+                const arr = lib_1.parseDelimitedLine(line.trim());
+                line = arr.map(c => c.trim()).join(",");
                 if (line) {
                     yield line;
                 }

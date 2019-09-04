@@ -427,7 +427,7 @@ function parseDelimitedLine(line, delimiter = ",") {
         out.push(buffer);
         buffer = "";
     }
-    return out;
+    return out.map(s => s.trim());
 }
 exports.parseDelimitedLine = parseDelimitedLine;
 /**

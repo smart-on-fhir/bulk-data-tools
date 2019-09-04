@@ -480,7 +480,7 @@ export function parseDelimitedLine(line: string, delimiter: string = ","): strin
         buffer = "";
     }
 
-    return out;
+    return out.map(s => s.trim());
 }
 
 /**
