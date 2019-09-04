@@ -462,13 +462,13 @@ function copyKeys(json) {
  * @returns The header as an array of strings
  */
 function delimitedHeaderFromArray(array, options = {}) {
-    if (options.fast) {
-        return flatObjectKeys(array[0]);
-    }
     let out = {};
-    array.forEach(json => {
+    for (const json of array) {
+        if (options.fast) {
+            return flatObjectKeys(json);
+        }
         out = mergeStrict(out, json);
-    });
+    }
     return flatObjectKeys(out);
 }
 exports.delimitedHeaderFromArray = delimitedHeaderFromArray;

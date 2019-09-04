@@ -519,16 +519,15 @@ function copyKeys(json: BulkDataTools.IAnyObject): BulkDataTools.IAnyObject
  * @returns The header as an array of strings
  */
 export function delimitedHeaderFromArray(
-    array: BulkDataTools.IAnyObject[],
+    array: BulkDataTools.IAnyObject[] | IterableIterator<BulkDataTools.IAnyObject>,
     options: { fast?: boolean } = {}
 ): string[] {
-    if (options.fast) {
-        return flatObjectKeys(array[0]);
-    }
-
     let out = {};
-    array.forEach(json => {
+    for (const json of array) {
+        if (options.fast) {
+            return flatObjectKeys(json);
+        }
         out = mergeStrict(out, json);
-    });
+    }
     return flatObjectKeys(out);
 }

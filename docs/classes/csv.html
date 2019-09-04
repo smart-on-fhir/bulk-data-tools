@@ -94,12 +94,10 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-private-protected">
+						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="csv.html#_delimiter" class="tsd-kind-icon">_delimiter</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="csv.html#_entries" class="tsd-kind-icon">_entries</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="csv.html#_eol" class="tsd-kind-icon">_eol</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="csv.html#_lines" class="tsd-kind-icon">_lines</a></li>
 							</ul>
 						</section>
@@ -112,6 +110,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="csv.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="csv.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="csv.html#tofile" class="tsd-kind-icon">to<wbr>File</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="csv.html#tojson" class="tsd-kind-icon">toJSON</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="csv.html#tondjson" class="tsd-kind-icon">toNDJSON</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="csv.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="csv.html#tostringarray" class="tsd-kind-icon">to<wbr>String<wbr>Array</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="csv.html#fromarray" class="tsd-kind-icon">from<wbr>Array</a></li>
@@ -124,23 +124,8 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="_delimiter" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _delimiter</h3>
-					<div class="tsd-signature tsd-kind-icon">_delimiter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;,&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L27">src/csv/CSV.ts:27</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The value delimiter to use while parsing and serializing.</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="_entries" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _entries</h3>
@@ -148,7 +133,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#_entries">_entries</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/Collection.ts#L25">src/Collection.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L25">src/Collection.ts:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -175,21 +160,6 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="_eol" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _eol</h3>
-					<div class="tsd-signature tsd-kind-icon">_eol<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L32">src/csv/CSV.ts:32</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The line separator to use while converting to string.</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="_lines" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _lines</h3>
@@ -197,7 +167,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#_lines">_lines</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/Collection.ts#L17">src/Collection.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L17">src/Collection.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -238,7 +208,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#entries">entries</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/Collection.ts#L64">src/Collection.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L64">src/Collection.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -261,7 +231,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#lines">lines</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/Collection.ts#L56">src/Collection.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L56">src/Collection.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -284,7 +254,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#setentries">setEntries</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/Collection.ts#L47">src/Collection.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L47">src/Collection.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -329,7 +299,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#setlines">setLines</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/Collection.ts#L33">src/Collection.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L33">src/Collection.ts:33</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -375,7 +345,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#toarray">toArray</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L39">src/csv/CSV.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L28">src/csv/CSV.ts:28</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -393,14 +363,14 @@
 					<a name="tofile" class="tsd-anchor"></a>
 					<h3>to<wbr>File</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="collection.html" class="tsd-signature-type">Collection</a></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="collection.html" class="tsd-signature-type">Collection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tofile">toFile</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L71">src/csv/CSV.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L97">src/csv/CSV.ts:97</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -415,10 +385,44 @@
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="collection.html" class="tsd-signature-type">Collection</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tojson" class="tsd-anchor"></a>
+					<h3>toJSON</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L33">src/csv/CSV.ts:33</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tondjson" class="tsd-anchor"></a>
+					<h3>toNDJSON</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toNDJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L38">src/csv/CSV.ts:38</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -426,22 +430,29 @@
 					<a name="tostring" class="tsd-anchor"></a>
 					<h3>to<wbr>String</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L52">src/csv/CSV.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L55">src/csv/CSV.ts:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Serializes the contents of the collection to a string. The subclasses
-									must implement this depending on the output format they represent.</p>
+									<p>Serializes the contents of the collection to a string. The result can be
+										a CSV, TSV or other delimited format depending on the options. The
+									default options will output CSV string.</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -450,14 +461,14 @@
 					<a name="tostringarray" class="tsd-anchor"></a>
 					<h3>to<wbr>String<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tostringarray">toStringArray</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L62">src/csv/CSV.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L75">src/csv/CSV.ts:75</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -467,6 +478,12 @@
 									represent.</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -475,13 +492,13 @@
 					<a name="fromarray" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span>, strict<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L154">src/csv/CSV.ts:154</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L203">src/csv/CSV.ts:203</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -504,7 +521,7 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> strict: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
@@ -515,13 +532,13 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 					<a name="fromdirectory" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>Directory</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Directory<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Directory<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L185">src/csv/CSV.ts:185</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L236">src/csv/CSV.ts:236</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -543,6 +560,9 @@ csv.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 										<p>Absolute path to directory</p>
 									</div>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
 						</li>
@@ -552,13 +572,13 @@ csv.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 					<a name="fromfile" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>File</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L236">src/csv/CSV.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L290">src/csv/CSV.ts:290</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -578,6 +598,9 @@ csv.entries(); <span class="hljs-comment">// Entries iterator</span></code></pre
 										<p>Absolute path to CSV or TSV file</p>
 									</div>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
 						</li>
@@ -587,13 +610,13 @@ csv.entries(); <span class="hljs-comment">// Entries iterator</span></code></pre
 					<a name="fromstring" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>String</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>String<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, delimiter<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>String<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L90">src/csv/CSV.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L137">src/csv/CSV.ts:137</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -614,7 +637,7 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> delimiter: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;,&quot;</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
@@ -625,13 +648,13 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 					<a name="fromstringarray" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>String<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="csv.html" class="tsd-signature-type">CSV</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/1b8943e/src/csv/CSV.ts#L106">src/csv/CSV.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L153">src/csv/CSV.ts:153</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -651,6 +674,9 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 									<div class="tsd-comment tsd-typography">
 										<p>An array of strings that can be parsed as CSV or TSV</p>
 									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="csv.html" class="tsd-signature-type">CSV</a></h4>
@@ -674,14 +700,8 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 					<li class="current tsd-kind-class">
 						<a href="csv.html" class="tsd-kind-icon">CSV</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="csv.html#_delimiter" class="tsd-kind-icon">_delimiter</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="csv.html#_entries" class="tsd-kind-icon">_entries</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="csv.html#_eol" class="tsd-kind-icon">_eol</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="csv.html#_lines" class="tsd-kind-icon">_lines</a>
@@ -703,6 +723,12 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="csv.html#tofile" class="tsd-kind-icon">to<wbr>File</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="csv.html#tojson" class="tsd-kind-icon">toJSON</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="csv.html#tondjson" class="tsd-kind-icon">toNDJSON</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="csv.html#tostring" class="tsd-kind-icon">to<wbr>String</a>

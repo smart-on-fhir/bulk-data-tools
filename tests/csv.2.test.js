@@ -1,6 +1,7 @@
 const Lab        = require("lab");
 const { expect } = require("code");
-const CSV        = require("../build/csv/CSV").default;
+const Delimited  = require("../build/csv/CSV").default;
+const fs         = require("fs");
 
 const lab = exports.lab = Lab.script();
 const { describe, it } = lab;
@@ -13,7 +14,7 @@ const { describe, it } = lab;
  *                                     arrays of strings
  * @param {string[]} expectedLines  The expected entries as an array of strings
  */
-function expectCSV(obj, expectedEntries, expectedLines) {
+function expectDelimited(obj, expectedEntries, expectedLines) {
     const outEntries = [];
     const outLines = [];
     const entries = obj.entries();
@@ -28,19 +29,17 @@ function expectCSV(obj, expectedEntries, expectedLines) {
     expect(outLines).to.equal(expectedLines);
 }
 
-describe("CSV", () => {
+describe("Delimited", () => {
 
     it("entries", () => {
-        const obj = CSV.fromString("a,b\r\n1,2\r\n3,4");
-        expectCSV(
+        const obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        expectDelimited(
             obj,
             [
-                // ["a", "b"],
                 { a: "1", b: "2" },
                 { a: "3", b: "4" }
             ],
             [
-                // "a,b",
                 "1,2",
                 "3,4"
             ]
@@ -62,35 +61,88 @@ describe("CSV", () => {
     // //     });
     // // });
 
-    // it("toArray", () => {
-    //     const obj = NDJSON.fromArray([{ a: 1 }]);
-    //     expect(obj.toArray()).to.equal([{ a: 1 }]);
-    // });
+    it("toFile", () => {
+        const filePath = __dirname + "/" + Date.now() + ".tmp";
+        let obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        try {
+            obj.toFile(filePath);
+            expect(fs.readFileSync(filePath, "utf8")).to.equal("a,b\r\n1,2\r\n3,4");
+        }
+        catch (ex) {
+            throw ex;
+        }
+        finally {
+            fs.unlinkSync(filePath);
+        }
+    });
 
-    // it("toString", () => {
-    //     const obj = NDJSON.fromArray([{ a: 1 }]);
-    //     expect(obj.toString()).to.equal('{"a":1}');
-    //     expect(obj + "").to.equal('{"a":1}');
-    // });
+    it("toArray", () => {
+        let obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        expect(obj.toArray()).to.equal([
+            { a: "1", b: "2" },
+            { a: "3", b: "4" }
+        ]);
 
-    // it("toStringArray", () => {
-    //     const obj = NDJSON.fromArray([{ a: 1 }]);
-    //     expect(obj.toStringArray()).to.equal(['{"a":1}']);
-    // });
+        obj = Delimited.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
+        expect(obj.toArray()).to.equal([
+            { "a,a": "1", b: "2" }
+        ]);
+    });
+
+    it("toString", () => {
+        let obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        expect(obj.toString()).to.equal("a,b\r\n1,2\r\n3,4");
+        expect(obj.toString({
+            delimiter: "\t"
+        })).to.equal("a\tb\r\n1\t2\r\n3\t4");
+        expect(obj.toString({
+            delimiter: ";",
+            eol: "\n"
+        })).to.equal("a;b\n1;2\n3;4");
+
+        obj = Delimited.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
+        expect(obj.toString()).to.equal('"a,a",b\r\n1,2');
+    });
+
+    it("toStringArray", () => {
+        let obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        expect(obj.toStringArray()).to.equal(["a,b", "1,2", "3,4"]);
+
+        expect(obj.toStringArray({
+            delimiter: "\t"
+        })).to.equal(["a\tb", "1\t2", "3\t4"]);
+
+        obj = Delimited.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
+        expect(obj.toStringArray()).to.equal(['"a,a",b', "1,2"]);
+    });
 
     it("fromArray", () => {
-        const obj = CSV.fromArray([{ a: "1", b: "2" }, { a: "3", b: "4" }]);
-        expectCSV(
-            obj,
+        const csv = Delimited.fromArray([{ a: "1", b: "2" }, { a: "3", b: "4" }]);
+        expectDelimited(
+            csv,
             [{ a: "1", b: "2" }, { a: "3", b: "4" }],
             ["1,2", "3,4"]
+        );
+
+        const tsv = Delimited.fromArray([{ a: "1", b: "2" }, { a: "3", b: "4" }], { delimiter: "\t" });
+        expectDelimited(
+            tsv,
+            [{ a: "1", b: "2" }, { a: "3", b: "4" }],
+            ["1\t2", "3\t4"]
+        );
+
+        const dirty = Delimited.fromArray([{ a: "1", "b\"c": '2"3' }]);
+        expectDelimited(
+            dirty,
+            [{ a: "1", 'b"c': '2"3' }],
+            ['1,"2""3"']
         );
     });
 
     it("fromDirectory", () => {
-        const obj = CSV.fromDirectory(__dirname + "/mocks/multi-csv");
-        expectCSV(
-            obj,
+        const csv = Delimited.fromDirectory(__dirname + "/mocks/multi-csv");
+        expectDelimited(
+            csv,
             [
                 { "a": "1" , "b": "2" , "c": "3"  },
                 { "a": "4" , "b": "5" , "c": "6"  },
@@ -104,12 +156,32 @@ describe("CSV", () => {
                 "40,50,60"
             ]
         );
+
+        const tsv = Delimited.fromDirectory(__dirname + "/mocks/multi-tsv", {
+            extension: "tsv",
+            delimiter: "\t"
+        });
+        expectDelimited(
+            tsv,
+            [
+                { a: "1" , b: "2" , c: "3"  },
+                { a: "4" , b: "5" , c: "6"  },
+                { a: "10", b: "20", c: "30" },
+                { a: "40", b: "50", c: "60" }
+            ],
+            [
+                "1\t2\t3",
+                "4\t5\t6",
+                "10\t20\t30",
+                "40\t50\t60"
+            ]
+        );
     });
 
     it("fromFile", () => {
-        const obj = CSV.fromFile(__dirname + "/mocks/sample.1.csv");
-        expectCSV(
-            obj,
+        const csv = Delimited.fromFile(__dirname + "/mocks/sample.1.csv");
+        expectDelimited(
+            csv,
             [
                 { "a": "1", "b": "2", "c": "3" },
                 { "a": "4", "b": "5", "c": "6" }
@@ -119,42 +191,51 @@ describe("CSV", () => {
                 "4,5,6"
             ]
         );
+
+        const tsv = Delimited.fromFile(__dirname + "/mocks/sample.1.tsv", { delimiter: "\t" });
+        expectDelimited(
+            tsv,
+            [
+                { "a": "1", "b": "2", "c": "3" },
+                { "a": "4", "b": "5", "c": "6" }
+            ],
+            [
+                "1\t2\t3",
+                "4\t5\t6"
+            ]
+        );
     });
 
     it("fromString", () => {
-        const obj = CSV.fromString("a, b\n1,2\r\n3 ,4");
-        expectCSV(
-            obj,
+        const csv = Delimited.fromString("a, b\n1,2\r\n3 ,4");
+        expectDelimited(
+            csv,
             [{ a: "1", b: "2" }, { a: "3", b: "4" }],
             ["1,2", "3,4"]
+        );
+
+        const tsv = Delimited.fromString("a\t b\n1\t2\r\n3 \t4", { delimiter: "\t" });
+        expectDelimited(
+            tsv,
+            [{ a: "1", b: "2" }, { a: "3", b: "4" }],
+            ["1\t2", "3\t4"]
         );
     });
 
     it("fromStringArray", () => {
-        const obj = CSV.fromStringArray(["a,b", "1,2", "3,4"]);
-        expectCSV(
-            obj,
+        const csv = Delimited.fromStringArray(["a,b", "1,2", "3,4"]);
+        expectDelimited(
+            csv,
             [{ a: "1", b: "2" }, { a: "3", b: "4" }],
             ["1,2", "3,4"]
         );
+
+        const tsv = Delimited.fromString("a\t b\n1\t2\r\n3 \t4", { delimiter: "\t" });
+        expectDelimited(
+            tsv,
+            [{ a: "1", b: "2" }, { a: "3", b: "4" }],
+            ["1\t2", "3\t4"]
+        );
     });
-
-    // // describe("LineStream", () => {
-    // //     it ("handles multiple new lines per chunk");
-    // //     it ("handles one new line per multiple chunks", () => {
-    // //         const stream = new LineStream();
-    // //     });
-    // // });
-
-    // // describe("NdJsonStream", () => {
-    // //     it ("TODO");
-    // // });
-
-    // // describe("forEachLine", () => {
-    // //     it ("TODO", () => {
-    // //         // "mocks/"
-    // //         // forEachLine(filePath, callback, onFinish)
-    // //     });
-    // // });
 
 });

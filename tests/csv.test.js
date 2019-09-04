@@ -329,4 +329,32 @@ describe("csv", () => {
         expect(lib.parseDelimitedLine('"a,b",c', ",")).to.equal(["a,b", "c"   ]);
         expect(lib.parseDelimitedLine('"a""b""c"'   )).to.equal(['a"b"c'      ]);
     });
+
+    describe("escapeDelimitedValue", () => {
+
+        // Simple values
+        expect(lib.escapeDelimitedValue("a")).to.equal("a");
+        expect(lib.escapeDelimitedValue("5")).to.equal("5");
+        expect(lib.escapeDelimitedValue(5  )).to.equal("5");
+
+        // Undefined
+        expect(lib.escapeDelimitedValue(undefined)).to.equal("");
+        expect(lib.escapeDelimitedValue()         ).to.equal("");
+
+        // Odd values
+        expect(lib.escapeDelimitedValue(false)).to.equal("false");
+        expect(lib.escapeDelimitedValue(true )).to.equal("true" );
+        expect(lib.escapeDelimitedValue({ toString() { return "x"; }})).to.equal("x");
+
+        // Auto-quoted values
+        expect(lib.escapeDelimitedValue("a,b"   )).to.equal('"a,b"'   );
+        expect(lib.escapeDelimitedValue("a\rb"  )).to.equal('"a\rb"'  );
+        expect(lib.escapeDelimitedValue("a\nb"  )).to.equal('"a\nb"'  );
+        expect(lib.escapeDelimitedValue("a\r\nb")).to.equal('"a\r\nb"');
+
+        // Quote escaping
+        expect(lib.escapeDelimitedValue('a"b'  )).to.equal('"a""b"'   );
+        expect(lib.escapeDelimitedValue('"'    )).to.equal('""""'     );
+        expect(lib.escapeDelimitedValue('"a,b"')).to.equal('"""a,b"""');
+    });
 });
