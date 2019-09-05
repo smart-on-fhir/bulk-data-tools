@@ -21,26 +21,63 @@ import {
 export default class CSV extends Collection
 {
     /**
-     * Converts the contents of the collection to array of "values". The
-     * subclasses must implement this depending on the output format they
-     * represent.
+     * Converts the contents of the collection to array of "values".
+     * The values are json objects representing each line, excluding the header.
+     *
+     * **NOTE:** Don't use this for big objects/files because the output array
+     * is built into memory and then returned. For big files iterate over the
+     * entries instead, which will yield the same objects:
+     * ```js
+     * for (const entry of collection.entries()) {
+     *     // entry is an object representing a row
+     * }
+     * ```
+     * @alias `toJSON`
      */
     public toArray(): BulkDataTools.IAnyObject[]
     {
         return [...this._entries()];
     }
 
+    /**
+     * Converts the contents of the collection to array of "values".
+     * The values are json objects representing each line, excluding the header.
+     *
+     * **NOTE:** Don't use this for big objects/files because the output array
+     * is built into memory and then returned. For big files iterate over the
+     * entries instead, which will yield the same objects:
+     * ```js
+     * for (const entry of collection.entries()) {
+     *     // entry is an object representing a row
+     * }
+     * ```
+     * @alias `toArray` This is just a "magic method" that will make it possible
+     * to call `JSON.stringify` on an instance and get a valid JSON result.
+     */
     public toJSON(): BulkDataTools.IAnyObject[]
     {
         return this.toArray();
     }
 
-    public toNDJSON(): string
+    /**
+     * Converts the instance to NDJSON string.
+     *
+     * **NOTE:** Don't use this for big objects/files because the output string
+     * is built into memory and then returned. For big files iterate over the
+     * entries instead and serialize one line at a time:
+     * ```js
+     * for (const entry of collection.entries()) {
+     *     const line = JSON.stringify(entry);
+     * }
+     * ```
+     * @param eol The new line character to use. Defaults to `\r\n`.
+     */
+    public toNDJSON(eol: string = "\r\n"): string
     {
         let out = "", len = 0;
         for (const item of this.entries()) {
             if (++len > 1) {
-                out += "\r\n";
+                out += eol;
             }
             out += JSON.stringify(item);
         }
@@ -50,7 +87,17 @@ export default class CSV extends Collection
     /**
      * Serializes the contents of the collection to a string. The result can be
      * a CSV, TSV or other delimited format depending on the options. The
-     * default options will output CSV string.
+     * default options will output CSV string. For TSV use:
+     * ```js
+     * instance.toString({ delimiter: "\t" });
+     * ```
+     * @param [options] The serialization options.
+     * @param [options.delimiter] The delimiter to use. Defaults to ",".
+     * @param [options.eol] The new line character to use. Defaults to "\r\n".
+     * @param [options.strictHeader] If `true`, all the entries will be iterated
+     * through to compute the header. If `false`, we assume that all the entries
+     * have the same structure and only use the first one to compute the header.
+     * Defaults to `false`.
      */
     public toString(options: BulkDataTools.IDelimitedFormatOptions = {}): string
     {
@@ -69,8 +116,17 @@ export default class CSV extends Collection
 
     /**
      * Converts the contents of the collection to an array of strings. The
-     * subclasses must implement this depending on the output format they
-     * represent.
+     * result strings can be in CSV, TSV or other delimited format depending on
+     * the options. The default options will output CSV strings. For TSV use:
+     * ```js
+     * instance.toStringArray({ delimiter: "\t" });
+     * ```
+     * @param [options] The serialization options.
+     * @param [options.delimiter] The delimiter to use. Defaults to ",".
+     * @param [options.strictHeader] If `true`, all the entries will be iterated
+     * through to compute the header. If `false`, we assume that all the entries
+     * have the same structure and only use the first one to compute the header.
+     * Defaults to `false`.
      */
     public toStringArray(options: BulkDataTools.IDelimitedFormatOptions = {}): string[]
     {
@@ -91,8 +147,11 @@ export default class CSV extends Collection
     }
 
     /**
-     * Writes the collection to a file. The subclasses must implement this
-     * depending on the output format they represent.
+     * Writes the collection to a file.
+     * @param path Absolute path to file.
+     * @param [options] The serialization options.
+     * @param [options.delimiter] The delimiter to use. Defaults to ",".
+     * @param [options.eol] The new line character to use. Defaults to "\r\n".
      */
     public toFile(path: string, options: BulkDataTools.IDelimitedFormatOptions = {}): Collection
     {

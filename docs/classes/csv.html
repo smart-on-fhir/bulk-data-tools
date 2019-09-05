@@ -133,7 +133,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#_entries">_entries</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L25">src/Collection.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/Collection.ts#L25">src/Collection.ts:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -167,7 +167,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#_lines">_lines</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L17">src/Collection.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/Collection.ts#L17">src/Collection.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -208,7 +208,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#entries">entries</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L64">src/Collection.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/Collection.ts#L64">src/Collection.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -231,7 +231,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#lines">lines</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L56">src/Collection.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/Collection.ts#L56">src/Collection.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -254,7 +254,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#setentries">setEntries</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L47">src/Collection.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/Collection.ts#L47">src/Collection.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -299,7 +299,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#setlines">setLines</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/Collection.ts#L33">src/Collection.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/Collection.ts#L33">src/Collection.ts:33</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -345,15 +345,25 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#toarray">toArray</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L28">src/csv/CSV.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L37">src/csv/CSV.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Converts the contents of the collection to array of &quot;values&quot;. The
-										subclasses must implement this depending on the output format they
-									represent.</p>
+									<p>Converts the contents of the collection to array of &quot;values&quot;.
+									The values are json objects representing each line, excluding the header.</p>
 								</div>
+								<p><strong>NOTE:</strong> Don&#39;t use this for big objects/files because the output array
+									is built into memory and then returned. For big files iterate over the
+								entries instead, which will yield the same objects:</p>
+								<pre><code class="language-js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> collection.entries()) {
+    <span class="hljs-comment">// entry is an object representing a row</span>
+}</code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>alias</dt>
+									<dd><p><code>toJSON</code></p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
@@ -370,19 +380,21 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tofile">toFile</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L97">src/csv/CSV.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L156">src/csv/CSV.ts:156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Writes the collection to a file. The subclasses must implement this
-									depending on the output format they represent.</p>
+									<p>Writes the collection to a file.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Absolute path to file.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
@@ -402,9 +414,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L33">src/csv/CSV.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L57">src/csv/CSV.ts:57</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Converts the contents of the collection to array of &quot;values&quot;.
+									The values are json objects representing each line, excluding the header.</p>
+								</div>
+								<p><strong>NOTE:</strong> Don&#39;t use this for big objects/files because the output array
+									is built into memory and then returned. For big files iterate over the
+								entries instead, which will yield the same objects:</p>
+								<pre><code class="language-js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> collection.entries()) {
+    <span class="hljs-comment">// entry is an object representing a row</span>
+}</code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>alias</dt>
+									<dd><p><code>toArray</code> This is just a &quot;magic method&quot; that will make it possible
+										to call <code>JSON.stringify</code> on an instance and get a valid JSON result.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -413,15 +443,35 @@
 					<a name="tondjson" class="tsd-anchor"></a>
 					<h3>toNDJSON</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">toNDJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">toNDJSON<span class="tsd-signature-symbol">(</span>eol<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L38">src/csv/CSV.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L75">src/csv/CSV.ts:75</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Converts the instance to NDJSON string.</p>
+								</div>
+								<p><strong>NOTE:</strong> Don&#39;t use this for big objects/files because the output string
+									is built into memory and then returned. For big files iterate over the
+								entries instead and serialize one line at a time:</p>
+								<pre><code class="language-js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> collection.entries()) {
+    <span class="hljs-keyword">const</span> line = <span class="hljs-built_in">JSON</span>.stringify(entry);
+}</code></pre>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> eol: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The new line character to use. Defaults to <code>\r\n</code>.</p>
+									</div>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -437,14 +487,15 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L55">src/csv/CSV.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L102">src/csv/CSV.ts:102</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Serializes the contents of the collection to a string. The result can be
 										a CSV, TSV or other delimited format depending on the options. The
-									default options will output CSV string.</p>
+									default options will output CSV string. For TSV use:</p>
+									<pre><code class="language-js">instance.toString({ <span class="hljs-attr">delimiter</span>: <span class="hljs-string">"\t"</span> });</code></pre>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -468,14 +519,15 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tostringarray">toStringArray</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L75">src/csv/CSV.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L131">src/csv/CSV.ts:131</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Converts the contents of the collection to an array of strings. The
-										subclasses must implement this depending on the output format they
-									represent.</p>
+										result strings can be in CSV, TSV or other delimited format depending on
+									the options. The default options will output CSV strings. For TSV use:</p>
+									<pre><code class="language-js">instance.toStringArray({ <span class="hljs-attr">delimiter</span>: <span class="hljs-string">"\t"</span> });</code></pre>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -498,7 +550,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L203">src/csv/CSV.ts:203</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L262">src/csv/CSV.ts:262</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -538,7 +590,7 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L236">src/csv/CSV.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L295">src/csv/CSV.ts:295</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -578,7 +630,7 @@ csv.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L290">src/csv/CSV.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L349">src/csv/CSV.ts:349</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -616,7 +668,7 @@ csv.entries(); <span class="hljs-comment">// Entries iterator</span></code></pre
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L137">src/csv/CSV.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L196">src/csv/CSV.ts:196</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -654,7 +706,7 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/0ee52ea/src/csv/CSV.ts#L153">src/csv/CSV.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/3a4a597/src/csv/CSV.ts#L212">src/csv/CSV.ts:212</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
