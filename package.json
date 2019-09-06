@@ -4,9 +4,9 @@
   "description": "",
   "main": "walk.js",
   "scripts": {
-    "test": "lab -v **/*.test.js",
+    "test": "lab -c --threshold 90 --verbose -r console -r html -o stdout -o tests/coverage.html --coverage-exclude tests --sourcemaps --transform node_modules/lab-transform-typescript **/*.test.*s",
     "test:watch": "nodemon -e js,json -x 'npm test'",
-    "doc": "typedoc",
+    "doc": "typedoc src",
     "build": "tsc"
   },
   "repository": {
@@ -21,18 +21,18 @@
   },
   "homepage": "https://github.com/smart-on-fhir/bulk-data-tools#readme",
   "dependencies": {
-    "commander": "^2.19.0",
-    "json2csv": "^4.3.5",
-    "typescript": "^3.5.3",
-    "walk": "^2.3.14"
+    "commander": "^2.19.0"
   },
   "devDependencies": {
-    "@types/walk": "^2.3.0",
+    "@types/code": "^4.0.5",
+    "@types/node": "^12.7.4",
     "code": "^5.2.4",
     "lab": "^18.0.2",
+    "lab-transform-typescript": "^3.0.1",
     "nodemon": "^1.18.10",
     "tslint": "^5.18.0",
-    "typedoc": "^0.14.2",
-    "typedoc-neo-theme": "^1.0.2"
+    "typedoc": "^0.15.0",
+    "typedoc-neo-theme": "^1.0.2",
+    "typescript": "^3.5.3"
   }
 }

@@ -6,13 +6,13 @@ module.exports = {
 
     // Specifies the output mode the project is used to be compiled with:
     // 'file' or 'modules'
-    mode: "file",
+    mode: "modules",
 
     // Specifies the location the documentation should be written to.
     out: "docs",
 
     // Define patterns for excluded files when specifying paths.
-    exclude: "node_modules",
+    exclude: ["node_modules", "deprecated"],
 
     // Define patterns for files that should be considered being external.
     externalPattern: "node_modules",
@@ -46,7 +46,7 @@ module.exports = {
     // --defaultCategory         Specifies the default category for reflections without a category.
     // --disableOutputCheck      Should TypeDoc disable the testing and cleaning of the output directory?
     // --entryPoint              Specifies the fully qualified name of the root symbol. Defaults to global namespace.
-    entryPoint: "BulkData",
+    // entryPoint: "BulkData",
     // --gaID                    Set the Google Analytics tracking ID and activate tracking code.
     // --gaSite                  Set the site name for Google Analytics. Defaults to `auto`.
     // --gitRevision             Use specified revision instead of the last revision for linking to GitHub source files.
