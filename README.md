@@ -55,3 +55,55 @@ for (const entry of entries) {
     );
 }
 ```
+
+## Command line usage
+
+Below are some examples of how the `bulk_data` executable can be used in CLI to
+convert data between different formats. **Note** that the examples will output
+their result to the terminal. You can add a `--output <file>` parameter to write
+the result to file.
+
+```sh
+# ------------------------------------------------------------------------------
+# Converting anything to JSON
+# ------------------------------------------------------------------------------
+
+# Collect ndjson files from directory and put them into one json array.
+node bulk_data.js --input path/to/files/ --input-type ndjson --output-type json
+
+# Collect csv files from directory and put them into one json array.
+node bulk_data.js --input path/to/files/ --input-type csv --output-type json
+
+# Collect TSV files from directory and put them into one json array.
+node bulk_data.js --input path/to/files/ --input-type tsv --output-type json
+
+# Convert TSV file to JSON
+node bulk_data.js --input path/to/file.tsv --input-type tsv --output-type json
+
+# Convert CSV file to JSON
+node bulk_data.js --input path/to/file.csv --input-type csv --output-type json
+
+# Convert NDJSON file to JSON
+node bulk_data.js --input path/to/file.ndjson --input-type ndjson --output-type json
+
+
+# ------------------------------------------------------------------------------
+# Converting anything to NDJSON
+# ------------------------------------------------------------------------------
+
+# Collect ndjson files from directory and put them into one big ndjson.
+node bulk_data.js --input path/to/files/ --input-type ndjson --output-type ndjson
+
+# Collect csv files from directory and put them into one ndjson.
+node bulk_data.js --input path/to/files/ --input-type csv --output-type ndjson
+
+# Collect TSV files from directory and put them into one ndjson.
+node bulk_data.js --input path/to/files/ --input-type tsv --output-type ndjson
+
+# Convert TSV file to NDJSON
+node bulk_data.js --input path/to/file.tsv --input-type tsv --output-type ndjson
+
+# Convert CSV file to NDJSON
+node bulk_data.js --input path/to/file.csv --input-type csv --output-type ndjson
+
+```
