@@ -4,18 +4,7 @@ const app       = require("commander");
 const FS        = require("fs");
 const Delimited = require("../build/src/Delimited").default;
 const NDJSON    = require("../build/src/NDJSON").default;
-// const { Transform, PassThrough } = require("stream");
-// const DelimitedToObject          = require("../src/streams/DelimitedToObject");
-// const ObjectToJson               = require("../src/streams/ObjectToJson");
-// const JsonToObject               = require("../src/streams/JsonToObject")
-// const ObjectToNdJson             = require("../src/streams/ObjectToNdJson");
-// const BytesToLines               = require("../src/streams/BytesToLines");
-// const BytesToJson                = require("../src/streams/BytesToJson");
-// const ObjectToJsonArray          = require("../src/streams/ObjectToJsonArray");
-// const NdJsonToDelimitedHeader    = require("../src/streams/NdJsonToDelimitedHeader");
-// const JsonArrayToDelimitedHeader = require("../src/streams/JsonArrayToDelimitedHeader");
-// const NdJsonToDelimited          = require("../src/streams/NdJsonToDelimited");
-// const ArrayToDelimited           = require("../src/streams/ArrayToDelimited");
+const JSONCollection = require("../build/src/JSONCollection").default;
 
 app
     .version("0.1.0")
@@ -105,318 +94,127 @@ function createInputCollection() {
         if (inputType == "ndjson") {
             return NDJSON.fromDirectory(app.input);
         }
+        if (inputType == "json") {
+            return JSONCollection.fromDirectory(app.input);
+        }
         return Delimited.fromDirectory(app.input, getOptionsForDelimitedInput());
     }
 
     if (inputType == "ndjson") {
         return NDJSON.fromFile(app.input);
     }
+    if (inputType == "json") {
+        return JSONCollection.fromFile(app.input);
+    }
     return Delimited.fromFile(app.input, getOptionsForDelimitedInput());
 }
 
 // =============================================================================
 
-if (!app.input) {
-    app.outputHelp();
-    process.exit();
-}
+function main() {
 
-const delimitedOptions = getOptionsForDelimitedInput();
-
-// const delimitedOutputOptions = {
-//     eol      : app.eol.replace(/CR/i, "\r").replace(/LF/i, "\n"),
-//     delimiter: app.outputDelimiter.replace(/TAB/i, "\t")
-// };
-
-
-
-// const outputStream = app.output ?
-//     FS.createWriteStream(app.output, "utf8") :
-//     process.stdout;
-
-let descriptor = `${getInputType()}-to-${getOutputType()}`;
-if (isDirectory(app.input)) {
-    descriptor = "multiple-" + descriptor;
-}
-
-// console.log(descriptor);
-
-switch (getOutputType()) {
-
-    // CSV to * ----------------------------------------------------------------
-
-//     case "csv-to-csv": {
-//         const inputStream = createInputStream();
-//         const headerStream = new NdJsonToDelimitedHeader();
-
-//         headerStream.once("finish", function() {
-//             createInputStream()
-//                 .pipe(new BytesToLines({ skipLines: 1 }))
-//                 .pipe(new DelimitedToObject({}))
-//                 .pipe(new NdJsonToDelimited())
-//                 .pipe(outputStream);
-//         });
-
-//         return (inputStream
-//             .pipe(new BytesToLines())
-//             .pipe(new DelimitedToObject())
-//             .pipe(headerStream)
-//             .pipe(outputStream, { end: false }));
-//     }
-
-//     case "csv-to-tsv": {
-//         const inputStream = createInputStream();
-//         const headerStream = new NdJsonToDelimitedHeader({ delimiter: "\t" });
-
-//         headerStream.once("finish", function() {
-//             createInputStream()
-//                 .pipe(new BytesToLines({ skipLines: 1 }))
-//                 .pipe(new DelimitedToObject({}))
-//                 .pipe(new NdJsonToDelimited({ delimiter: "\t" }))
-//                 .pipe(outputStream);
-//         });
-
-//         return inputStream
-//             .pipe(new BytesToLines())
-//             .pipe(new DelimitedToObject())
-//             .pipe(headerStream)
-//             .pipe(outputStream, { end: false });
-//     }
-
-//     case "csv-to-ndjson": {
-//         return createInputStream()
-//             .pipe(new BytesToLines())
-//             .pipe(new DelimitedToObject())
-//             .pipe(new ObjectToNdJson())
-//             .pipe(outputStream);
-//     }
-
-    case "json": {
-        const input  = createInputCollection();
-        const output = JSON.stringify(input.toJSON());
-        if (!app.output) { return console.log(output); }
-        return FS.writeFileSync(app.output, output, "utf8");
+    if (!app.input) {
+        return app.outputHelp();
     }
 
-    // TSV to * ----------------------------------------------------------------
+    const inputType = getInputType();
 
-//     case "tsv-to-csv": {
-//         const inputStream = createInputStream();
-//         const headerStream = new NdJsonToDelimitedHeader();
+    // const delimitedOptions = getOptionsForDelimitedInput();
 
-//         headerStream.once("finish", function() {
-//             createInputStream()
-//                 .pipe(new BytesToLines({ skipLines: 1 }))
-//                 .pipe(new DelimitedToObject({ delimiter: "\t" }))
-//                 .pipe(new NdJsonToDelimited())
-//                 .pipe(outputStream);
-//         });
+    // const delimitedOutputOptions = {
+    //     eol      : app.eol.replace(/CR/i, "\r").replace(/LF/i, "\n"),
+    //     delimiter: app.outputDelimiter.replace(/TAB/i, "\t")
+    // };
 
-//         return inputStream
-//             .pipe(new BytesToLines())
-//             .pipe(new DelimitedToObject({ delimiter: "\t" }))
-//             .pipe(headerStream)
-//             .pipe(outputStream, { end: false });
-//     }
 
-//     case "tsv-to-tsv": {
-//         const inputStream = createInputStream();
-//         const headerStream = new NdJsonToDelimitedHeader({ delimiter: "\t" });
 
-//         headerStream.once("finish", function() {
-//             createInputStream()
-//                 .pipe(new BytesToLines({ skipLines: 1 }))
-//                 .pipe(new DelimitedToObject({ delimiter: "\t" }))
-//                 .pipe(new NdJsonToDelimited({ delimiter: "\t" }))
-//                 .pipe(outputStream);
-//         });
+    // const outputStream = app.output ?
+    //     FS.createWriteStream(app.output, "utf8") :
+    //     process.stdout;
 
-//         return inputStream
-//             .pipe(new BytesToLines())
-//             .pipe(new DelimitedToObject({ delimiter: "\t" }))
-//             .pipe(headerStream)
-//             .pipe(outputStream, { end: false });
-//     }
+    let descriptor = `${getInputType()}-to-${getOutputType()}`;
+    if (isDirectory(app.input)) {
+        descriptor = "multiple-" + descriptor;
+    }
 
-//     case "tsv-to-json": {
-//         return createInputStream()
-//             .pipe(new BytesToLines())
-//             .pipe(new DelimitedToObject({ delimiter: "\t" }))
-//             .pipe(new ObjectToJsonArray())
-//             .pipe(outputStream);
-//     }
+    // console.log(descriptor);
 
-//     case "tsv-to-ndjson": {
-//         return createInputStream()
-//             .pipe(new BytesToLines())
-//             .pipe(new DelimitedToObject({ delimiter: "\t" }))
-//             .pipe(new ObjectToNdJson())
-//             .pipe(outputStream);
-//     }
+    switch (getOutputType()) {
 
-//     // NDJSON to * -------------------------------------------------------------
+        // CSV to * ------------------------------------------------------------
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.csv --input-type csv --output-type csv
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.csv --input-type csv --output-type tsv
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.csv --input-type csv --output-type json
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.csv --input-type csv --output-type ndjson
 
-//     case "ndjson-to-csv": {
-//         return createInputStream()
-//             .pipe(new BytesToLines())
-//             .pipe(new JsonToObject())
-//             .pipe(new NdJsonToDelimited())
-//             .pipe(outputStream);
-//     }
+        // TSV to * ------------------------------------------------------------
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --input-type tsv --output-type csv
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --input-type tsv --output-type tsv
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --input-type tsv --output-type json
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --input-type tsv --output-type ndjson
 
-//     case "ndjson-to-tsv": {
-//         return createInputStream()
-//             .pipe(new BytesToLines())
-//             .pipe(new JsonToObject())
-//             .pipe(new NdJsonToDelimited({ delimiter: "\t" }))
-//             .pipe(outputStream);
-//     }
+        // JSON to * ------------------------------------------------------------
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.json --input-type json --output-type csv
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.json --input-type json --output-type tsv
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.json --input-type json --output-type json
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.json --input-type json --output-type ndjson
 
-//     case "ndjson-to-ndjson": {
-//         return createInputStream()
-//             .pipe(new BytesToLines())
-//             .pipe(new JsonToObject())
-//             .pipe(new ObjectToNdJson())
-//             .pipe(outputStream);
-//     }
+        // NDJSON to * ---------------------------------------------------------
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --input-type ndjson --output-type csv
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --input-type ndjson --output-type tsv
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --input-type ndjson --output-type json
+        // node bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --input-type ndjson --output-type ndjson
 
-//     case "ndjson-to-json": {
-//         return createInputStream()
-//             .pipe(new BytesToLines())
-//             .pipe(new JsonToObject())
-//             .pipe(new ObjectToJsonArray())
-//             .pipe(outputStream);
-//     }
 
-//     // JSON to * ---------------------------------------------------------------
+        case "csv": {
+            const input = createInputCollection();
+            if (inputType == "ndjson" || inputType == "json") {
+                process.stdout.write(
+                    Delimited.fromArray(input.toArray()).toString({ delimiter: "," })
+                );
+            } else {
+                process.stdout.write(input.toString({ delimiter: "," }));
+            }
+            break;
+        }
 
-//     case "json-to-csv": {
-//         return createInputStream()
-//             .pipe(new BytesToJson())
-//             .pipe(new JsonToObject())
-//             .pipe(new ArrayToDelimited())
-//             .pipe(outputStream);
-//     }
+        case "tsv": {
+            const input = createInputCollection();
+            if (inputType == "ndjson" || inputType == "json") {
+                process.stdout.write(
+                    Delimited.fromArray(input.toArray()).toString({ delimiter: "\t" })
+                );
+            }
+            else {
+                process.stdout.write(input.toString({ delimiter: "\t" }));
+            }
+            break;
+        }
 
-//     case "json-to-tsv": {
-//         return createInputStream()
-//             .pipe(new BytesToJson())
-//             .pipe(new JsonToObject())
-//             .pipe(new ArrayToDelimited({ delimiter: "\t" }))
-//             .pipe(outputStream);
-//     }
+        case "json": {
+            const input  = createInputCollection();
+            process.stdout.write(JSON.stringify(input.toJSON()));
+            break;
+        }
 
-//     case "json-to-ndjson": {
-//         return createInputStream()
-//             .pipe(new BytesToJson())
-//             .pipe(new JsonToObject())
-//             .pipe(new ArrayToNdJson())
-//             .pipe(outputStream);
-//     }
+        case "ndjson": {
+            const input  = createInputCollection();
+            if (inputType == "ndjson") {
+                process.stdout.write(input.toString());
+            } else {
+                process.stdout.write(input.toNDJSON());
+            }
+            break;
+        }
 
-//     case "json-to-json": {
-//         return createInputStream()
-//             .pipe(new BytesToJson())
-//             // .pipe(new JsonToObject())
-//             // .pipe(new ObjectToJson())
-//             .pipe(outputStream);
-//     }
 
-//     // Multiple JSON to * ------------------------------------------------------
-
-//     case "multiple-json-to-json": {
-//         let counter = 0;
-//         return new JsonFileStream(app.input)
-//         .pipe(new Stream.Transform({
-//             objectMode: true,
-//             transform(json, _enc, next) {
-//                 if (++counter === 1) {
-//                     this.push("[");
-//                 } else {
-//                     this.push(",");
-//                 }
-//                 this.push(json);
-//                 next();
-//             },
-//             flush(next) {
-//                 this.push("]");
-//                 next();
-//             }
-//         }))
-//         .pipe(outputStream);
-//     }
-
-//     case "multiple-json-to-ndjson": {
-//         let counter = 0;
-//         return new JsonFileStream(app.input)
-//         .pipe(new Stream.Transform({
-//             objectMode: true,
-//             transform(json, _enc, next) {
-//                 if (++counter > 1) {
-//                     this.push("\r\n");
-//                 }
-//                 this.push(json);
-//                 next();
-//             }
-//         }))
-//         .pipe(outputStream);
-//     }
-
-//     // Multiple CSV to * -------------------------------------------------------
-
-//     // Multiple TSV to * -------------------------------------------------------
-
-//     // Multiple NDJSON to * ----------------------------------------------------
-
-//     // case "multiple-ndjson-to-csv": {
-//     //     return forEachFileOfType(app.input, "ndjson", path => {
-//     //         let count = 0;
-//     //         return new Promise((resolve, reject) => {
-//     //             const pipeline = FS.createReadStream(path, "utf8")
-//     //                 .pipe(new BytesToLines())
-//     //                 .pipe(new JsonToObject())
-//     //                 .pipe(new NdJsonToDelimited());
-
-//     //             pipeline.once("finish", () => resolve());
-//     //             pipeline.pipe(outputStream, { end: false });
-//     //         });
-//     //     });
-//     // }
-
-//     case "multiple-ndjson-to-ndjson": {
-//         let count = 0;
-//         return forEachFileOfType(app.input, "ndjson", path => {
-//             return new Promise((resolve, reject) => {
-//                 const pipeline = FS.createReadStream(path, "utf8")
-//                     .pipe(new BytesToLines())
-//                     .pipe(new JsonToObject())
-//                     .pipe(new ObjectToNdJson({ prependEol: ++count > 1 }));
-//                 pipeline.once("finish", () => resolve());
-//                 pipeline.pipe(outputStream, { end: false });
-//             });
-//         });
-//     }
-
-//     // case "multiple-ndjson-to-json": {
-//     //     let count = 0;
-//     //     return forEachFileOfType(app.input, "ndjson", path => {
-//     //         return new Promise((resolve, reject) => {
-//     //             const pipeline = FS.createReadStream(path, "utf8")
-//     //                 .pipe(new BytesToLines())
-//     //                 .pipe(new JsonToObject())
-//     //                 .pipe(new ObjectToNdJson({ prependEol: ++count > 1 }));
-//     //             pipeline.once("finish", () => resolve());
-//     //             pipeline.pipe(outputStream, { end: false });
-//     //         });
-//     //     });
-//     // }
-
-    default:
-        throw new Error(
-            `Conversion of type ${descriptor} is not implemented.\n` +
-            `Please use the --input-type and --output-type options to specify ` +
-            `what type of conversion you need.\n`
-        );
+        default:
+            throw new Error(
+                `Conversion of type ${descriptor} is not implemented.\n` +
+                `Please use the --input-type and --output-type options to specify ` +
+                `what type of conversion you need.\n`
+            );
+    }
 }
 
-
+main();
