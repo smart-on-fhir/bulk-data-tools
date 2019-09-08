@@ -15,18 +15,8 @@ const { describe, it } = exports.lab;
  * @param {string[]} expectedLines  The expected entries as an array of strings
  */
 function expectDelimited(obj, expectedEntries, expectedLines) {
-    const outEntries = [];
-    const outLines = [];
-    const entries = obj.entries();
-    const lines = obj.lines();
-    for (const entry of entries) {
-        outEntries.push(entry);
-    }
-    for (const line of lines) {
-        outLines.push(line);
-    }
-    code_1.expect(outEntries).to.equal(expectedEntries);
-    code_1.expect(outLines).to.equal(expectedLines);
+    code_1.expect([...obj.entries()]).to.equal(expectedEntries);
+    code_1.expect([...obj.lines()]).to.equal(expectedLines);
 }
 describe("Delimited", () => {
     it("entries", () => {
@@ -39,18 +29,6 @@ describe("Delimited", () => {
             "3,4"
         ]);
     });
-    // // describe("lines", () => {
-    // //     it("works as expected", () => {
-    // //     });
-    // // });
-    // // describe("setEntries", () => {
-    // //     it("works as expected", () => {
-    // //     });
-    // // });
-    // // describe("setLines", () => {
-    // //     it("works as expected", () => {
-    // //     });
-    // // });
     it("toFile", () => {
         const filePath = __dirname + "/" + Date.now() + ".tmp";
         const obj = Delimited_1.default.fromString("a,b\r\n1,2\r\n3,4");
@@ -99,10 +77,22 @@ describe("Delimited", () => {
         code_1.expect(obj.toStringArray()).to.equal(['"a,a",b', "1,2"]);
     });
     it("fromArray", () => {
-        const csv = Delimited_1.default.fromArray([{ a: "1", b: "2" }, { a: "3", b: "4" }]);
-        expectDelimited(csv, [{ a: "1", b: "2" }, { a: "3", b: "4" }], ["1,2", "3,4"]);
-        const tsv = Delimited_1.default.fromArray([{ a: "1", b: "2" }, { a: "3", b: "4" }], { delimiter: "\t" });
-        expectDelimited(tsv, [{ a: "1", b: "2" }, { a: "3", b: "4" }], ["1\t2", "3\t4"]);
+        const csv = Delimited_1.default.fromArray([
+            { a: 1, b: 2, c: { d: null } },
+            { a: 3, b: 4, c: { d: 4 } }
+        ]);
+        expectDelimited(csv, [
+            { a: 1, b: 2, "c.d": null },
+            { a: 3, b: 4, "c.d": 4 }
+        ], ["1,2,null", "3,4,4"]);
+        const tsv = Delimited_1.default.fromArray([
+            { a: 1, b: 2, c: { d: null } },
+            { a: 3, b: 4, c: { d: 4 } }
+        ], { delimiter: "\t" });
+        expectDelimited(tsv, [
+            { a: 1, b: 2, "c.d": null },
+            { a: 3, b: 4, "c.d": 4 }
+        ], ["1\t2\tnull", "3\t4\t4"]);
         const dirty = Delimited_1.default.fromArray([{ a: "1", "b\"c": '2"3' }]);
         expectDelimited(dirty, [{ a: "1", 'b"c': '2"3' }], ['1,"2""3"']);
     });

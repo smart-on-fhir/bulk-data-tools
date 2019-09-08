@@ -74,7 +74,7 @@ class Delimited extends Collection_1.default {
         const header = lib_1.delimitedHeaderFromArray(this.entries(), { fast: !options.strictHeader });
         let out = header.map(cell => lib_1.escapeDelimitedValue(cell, delimiter)).join(delimiter);
         for (const entry of this.entries()) {
-            const row = header.map(cell => lib_1.escapeDelimitedValue(entry[cell], delimiter));
+            const row = header.map(cell => lib_1.escapeDelimitedValue(lib_1.getPath(entry, cell), delimiter));
             out += `${eol}${row.join(delimiter)}`;
         }
         return out;
@@ -100,7 +100,7 @@ class Delimited extends Collection_1.default {
             header.map(cell => lib_1.escapeDelimitedValue(cell, delimiter)).join(delimiter)
         ];
         for (const entry of this.entries()) {
-            out.push(header.map(cell => lib_1.escapeDelimitedValue(entry[cell], delimiter)).join(delimiter));
+            out.push(header.map(cell => lib_1.escapeDelimitedValue(lib_1.getPath(entry, cell), delimiter)).join(delimiter));
         }
         return out;
     }
@@ -120,7 +120,7 @@ class Delimited extends Collection_1.default {
                 header = lib_1.delimitedHeaderFromArray([entry], { fast: true });
                 fs_1.appendFileSync(path, header.map(h => lib_1.escapeDelimitedValue(h, delimiter)).join(delimiter));
             }
-            const line = header.map(h => lib_1.escapeDelimitedValue(entry[h], delimiter)).join(delimiter);
+            const line = header.map(h => lib_1.escapeDelimitedValue(lib_1.getPath(entry, h), delimiter)).join(delimiter);
             fs_1.appendFileSync(path, `${eol}${line}`);
         }
         return this;
@@ -198,12 +198,23 @@ class Delimited extends Collection_1.default {
     static fromArray(arr, options = {}) {
         const delimiter = options.delimiter || ",";
         const out = new Delimited();
-        out.setEntries(() => arr.values());
         const header = lib_1.delimitedHeaderFromArray(arr, { fast: !options.strictHeader });
+        // out.setEntries(() => arr.values());
+        out.setEntries(function* () {
+            for (const entry of arr) {
+                const row = {};
+                header.forEach(key => row[key] = lib_1.getPath(entry, key));
+                yield row;
+                // yield header
+                //     .map(key => getPath(entry, key))
+                // .join(delimiter);
+            }
+        });
         out.setLines(function* () {
+            console.log(header, arr);
             for (const entry of arr) {
                 yield header
-                    .map(key => lib_1.escapeDelimitedValue(entry[key], delimiter))
+                    .map(key => lib_1.escapeDelimitedValue(lib_1.getPath(entry, key), delimiter))
                     .join(delimiter);
             }
         });

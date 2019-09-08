@@ -24,18 +24,6 @@ describe("NDJSON", () => {
         const obj = NDJSON_1.default.fromArray([{ a: 1 }]);
         expectNdJson(obj, [{ a: 1 }], ['{"a":1}']);
     });
-    // describe("lines", () => {
-    //     it("works as expected", () => {
-    //     });
-    // });
-    // describe("setEntries", () => {
-    //     it("works as expected", () => {
-    //     });
-    // });
-    // describe("setLines", () => {
-    //     it("works as expected", () => {
-    //     });
-    // });
     it("toArray", () => {
         const obj = NDJSON_1.default.fromArray([{ a: 1 }]);
         code_1.expect(obj.toArray()).to.equal([{ a: 1 }]);
