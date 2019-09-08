@@ -124,6 +124,55 @@
         <span class="hljs-built_in">JSON</span>.stringify(entry)
     );
 }</code></pre>
+				<a href="#command-line-usage" id="command-line-usage" style="color: inherit; text-decoration: none;">
+					<h2>Command line usage</h2>
+				</a>
+				<p>Below are some examples of how the <code>bulk_data</code> executable can be used in CLI to
+					convert data between different formats. <strong>Note</strong> that the examples will output
+					their result to the terminal. You can add a <code>--output &lt;file&gt;</code> parameter to write
+				the result to file.</p>
+				<pre><code class="language-sh"><span class="hljs-comment"># ------------------------------------------------------------------------------</span>
+<span class="hljs-comment"># Converting anything to JSON</span>
+<span class="hljs-comment"># ------------------------------------------------------------------------------</span>
+
+<span class="hljs-comment"># Collect ndjson files from directory and put them into one json array.</span>
+node bulk_data.js --input path/to/files/ --input-type ndjson --output-type json
+
+<span class="hljs-comment"># Collect csv files from directory and put them into one json array.</span>
+node bulk_data.js --input path/to/files/ --input-type csv --output-type json
+
+<span class="hljs-comment"># Collect TSV files from directory and put them into one json array.</span>
+node bulk_data.js --input path/to/files/ --input-type tsv --output-type json
+
+<span class="hljs-comment"># Convert TSV file to JSON</span>
+node bulk_data.js --input path/to/file.tsv --input-type tsv --output-type json
+
+<span class="hljs-comment"># Convert CSV file to JSON</span>
+node bulk_data.js --input path/to/file.csv --input-type csv --output-type json
+
+<span class="hljs-comment"># Convert NDJSON file to JSON</span>
+node bulk_data.js --input path/to/file.ndjson --input-type ndjson --output-type json
+
+
+<span class="hljs-comment"># ------------------------------------------------------------------------------</span>
+<span class="hljs-comment"># Converting anything to NDJSON</span>
+<span class="hljs-comment"># ------------------------------------------------------------------------------</span>
+
+<span class="hljs-comment"># Collect ndjson files from directory and put them into one big ndjson.</span>
+node bulk_data.js --input path/to/files/ --input-type ndjson --output-type ndjson
+
+<span class="hljs-comment"># Collect csv files from directory and put them into one ndjson.</span>
+node bulk_data.js --input path/to/files/ --input-type csv --output-type ndjson
+
+<span class="hljs-comment"># Collect TSV files from directory and put them into one ndjson.</span>
+node bulk_data.js --input path/to/files/ --input-type tsv --output-type ndjson
+
+<span class="hljs-comment"># Convert TSV file to NDJSON</span>
+node bulk_data.js --input path/to/file.tsv --input-type tsv --output-type ndjson
+
+<span class="hljs-comment"># Convert CSV file to NDJSON</span>
+node bulk_data.js --input path/to/file.csv --input-type csv --output-type ndjson
+</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -132,22 +181,85 @@
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_collection_.html">"<wbr>Collection"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_delimited_.html">"<wbr>Delimited"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_ndjson_.html">"NDJSON"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_.html">"lib"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/collection.html" class="tsd-kind-icon">Collection</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/delimited.html" class="tsd-kind-icon">Delimited</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/jsoncollection.html" class="tsd-kind-icon">JSONCollection</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/ndjson.html" class="tsd-kind-icon">NDJSON</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#delimitedheaderfromarray" class="tsd-kind-icon">delimited<wbr>Header<wbr>From<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#equals" class="tsd-kind-icon">equals</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#escapedelimitedvalue" class="tsd-kind-icon">escape<wbr>Delimited<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#filterfiles" class="tsd-kind-icon">filter<wbr>Files</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#flatobjectkeys" class="tsd-kind-icon">flat<wbr>Object<wbr>Keys</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#floatval" class="tsd-kind-icon">float<wbr>Val</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getpath" class="tsd-kind-icon">get<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#intval" class="tsd-kind-icon">int<wbr>Val</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#isfunction" class="tsd-kind-icon">is<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#isobject" class="tsd-kind-icon">is<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#jsonentries" class="tsd-kind-icon">json<wbr>Entries</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#mergestrict" class="tsd-kind-icon">merge<wbr>Strict</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#parsedelimitedline" class="tsd-kind-icon">parse<wbr>Delimited<wbr>Line</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#readline" class="tsd-kind-icon">read<wbr>Line</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#readablefilesize" class="tsd-kind-icon">readable<wbr>File<wbr>Size</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#roundtoprecision" class="tsd-kind-icon">round<wbr>ToPrecision</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#setpath" class="tsd-kind-icon">set<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#strpad" class="tsd-kind-icon">str<wbr>Pad</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#ufloat" class="tsd-kind-icon">u<wbr>Float</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#uint" class="tsd-kind-icon">u<wbr>Int</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#walksync" class="tsd-kind-icon">walk<wbr>Sync</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

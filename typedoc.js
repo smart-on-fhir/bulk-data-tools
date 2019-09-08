@@ -6,7 +6,7 @@ module.exports = {
 
     // Specifies the output mode the project is used to be compiled with:
     // 'file' or 'modules'
-    mode: "modules",
+    mode: "file",
 
     // Specifies the location the documentation should be written to.
     out: "docs",
