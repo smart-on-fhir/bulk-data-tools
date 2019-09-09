@@ -1,3 +1,5 @@
+/// <reference path="../index.d.ts" />
+
 import { openSync, readSync, readdirSync, statSync, readFileSync, closeSync } from "fs";
 import * as Path from "path";
 

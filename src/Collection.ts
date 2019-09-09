@@ -1,3 +1,5 @@
+/// <reference path="../index.d.ts" />
+
 /**
  * This class represents a collection of data entries. An instance can be
  * created from different kinds of input using the static methods starting with

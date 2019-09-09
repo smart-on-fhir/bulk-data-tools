@@ -19,28 +19,28 @@ describe("CLI", () => {
 
         it("CSV file to TSV", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.csv --input-type csv --output-type tsv",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.csv --output-type tsv",
                 "a\tb\tc\r\n1\t2\t3\r\n4\t5\t6"
             );
         });
 
         it("CSV file to CSV", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.csv --input-type csv --output-type csv",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.csv --output-type csv",
                 "a,b,c\r\n1,2,3\r\n4,5,6"
             );
         });
 
         it("CSV file to JSON", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.csv --input-type csv --output-type json",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.csv --output-type json",
                 '[{"a":"1","b":"2","c":"3"},{"a":"4","b":"5","c":"6"}]'
             );
         });
 
         it("CSV file to NDJSON", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.csv --input-type csv --output-type ndjson",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.csv --output-type ndjson",
                 '{"a":"1","b":"2","c":"3"}\r\n{"a":"4","b":"5","c":"6"}'
             );
         });
@@ -80,14 +80,14 @@ describe("CLI", () => {
 
         it("TSV file to TSV", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --input-type tsv --output-type tsv",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --output-type tsv",
                 "a\tb\tc\r\n1\t2\t3\r\n4\t5\t6"
             );
         });
 
         it("TSV file to CSV", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --input-type tsv --output-type csv",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --output-type csv",
                 "a,b,c\r\n1,2,3\r\n4,5,6"
             );
         });
@@ -101,7 +101,7 @@ describe("CLI", () => {
 
         it("TSV file to NDJSON", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --input-type tsv --output-type ndjson",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.tsv --output-type ndjson",
                 '{"a":"1","b":"2","c":"3"}\r\n{"a":"4","b":"5","c":"6"}'
             );
         });
@@ -141,28 +141,28 @@ describe("CLI", () => {
 
         it("NDJSON file to TSV", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --input-type ndjson --output-type tsv",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --output-type tsv",
                 "a\tb\tc\r\n1\t2\t3\r\n4\t5\t6"
             );
         });
 
         it("NDJSON file to CSV", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --input-type ndjson --output-type csv",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --output-type csv",
                 "a,b,c\r\n1,2,3\r\n4,5,6"
             );
         });
 
         it("NDJSON file to JSON", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --input-type ndjson --output-type json",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --output-type json",
                 '[{"a":1,"b":2,"c":3},{"a":4,"b":5,"c":6}]'
             );
         });
 
         it("NDJSON file to NDJSON", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --input-type ndjson --output-type ndjson",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.ndjson --output-type ndjson",
                 '{"a":1,"b":2,"c":3}\r\n{"a":4,"b":5,"c":6}'
             );
         });
@@ -202,28 +202,28 @@ describe("CLI", () => {
 
         it("JSON file to TSV", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.json --input-type json --output-type tsv",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.json --output-type tsv",
                 "a\tb\tc\r\n1\t2\t3\r\n4\t5\t6"
             );
         });
 
         it("JSON file to CSV", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.json --input-type json --output-type csv",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.json --output-type csv",
                 "a,b,c\r\n1,2,3\r\n4,5,6"
             );
         });
 
         it("JSON file to JSON", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.json --input-type json --output-type json",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.json --output-type json",
                 '[{"a":1,"b":2,"c":3},{"a":4,"b":5,"c":6}]'
             );
         });
 
         it("JSON file to NDJSON", () => {
             testCommand(
-                "./bin/bulk_data.2.js --input tests/mocks/sample.1.json --input-type json --output-type ndjson",
+                "./bin/bulk_data.2.js --input tests/mocks/sample.1.json --output-type ndjson",
                 '{"a":1,"b":2,"c":3}\r\n{"a":4,"b":5,"c":6}'
             );
         });

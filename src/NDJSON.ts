@@ -1,3 +1,5 @@
+/// <reference path="../index.d.ts" />
+
 import { writeFileSync } from "fs";
 import Collection from "./Collection";
 import { filterFiles, readLine } from "./lib";

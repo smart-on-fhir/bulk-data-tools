@@ -1,3 +1,5 @@
+/// <reference path="../index.d.ts" />
+
 import { appendFileSync } from "fs";
 import Collection from "./Collection";
 import {

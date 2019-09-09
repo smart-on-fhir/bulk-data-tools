@@ -30,6 +30,7 @@
         "member-ordering": false,
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
         "forin": false,
-        "max-classes-per-file": false
+        "max-classes-per-file": false,
+        "no-reference": false
     }
 }
