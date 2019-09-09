@@ -57,53 +57,40 @@ for (const entry of entries) {
 ```
 
 ## Command line usage
+---
 
-Below are some examples of how the `bulk_data` executable can be used in CLI to
-convert data between different formats. **Note** that the examples will output
-their result to the terminal. You can add a `--output <file>` parameter to write
-the result to file.
+The `bulk_data` executable can be used in the terminal to convert data between
+different formats.
 
+**Examples:**
 ```sh
-# ------------------------------------------------------------------------------
-# Converting anything to JSON
-# ------------------------------------------------------------------------------
-
-# Collect ndjson files from directory and put them into one json array.
-node bulk_data.js --input path/to/files/ --input-type ndjson --output-type json
-
-# Collect csv files from directory and put them into one json array.
-node bulk_data.js --input path/to/files/ --input-type csv --output-type json
-
-# Collect TSV files from directory and put them into one json array.
-node bulk_data.js --input path/to/files/ --input-type tsv --output-type json
-
-# Convert TSV file to JSON
-node bulk_data.js --input path/to/file.tsv --input-type tsv --output-type json
-
-# Convert CSV file to JSON
-node bulk_data.js --input path/to/file.csv --input-type csv --output-type json
-
-# Convert NDJSON file to JSON
-node bulk_data.js --input path/to/file.ndjson --input-type ndjson --output-type json
-
-
-# ------------------------------------------------------------------------------
-# Converting anything to NDJSON
-# ------------------------------------------------------------------------------
-
-# Collect ndjson files from directory and put them into one big ndjson.
-node bulk_data.js --input path/to/files/ --input-type ndjson --output-type ndjson
-
-# Collect csv files from directory and put them into one ndjson.
-node bulk_data.js --input path/to/files/ --input-type csv --output-type ndjson
-
-# Collect TSV files from directory and put them into one ndjson.
-node bulk_data.js --input path/to/files/ --input-type tsv --output-type ndjson
-
-# Convert TSV file to NDJSON
-node bulk_data.js --input path/to/file.tsv --input-type tsv --output-type ndjson
 
 # Convert CSV file to NDJSON
-node bulk_data.js --input path/to/file.csv --input-type csv --output-type ndjson
+node bulk_data --input path/to/file.csv --output-type ndjson
 
+# Convert NDJSON file to CSV
+node bulk_data --input path/to/file.ndjson --output-type csv
 ```
+
+**Note** that the examples will output their result to the terminal. You can add
+a `--output <file>` parameter to write the result to file or append `> filename`
+to the command.
+
+For the full list of possible conversions see [tests/bin.test.ts](tests/bin.test.ts).
+
+**CLI parameters:**
+
+- `--input` - Path to input directory or file.
+- `--output` - Path to output file.
+- `--input-type` - The type of input (`json`, `ndjson`, `csv`, `tsv`, `auto`).
+  Defaults to `auto` which means the input type can be omitted and will be detected
+  based in the file extension of the file passed as `--input`.If the `--input` is
+  a directory, then `--input-type` is required and cannot be `auto`.
+- `--output-type` - The type of output (`json`, `ndjson`, `csv`, `tsv`).
+- `--eol` - The line separator (CRLF, LF). Defaults to `CRLF`.
+- `--output-delimiter` - The delimiter (e.g. ",", "TAB", ";"...) to use when
+  generating the output. Ignored if --output-type is not "delimited".
+- `--input-delimiter` - The delimiter (e.g. ",", "TAB", ";"...) to use when
+  parsing the input. Ignored if --input-type is not "delimited".
+- `--fast` - Only use the first line in ndjson to compute the header
+
