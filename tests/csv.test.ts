@@ -1,7 +1,7 @@
 import { unlinkSync, readFileSync } from "fs";
 import * as Lab   from "lab";
 import { expect } from "code";
-import Delimited  from "../src/Delimited";
+import DelimitedCollection  from "../src/DelimitedCollection";
 
 export const lab = Lab.script();
 const { describe, it } = lab;
@@ -16,7 +16,7 @@ const { describe, it } = lab;
  * @param {string[]} expectedLines  The expected entries as an array of strings
  */
 function expectDelimited(
-    obj: Delimited,
+    obj: DelimitedCollection,
     expectedEntries: BulkDataTools.IAnyObject[],
     expectedLines: string[]
 ) {
@@ -27,7 +27,7 @@ function expectDelimited(
 describe("Delimited", () => {
 
     it("entries", () => {
-        const obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        const obj = DelimitedCollection.fromString("a,b\r\n1,2\r\n3,4");
         expectDelimited(
             obj,
             [
@@ -43,10 +43,13 @@ describe("Delimited", () => {
 
     it("toFile", () => {
         const filePath = __dirname + "/" + Date.now() + ".tmp";
-        const obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        const obj = DelimitedCollection.fromString("a,b\r\n1,2\r\n3,4");
         try {
             obj.toFile(filePath);
             expect(readFileSync(filePath, "utf8")).to.equal("a,b\r\n1,2\r\n3,4");
+            unlinkSync(filePath);
+            obj.toFile(filePath, { eol: "\n" });
+            expect(readFileSync(filePath, "utf8")).to.equal("a,b\n1,2\n3,4");
         }
         catch (ex) {
             throw ex;
@@ -57,20 +60,20 @@ describe("Delimited", () => {
     });
 
     it("toArray", () => {
-        let obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        let obj = DelimitedCollection.fromString("a,b\r\n1,2\r\n3,4");
         expect(obj.toArray()).to.equal([
             { a: "1", b: "2" },
             { a: "3", b: "4" }
         ]);
 
-        obj = Delimited.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
+        obj = DelimitedCollection.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
         expect(obj.toArray()).to.equal([
             { "a,a": "1", b: "2" }
         ]);
     });
 
     it("toString", () => {
-        let obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        let obj = DelimitedCollection.fromString("a,b\r\n1,2\r\n3,4");
         expect(obj.toString()).to.equal("a,b\r\n1,2\r\n3,4");
         expect(obj.toString({
             delimiter: "\t"
@@ -80,24 +83,24 @@ describe("Delimited", () => {
             eol: "\n"
         })).to.equal("a;b\n1;2\n3;4");
 
-        obj = Delimited.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
+        obj = DelimitedCollection.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
         expect(obj.toString()).to.equal('"a,a",b\r\n1,2');
     });
 
     it("toStringArray", () => {
-        let obj = Delimited.fromString("a,b\r\n1,2\r\n3,4");
+        let obj = DelimitedCollection.fromString("a,b\r\n1,2\r\n3,4");
         expect(obj.toStringArray()).to.equal(["a,b", "1,2", "3,4"]);
 
         expect(obj.toStringArray({
             delimiter: "\t"
         })).to.equal(["a\tb", "1\t2", "3\t4"]);
 
-        obj = Delimited.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
+        obj = DelimitedCollection.fromString('"a,a",b\r\n1,2'); // [ { 'a,a': '1', b: '2' } ]
         expect(obj.toStringArray()).to.equal(['"a,a",b', "1,2"]);
     });
 
     it("fromArray", () => {
-        const csv = Delimited.fromArray([
+        const csv = DelimitedCollection.fromArray([
             { a: 1, b: 2, c: { d: null }},
             { a: 3, b: 4, c: { d: 4    }}
         ]);
@@ -110,7 +113,7 @@ describe("Delimited", () => {
             ["1,2,null", "3,4,4"]
         );
 
-        const tsv = Delimited.fromArray(
+        const tsv = DelimitedCollection.fromArray(
             [
                 { a: 1, b: 2, c: { d: null }},
                 { a: 3, b: 4, c: { d: 4    }}
@@ -126,16 +129,32 @@ describe("Delimited", () => {
             ["1\t2\tnull", "3\t4\t4"]
         );
 
-        const dirty = Delimited.fromArray([{ a: "1", "b\"c": '2"3' }]);
+        const dirty = DelimitedCollection.fromArray([{ a: "1", "b\"c": '2"3' }]);
         expectDelimited(
             dirty,
             [{ a: "1", 'b"c': '2"3' }],
             ['1,"2""3"']
         );
+
+        const mixed = DelimitedCollection.fromArray([
+            { a: 1, b: 2, c: 3 },
+            { a: 1, d: 6, c: 3 }
+        ]);
+        expectDelimited(
+            mixed,
+            [
+                { a: 1, b: 2, c: 3, d: undefined },
+                { a: 1, b: undefined, c: 3, d: 6 }
+            ],
+            [
+                "1,2,3,",
+                "1,,3,6"
+            ]
+        );
     });
 
     it("fromDirectory", () => {
-        const csv = Delimited.fromDirectory(__dirname + "/mocks/multi-csv");
+        const csv = DelimitedCollection.fromDirectory(__dirname + "/mocks/multi-csv");
         expectDelimited(
             csv,
             [
@@ -152,7 +171,7 @@ describe("Delimited", () => {
             ]
         );
 
-        const tsv = Delimited.fromDirectory(__dirname + "/mocks/multi-tsv", {
+        const tsv = DelimitedCollection.fromDirectory(__dirname + "/mocks/multi-tsv", {
             extension: "tsv",
             delimiter: "\t"
         });
@@ -171,10 +190,14 @@ describe("Delimited", () => {
                 "40\t50\t60"
             ]
         );
+
+        const obj2 = DelimitedCollection.fromDirectory(__dirname + "/mocks/bad-csv");
+        expect(() => [...obj2.lines()]).to.throw();
+        expect(() => [...obj2.entries()]).to.throw();
     });
 
     it("fromFile", () => {
-        const csv = Delimited.fromFile(__dirname + "/mocks/sample.1.csv");
+        const csv = DelimitedCollection.fromFile(__dirname + "/mocks/sample.1.csv");
         expectDelimited(
             csv,
             [
@@ -187,7 +210,7 @@ describe("Delimited", () => {
             ]
         );
 
-        const tsv = Delimited.fromFile(__dirname + "/mocks/sample.1.tsv", { delimiter: "\t" });
+        const tsv = DelimitedCollection.fromFile(__dirname + "/mocks/sample.1.tsv", { delimiter: "\t" });
         expectDelimited(
             tsv,
             [
@@ -199,17 +222,20 @@ describe("Delimited", () => {
                 "4\t5\t6"
             ]
         );
+
+        const empty = DelimitedCollection.fromFile(__dirname + "/mocks/multi-csv/other.txt");
+        expectDelimited(empty, [], []);
     });
 
     it("fromString", () => {
-        const csv = Delimited.fromString("a, b\n1,2\r\n3 ,4");
+        const csv = DelimitedCollection.fromString("a, b\n1,2\r\n3 ,4");
         expectDelimited(
             csv,
             [{ a: "1", b: "2" }, { a: "3", b: "4" }],
             ["1,2", "3,4"]
         );
 
-        const tsv = Delimited.fromString("a\t b\n1\t2\r\n3 \t4", { delimiter: "\t" });
+        const tsv = DelimitedCollection.fromString("a\t b\n1\t2\r\n3 \t4", { delimiter: "\t" });
         expectDelimited(
             tsv,
             [{ a: "1", b: "2" }, { a: "3", b: "4" }],
@@ -218,19 +244,22 @@ describe("Delimited", () => {
     });
 
     it("fromStringArray", () => {
-        const csv = Delimited.fromStringArray(["a,b", "1,2", "3,4"]);
+        const csv = DelimitedCollection.fromStringArray(["a,b", "1,2", "3,4"]);
         expectDelimited(
             csv,
             [{ a: "1", b: "2" }, { a: "3", b: "4" }],
             ["1,2", "3,4"]
         );
 
-        const tsv = Delimited.fromString("a\t b\n1\t2\r\n3 \t4", { delimiter: "\t" });
+        const tsv = DelimitedCollection.fromString("a\t b\n1\t2\r\n3 \t4", { delimiter: "\t" });
         expectDelimited(
             tsv,
             [{ a: "1", b: "2" }, { a: "3", b: "4" }],
             ["1\t2", "3\t4"]
         );
+
+        const empty = DelimitedCollection.fromStringArray([]);
+        expectDelimited(empty, [], []);
     });
 
 });

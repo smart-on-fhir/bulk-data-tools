@@ -1,5 +1,6 @@
 
 declare namespace BulkDataTools {
+
     interface IReadableFileSizeOptions {
 
         /**
@@ -26,6 +27,12 @@ declare namespace BulkDataTools {
      * A number or a (presumably numeric) string
      */
     type Numeric = string | number;
+
+    /**
+     * A filter for picking files. Can be a RegExp instance or custom filter
+     * function
+     */
+    type FileFilter = RegExp | ((file: string) => boolean);
 
     /**
      * Options for parsing and serializing delimited formats like CSV ot TSV

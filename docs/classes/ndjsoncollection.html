@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Delimited | Bulk Data Tools</title>
+	<title>NDJSONCollection | Bulk Data Tools</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,10 +52,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="delimited.html">Delimited</a>
+					<a href="ndjsoncollection.html">NDJSONCollection</a>
 				</li>
 			</ul>
-			<h1>Class Delimited</h1>
+			<h1>Class NDJSONCollection</h1>
 		</div>
 	</div>
 </header>
@@ -65,15 +65,11 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This class represents a collection in delimited format.</p>
-						<ul>
-							<li>An instance can be created from different kinds of input using the static
-								methods starting with <code>from</code> and converted to other kinds of output using the
-							instance methods starting with <code>to</code>.</li>
-							<li>This class is designed to handle large files or directories by using
-							iterators and reading files one line at a time.</li>
-							<li>The <code>entries</code> iterator will yield json objects for each line.</li>
-						</ul>
+						<p>This class represents an NDJSON object. An instance can be created from
+							different kinds of input using the static methods starting with <code>from</code> and
+							converted to other kinds of output using the instance methods starting with
+							<code>to</code>. This class is designed to handle large files or directories by using
+						iterators and reading files one line at a time.</p>
 					</div>
 				</div>
 			</section>
@@ -84,7 +80,7 @@
 						<a href="collection.html" class="tsd-signature-type">Collection</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">Delimited</span>
+								<span class="target">NDJSONCollection</span>
 							</li>
 						</ul>
 					</li>
@@ -97,28 +93,27 @@
 						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="delimited.html#_entries" class="tsd-kind-icon">_entries</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="delimited.html#_lines" class="tsd-kind-icon">_lines</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="ndjsoncollection.html#_entries" class="tsd-kind-icon">_entries</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="ndjsoncollection.html#_lines" class="tsd-kind-icon">_lines</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="delimited.html#entries" class="tsd-kind-icon">entries</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="delimited.html#lines" class="tsd-kind-icon">lines</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="delimited.html#setentries" class="tsd-kind-icon">set<wbr>Entries</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="delimited.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="delimited.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="delimited.html#tofile" class="tsd-kind-icon">to<wbr>File</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="delimited.html#tojson" class="tsd-kind-icon">toJSON</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="delimited.html#tondjson" class="tsd-kind-icon">toNDJSON</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="delimited.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="delimited.html#tostringarray" class="tsd-kind-icon">to<wbr>String<wbr>Array</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="delimited.html#fromarray" class="tsd-kind-icon">from<wbr>Array</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="delimited.html#fromdirectory" class="tsd-kind-icon">from<wbr>Directory</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="delimited.html#fromfile" class="tsd-kind-icon">from<wbr>File</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="delimited.html#fromstring" class="tsd-kind-icon">from<wbr>String</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="delimited.html#fromstringarray" class="tsd-kind-icon">from<wbr>String<wbr>Array</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="ndjsoncollection.html#entries" class="tsd-kind-icon">entries</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="ndjsoncollection.html#lines" class="tsd-kind-icon">lines</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="ndjsoncollection.html#setentries" class="tsd-kind-icon">set<wbr>Entries</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="ndjsoncollection.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="ndjsoncollection.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="ndjsoncollection.html#tofile" class="tsd-kind-icon">to<wbr>File</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="ndjsoncollection.html#tojson" class="tsd-kind-icon">toJSON</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="ndjsoncollection.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="ndjsoncollection.html#tostringarray" class="tsd-kind-icon">to<wbr>String<wbr>Array</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ndjsoncollection.html#fromarray" class="tsd-kind-icon">from<wbr>Array</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ndjsoncollection.html#fromdirectory" class="tsd-kind-icon">from<wbr>Directory</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ndjsoncollection.html#fromfile" class="tsd-kind-icon">from<wbr>File</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ndjsoncollection.html#fromstring" class="tsd-kind-icon">from<wbr>String</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ndjsoncollection.html#fromstringarray" class="tsd-kind-icon">from<wbr>String<wbr>Array</a></li>
 							</ul>
 						</section>
 					</div>
@@ -133,7 +128,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#_entries">_entries</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Collection.ts#L28">Collection.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/Collection.ts#L28">Collection.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -167,7 +162,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#_lines">_lines</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Collection.ts#L20">Collection.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/Collection.ts#L20">Collection.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -208,7 +203,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#entries">entries</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Collection.ts#L67">Collection.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/Collection.ts#L67">Collection.ts:67</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -231,7 +226,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#lines">lines</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Collection.ts#L59">Collection.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/Collection.ts#L59">Collection.ts:59</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -254,7 +249,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#setentries">setEntries</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Collection.ts#L50">Collection.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/Collection.ts#L50">Collection.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -299,7 +294,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#setlines">setLines</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Collection.ts#L36">Collection.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/Collection.ts#L36">Collection.ts:36</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -345,25 +340,15 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#toarray">toArray</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L40">Delimited.ts:40</a></li>
+									<li>Defined in NDJSONCollection.ts:200</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Converts the contents of the collection to array of &quot;values&quot;.
-									The values are json objects representing each line, excluding the header.</p>
+									<p>Returns an array of JSON objects representing of the NDJSON object.
+										<strong>NOTE:</strong> The array takes memory. Don&#39;t use this for big NDJSON objects.
+									Use the <code>lines</code> or <code>entries</code> iterators instead to handle one entry at a time.</p>
 								</div>
-								<p><strong>NOTE:</strong> Don&#39;t use this for big objects/files because the output array
-									is built into memory and then returned. For big files iterate over the
-								entries instead, which will yield the same objects:</p>
-								<pre><code class="language-js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> collection.entries()) {
-    <span class="hljs-comment">// entry is an object representing a row</span>
-}</code></pre>
-								<dl class="tsd-comment-tags">
-									<dt>alias</dt>
-									<dd><p><code>toJSON</code></p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
@@ -373,34 +358,42 @@
 					<a name="tofile" class="tsd-anchor"></a>
 					<h3>to<wbr>File</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="collection.html" class="tsd-signature-type">Collection</a></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tofile">toFile</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L139">Delimited.ts:139</a></li>
+									<li>Defined in NDJSONCollection.ts:221</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Writes the collection to a file.</p>
+									<p>Writes the NDJSON object to file. The file can be (re)created or appended
+									to. Example:</p>
+									<p>```js
+									const ndjson = NDJSON.fromStringArray([&quot;{}&quot;, &quot;{}&quot; ]);</p>
 								</div>
+								<p>// Create or overwrite the file with default settings
+								ndjson.toFile(&quot;/my/output.ndjson&quot;);</p>
+								<p>// Or use custom settings:
+									ndjson.toFile(&quot;/my/output.ndjson&quot;, {
+									eol: &quot;\r\n&quot;,
+									append: true
+								});</p>
+								<pre><code></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Absolute path to file.</p>
-									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="collection.html" class="tsd-signature-type">Collection</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -415,7 +408,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="collection.html">Collection</a>.<a href="collection.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Collection.ts#L118">Collection.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/Collection.ts#L118">Collection.ts:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -441,71 +434,27 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="tondjson" class="tsd-anchor"></a>
-					<h3>toNDJSON</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">toNDJSON<span class="tsd-signature-symbol">(</span>eol<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L58">Delimited.ts:58</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Converts the instance to NDJSON string.</p>
-								</div>
-								<p><strong>NOTE:</strong> Don&#39;t use this for big objects/files because the output string
-									is built into memory and then returned. For big files iterate over the
-								entries instead and serialize one line at a time:</p>
-								<pre><code class="language-js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> collection.entries()) {
-    <span class="hljs-keyword">const</span> line = <span class="hljs-built_in">JSON</span>.stringify(entry);
-}</code></pre>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> eol: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The new line character to use. Defaults to <code>\r\n</code>.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="tostring" class="tsd-anchor"></a>
 					<h3>to<wbr>String</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L85">Delimited.ts:85</a></li>
+									<li>Defined in NDJSONCollection.ts:172</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Serializes the contents of the collection to a string. The result can be
-										a CSV, TSV or other delimited format depending on the options. The
-									default options will output CSV string. For TSV use:</p>
-									<pre><code class="language-js">instance.toString({ <span class="hljs-attr">delimiter</span>: <span class="hljs-string">"\t"</span> });</code></pre>
+									<p>Returns a string representation of the NDJSON object.
+										<strong>NOTE:</strong> The string takes memory. Don&#39;t use this for big NDJSON objects.
+									Use the <code>lines</code> or <code>entries</code> iterators instead to handle one entry at a time.</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -514,30 +463,23 @@
 					<a name="tostringarray" class="tsd-anchor"></a>
 					<h3>to<wbr>String<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="collection.html">Collection</a>.<a href="collection.html#tostringarray">toStringArray</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L114">Delimited.ts:114</a></li>
+									<li>Defined in NDJSONCollection.ts:186</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Converts the contents of the collection to an array of strings. The
-										result strings can be in CSV, TSV or other delimited format depending on
-									the options. The default options will output CSV strings. For TSV use:</p>
-									<pre><code class="language-js">instance.toStringArray({ <span class="hljs-attr">delimiter</span>: <span class="hljs-string">"\t"</span> });</code></pre>
+									<p>Returns an array of JSON strings representing of the NDJSON object.
+										<strong>NOTE:</strong> The array takes memory. Don&#39;t use this for big NDJSON objects.
+									Use the <code>lines</code> or <code>entries</code> iterators instead to handle one entry at a time.</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -546,24 +488,22 @@
 					<a name="fromarray" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="delimited.html" class="tsd-signature-type">Delimited</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L247">Delimited.ts:247</a></li>
+									<li>Defined in NDJSONCollection.ts:46</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>If we happen to have the entire csv as array of objects, we can create an
+									<p>If we happen to have the entire ndjson as array, we can create an NDJSON
 									instance like so:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> csv = CSV.fromArray([{ <span class="hljs-attr">a</span>: <span class="hljs-string">"1"</span>, <span class="hljs-attr">b</span>: <span class="hljs-string">"2"</span> }, { <span class="hljs-attr">a</span>: <span class="hljs-string">"3"</span>, <span class="hljs-attr">b</span>: <span class="hljs-string">"4"</span> }]);
-csv.lines();   <span class="hljs-comment">// Lines iterator -&gt; "1,2", "3,4"</span>
-csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "2" }, { a: "3", b: "4" }</span></code></pre>
-									<p>In this case we already have entries and we only need to handle their
-									serialization in the <code>lines</code> iterator.</p>
+									<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = NDJSON.fromArray([ {}, {} ]);
+ndjson.lines();   <span class="hljs-comment">// Lines iterator</span>
+ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -574,11 +514,8 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 										<p>An array of objects that can be serialized as JSON</p>
 									</div>
 								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="delimited.html" class="tsd-signature-type">Delimited</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -586,24 +523,24 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 					<a name="fromdirectory" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>Directory</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Directory<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="delimited.html" class="tsd-signature-type">Delimited</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Directory<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L291">Delimited.ts:291</a></li>
+									<li>Defined in NDJSONCollection.ts:86</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates and returns an instance from directory path. This will walk
-										(recursively) through the directory and collect all the files having
-										a <code>.csv</code> extension. The <code>lines</code> and <code>entries</code> iterators will yield
+									<p>Creates and returns an NDJSON instance from directory path. This will
+										walk (recursively) through the directory and collect all the files having
+										a <code>.ndjson</code> extension. The <code>lines</code> and <code>entries</code> iterators will yield
 									results from all those files combined. Example:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> csv = Delimited.fromDirectory(<span class="hljs-string">"/path/to/directory/containing/csv/files"</span>);
-csv.lines();   <span class="hljs-comment">// Lines iterator</span>
-csv.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
+									<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = NDJSON.fromDirectory(<span class="hljs-string">"/path/to/directory/containing/ndjson/files"</span>);
+ndjson.lines();   <span class="hljs-comment">// Lines iterator</span>
+ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -614,11 +551,8 @@ csv.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 										<p>Absolute path to directory</p>
 									</div>
 								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="delimited.html" class="tsd-signature-type">Delimited</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -626,25 +560,21 @@ csv.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 					<a name="fromfile" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>File</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="delimited.html" class="tsd-signature-type">Delimited</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L350">Delimited.ts:350</a></li>
+									<li>Defined in NDJSONCollection.ts:136</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates and returns an instance from a file path. The <code>lines</code> and
-									<code>entries</code> iterators will read the file one line at a time. Example:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> csv = Delimited.fromFile(<span class="hljs-string">"/path/to/file.csv"</span>);
-csv.lines();   <span class="hljs-comment">// Lines iterator</span>
-csv.entries(); <span class="hljs-comment">// Entries iterator</span></code></pre>
-									<p>For TSV or another custom delimited format provide a delimiter option
-									like so:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> tsv = Delimited.fromFile(<span class="hljs-string">"/path/to/file.tsv"</span>, { <span class="hljs-attr">delimiter</span>: <span class="hljs-string">"\t"</span> });</code></pre>
+									<p>Creates and returns an NDJSON instance from a file path. Example:</p>
+									<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = NDJSON.fromFile(<span class="hljs-string">"/path/to/file.ndjson"</span>);
+ndjson.lines();   <span class="hljs-comment">// Lines iterator</span>
+ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -652,14 +582,11 @@ csv.entries(); <span class="hljs-comment">// Entries iterator</span></code></pre
 								<li>
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Absolute path to CSV or TSV file</p>
+										<p>Absolute path to NDJSON file</p>
 									</div>
 								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="delimited.html" class="tsd-signature-type">Delimited</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -667,22 +594,22 @@ csv.entries(); <span class="hljs-comment">// Entries iterator</span></code></pre
 					<a name="fromstring" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>String</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>String<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="delimited.html" class="tsd-signature-type">Delimited</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>String<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L181">Delimited.ts:181</a></li>
+									<li>Defined in NDJSONCollection.ts:26</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>If we have the entire csv or tsv as a string, we can create an instance
-									like so:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> csv = Delimited.fromString(<span class="hljs-string">"a,b\n1,2\r\n3,4"</span>);
-csv.lines();   <span class="hljs-comment">// Lines iterator -&gt; "1,2", "3,4"</span>
-csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "2" }, { a: "3", b: "4" }</span></code></pre>
+									<p>If we have the entire ndjson as a string, we can create an instance
+									of NDJSON which will provide the <code>lines</code> and <code>entries</code> iterators like so:</p>
+									<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = NDJSON.fromString(<span class="hljs-string">"{}\n{}"</span>);
+ndjson.lines();   <span class="hljs-comment">// Lines iterator</span>
+ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -690,14 +617,11 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 								<li>
 									<h5>input: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The input string that can be parsed as CSV or TSV</p>
+										<p>The input string that can be parsed as JSON</p>
 									</div>
 								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="delimited.html" class="tsd-signature-type">Delimited</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -705,23 +629,22 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 					<a name="fromstringarray" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>String<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="delimited.html" class="tsd-signature-type">Delimited</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>String<wbr>Array<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/Delimited.ts#L197">Delimited.ts:197</a></li>
+									<li>Defined in NDJSONCollection.ts:65</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>If we have the entire collection as an array of string lines, we can
-									create an instance like so:</p>
-									<pre><code class="language-js"><span class="hljs-keyword">const</span> csv = Delimited.fromStringArray([<span class="hljs-string">"a,b"</span>, <span class="hljs-string">"1,2"</span>, <span class="hljs-string">"3,4"</span>]);
-csv.lines();   <span class="hljs-comment">// Lines iterator -&gt; "1,2", "3,4"</span>
-csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "2" }, { a: "3", b: "4" }</span></code></pre>
-									<p>The fist line is used as header!</p>
+									<p>If we have the entire ndjson as array of strings, we can create an NDJSON
+									instance like so:</p>
+									<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = NDJSON.fromStringArray([<span class="hljs-string">"{}"</span>, <span class="hljs-string">"{}"</span> ]);
+ndjson.lines();   <span class="hljs-comment">// Lines iterator</span>
+ndjson.entries(); <span class="hljs-comment">// JSON iterator</span></code></pre>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -729,14 +652,11 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 								<li>
 									<h5>arr: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>An array of strings that can be parsed as CSV or TSV</p>
+										<p>An array of strings that can be parsed as JSON</p>
 									</div>
 								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IDelimitedFormatOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="delimited.html" class="tsd-signature-type">Delimited</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="ndjsoncollection.html" class="tsd-signature-type">NDJSONCollection</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -755,72 +675,69 @@ csv.entries(); <span class="hljs-comment">// JSON iterator  -&gt; { a: "1", b: "
 					<li class=" tsd-kind-class">
 						<a href="collection.html" class="tsd-kind-icon">Collection</a>
 					</li>
+					<li class=" tsd-kind-class">
+						<a href="delimitedcollection.html" class="tsd-kind-icon">Delimited<wbr>Collection</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="jsoncollection.html" class="tsd-kind-icon">JSONCollection</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="delimited.html" class="tsd-kind-icon">Delimited</a>
+						<a href="ndjsoncollection.html" class="tsd-kind-icon">NDJSONCollection</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="delimited.html#_entries" class="tsd-kind-icon">_entries</a>
+								<a href="ndjsoncollection.html#_entries" class="tsd-kind-icon">_entries</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="delimited.html#_lines" class="tsd-kind-icon">_lines</a>
+								<a href="ndjsoncollection.html#_lines" class="tsd-kind-icon">_lines</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="delimited.html#entries" class="tsd-kind-icon">entries</a>
+								<a href="ndjsoncollection.html#entries" class="tsd-kind-icon">entries</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="delimited.html#lines" class="tsd-kind-icon">lines</a>
+								<a href="ndjsoncollection.html#lines" class="tsd-kind-icon">lines</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="delimited.html#setentries" class="tsd-kind-icon">set<wbr>Entries</a>
+								<a href="ndjsoncollection.html#setentries" class="tsd-kind-icon">set<wbr>Entries</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="delimited.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a>
+								<a href="ndjsoncollection.html#setlines" class="tsd-kind-icon">set<wbr>Lines</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="delimited.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
+								<a href="ndjsoncollection.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="delimited.html#tofile" class="tsd-kind-icon">to<wbr>File</a>
+								<a href="ndjsoncollection.html#tofile" class="tsd-kind-icon">to<wbr>File</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="delimited.html#tojson" class="tsd-kind-icon">toJSON</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="delimited.html#tondjson" class="tsd-kind-icon">toNDJSON</a>
+								<a href="ndjsoncollection.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="delimited.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
+								<a href="ndjsoncollection.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="delimited.html#tostringarray" class="tsd-kind-icon">to<wbr>String<wbr>Array</a>
+								<a href="ndjsoncollection.html#tostringarray" class="tsd-kind-icon">to<wbr>String<wbr>Array</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="delimited.html#fromarray" class="tsd-kind-icon">from<wbr>Array</a>
+								<a href="ndjsoncollection.html#fromarray" class="tsd-kind-icon">from<wbr>Array</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="delimited.html#fromdirectory" class="tsd-kind-icon">from<wbr>Directory</a>
+								<a href="ndjsoncollection.html#fromdirectory" class="tsd-kind-icon">from<wbr>Directory</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="delimited.html#fromfile" class="tsd-kind-icon">from<wbr>File</a>
+								<a href="ndjsoncollection.html#fromfile" class="tsd-kind-icon">from<wbr>File</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="delimited.html#fromstring" class="tsd-kind-icon">from<wbr>String</a>
+								<a href="ndjsoncollection.html#fromstring" class="tsd-kind-icon">from<wbr>String</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="delimited.html#fromstringarray" class="tsd-kind-icon">from<wbr>String<wbr>Array</a>
+								<a href="ndjsoncollection.html#fromstringarray" class="tsd-kind-icon">from<wbr>String<wbr>Array</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="jsoncollection.html" class="tsd-kind-icon">JSONCollection</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="ndjson.html" class="tsd-kind-icon">NDJSON</a>
-					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#delimitedheaderfromarray" class="tsd-kind-icon">delimited<wbr>Header<wbr>From<wbr>Array</a>
 					</li>

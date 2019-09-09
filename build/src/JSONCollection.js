@@ -84,8 +84,8 @@ class JSONCollection extends Collection_1.default {
         function* lines() {
             for (const filePath of lib_1.filterFiles(path, /\.json$/i)) {
                 try {
-                    const ndjson = JSONCollection.fromFile(filePath);
-                    const _lines = ndjson.lines();
+                    const json = JSONCollection.fromFile(filePath);
+                    const _lines = json.lines();
                     for (const line of _lines) {
                         yield line;
                     }
@@ -175,13 +175,15 @@ class JSONCollection extends Collection_1.default {
         if (!options.append) {
             fs_1.writeFileSync(path, "");
         }
+        fs_1.writeFileSync(path, "[", { encoding: "utf8", flag: "a" });
         let count = 0;
         for (const line of this.lines()) {
-            fs_1.writeFileSync(path, `${++count > 1 ? "\r\n" : ""}${line}`, {
+            fs_1.writeFileSync(path, `${++count > 1 ? "," : ""}${line}`, {
                 encoding: "utf8",
                 flag: "a"
             });
         }
+        fs_1.writeFileSync(path, "]", { encoding: "utf8", flag: "a" });
         return this;
     }
     /**

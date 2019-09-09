@@ -67,9 +67,9 @@
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-class"><a href="classes/collection.html" class="tsd-kind-icon">Collection</a></li>
-								<li class="tsd-kind-class"><a href="classes/delimited.html" class="tsd-kind-icon">Delimited</a></li>
+								<li class="tsd-kind-class"><a href="classes/delimitedcollection.html" class="tsd-kind-icon">Delimited<wbr>Collection</a></li>
 								<li class="tsd-kind-class"><a href="classes/jsoncollection.html" class="tsd-kind-icon">JSONCollection</a></li>
-								<li class="tsd-kind-class"><a href="classes/ndjson.html" class="tsd-kind-icon">NDJSON</a></li>
+								<li class="tsd-kind-class"><a href="classes/ndjsoncollection.html" class="tsd-kind-icon">NDJSONCollection</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -113,7 +113,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L523">lib.ts:523</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L517">lib.ts:517</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -145,22 +145,48 @@
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L122">lib.ts:122</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L141">lib.ts:141</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns a function that will return true if called with argument equal to @value.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to compare with.</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-siganture">
+									<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5>x: <span class="tsd-signature-type">any</span></h5>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</section>
@@ -174,7 +200,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L361">lib.ts:361</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L379">lib.ts:379</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -210,13 +236,13 @@
 					<a name="filterfiles" class="tsd-anchor"></a>
 					<h3>filter<wbr>Files</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">filter<wbr>Files<span class="tsd-signature-symbol">(</span>dir<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, filter<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">FileFilter</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">filter<wbr>Files<span class="tsd-signature-symbol">(</span>dir<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, filter<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">BulkDataTools.FileFilter</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L264">lib.ts:264</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L285">lib.ts:285</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -234,7 +260,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> filter: <span class="tsd-signature-type">FileFilter</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> filter: <span class="tsd-signature-type">BulkDataTools.FileFilter</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -251,7 +277,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L333">lib.ts:333</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L352">lib.ts:352</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -289,7 +315,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L97">lib.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L97">lib.ts:97</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -325,7 +351,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L139">lib.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L162">lib.ts:162</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -363,7 +389,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L81">lib.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L81">lib.ts:81</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -403,13 +429,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L126">lib.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L149">lib.ts:149</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Tests if the given argument is a function</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>x: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to test</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -426,7 +460,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L117">lib.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L133">lib.ts:133</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -451,13 +485,13 @@
 					<a name="jsonentries" class="tsd-anchor"></a>
 					<h3>json<wbr>Entries</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">json<wbr>Entries<span class="tsd-signature-symbol">(</span>dir<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">json<wbr>Entries<span class="tsd-signature-symbol">(</span>dir<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L304">lib.ts:304</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L324">lib.ts:324</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -477,7 +511,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IAnyObject</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -491,7 +525,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L381">lib.ts:381</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L399">lib.ts:399</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -537,7 +571,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L426">lib.ts:426</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L443">lib.ts:443</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -577,7 +611,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L221">lib.ts:221</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L242">lib.ts:242</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -617,7 +651,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L43">lib.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L43">lib.ts:43</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -651,7 +685,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L15">lib.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L15">lib.ts:15</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -686,7 +720,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L150">lib.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L172">lib.ts:172</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -722,7 +756,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L203">lib.ts:203</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L224">lib.ts:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -759,16 +793,30 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L109">lib.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L125">lib.ts:125</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Converts the input argument @x to unsigned (positive) float. Negative
+									numbers are converted to their absolute value.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>x: <span class="tsd-signature-type">BulkDataTools.Numeric</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to convert. Should be a number or numeric string.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> defaultValue: <span class="tsd-signature-type">BulkDataTools.Numeric</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The default value that is returned in case the conversion
+											is not possible. Note that this will also be converted to unsigned float.
+										Defaults to 0.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -785,16 +833,30 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L105">lib.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L113">lib.ts:113</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Converts the input argument @x to unsigned (positive) integer. Negative
+									numbers are converted to their absolute value.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>x: <span class="tsd-signature-type">BulkDataTools.Numeric</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to convert. Should be a number or numeric string.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> defaultValue: <span class="tsd-signature-type">BulkDataTools.Numeric</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The default value that is returned in case the conversion
+											is not possible. Note that this will also be converted to unsigned integer.
+										Defaults to 0.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -811,7 +873,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/69f8111/src/lib.ts#L281">lib.ts:281</a></li>
+									<li>Defined in <a href="https://github.com/smart-on-fhir/bulk-data-tools/blob/c5db50f/src/lib.ts#L302">lib.ts:302</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -847,13 +909,13 @@
 						<a href="classes/collection.html" class="tsd-kind-icon">Collection</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/delimited.html" class="tsd-kind-icon">Delimited</a>
+						<a href="classes/delimitedcollection.html" class="tsd-kind-icon">Delimited<wbr>Collection</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/jsoncollection.html" class="tsd-kind-icon">JSONCollection</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/ndjson.html" class="tsd-kind-icon">NDJSON</a>
+						<a href="classes/ndjsoncollection.html" class="tsd-kind-icon">NDJSONCollection</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#delimitedheaderfromarray" class="tsd-kind-icon">delimited<wbr>Header<wbr>From<wbr>Array</a>

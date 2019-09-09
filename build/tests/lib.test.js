@@ -63,6 +63,7 @@ describe("lib", () => {
             [[""], 0],
             [["5.3"], 5],
             [[false, 5], 5],
+            [[Infinity, 5], 5],
         ];
         map.forEach(([args, result]) => {
             it("expect intVal(" +
@@ -80,6 +81,7 @@ describe("lib", () => {
             [[""], 0],
             [["5.3"], 5.3],
             [[false, 5.2], 5.2],
+            [[Infinity, 5.2], 5.2],
         ];
         map.forEach(([args, result]) => {
             it("expect floatVal(" +
@@ -200,6 +202,9 @@ describe("lib", () => {
             code_1.expect(() => lib.setPath({ a: { b: { a: 5 } } }, "a.b", ["y"])).to.throw();
             code_1.expect(() => lib.setPath({ a: { b: { a: 5 } } }, "a.b", 5)).to.throw();
         });
+        it("throws with no path", () => {
+            code_1.expect(() => lib.setPath({}, [], "")).to.throw();
+        });
     });
     describe("strPad", () => {
         it("typical usage", () => {
@@ -275,5 +280,90 @@ describe("lib", () => {
                 { a: 1, b: 2, c: [5] }
             ])).to.throw();
         });
+    });
+    describe("filterFiles", () => {
+        it("works with RegEx filter", () => {
+            code_1.expect([...lib.filterFiles(__dirname + "/mocks/multi-csv", /\.csv$/i)]).to.equal([
+                __dirname + "/mocks/multi-csv/sample.1.csv",
+                __dirname + "/mocks/multi-csv/sample.2.csv"
+            ]);
+        });
+        it("works with function filter", () => {
+            code_1.expect([...lib.filterFiles(__dirname + "/mocks/multi-csv", f => f.endsWith(".csv"))]).to.equal([
+                __dirname + "/mocks/multi-csv/sample.1.csv",
+                __dirname + "/mocks/multi-csv/sample.2.csv"
+            ]);
+        });
+    });
+    describe("jsonEntries", () => {
+        code_1.expect([...lib.jsonEntries(__dirname + "/mocks/multi-json")]).to.equal([
+            { "a": 1, "b": 2, "c": 3 },
+            { "a": 4, "b": 5, "c": 6 },
+            { "a": 7, "b": 8, "c": 9 },
+            { "a": 10, "b": 11, "c": 12 }
+        ]);
+        code_1.expect([...lib.jsonEntries(__dirname + "/mocks/multi-ndjson")]).to.equal([
+            { "a": 1, "b": 2, "c": 3 },
+            { "a": 4, "b": 5, "c": 6 },
+            { "a": 7, "b": 8, "c": 9 },
+            { "a": 10, "b": 11, "c": 12 }
+        ]);
+    });
+    describe("parseDelimitedLine", () => {
+        code_1.expect(lib.parseDelimitedLine("a,b,c", ",")).to.equal(["a", "b", "c"]);
+        code_1.expect(lib.parseDelimitedLine("a;b;c", ";")).to.equal(["a", "b", "c"]);
+        code_1.expect(lib.parseDelimitedLine('"a,b",c', ",")).to.equal(["a,b", "c"]);
+        code_1.expect(lib.parseDelimitedLine('"a""b""c"')).to.equal(['a"b"c']);
+    });
+    describe("mergeStrict", () => {
+        it("throws on incompatible objects", () => {
+            // don't override scalar with object
+            code_1.expect(() => lib.mergeStrict({ a: 1, b: 2, c: 3 }, { a: 1, b: 2, c: { d: 5 } }), "Override scalar value with object").to.throw();
+            // don't override object with scalar
+            code_1.expect(() => lib.mergeStrict({ a: 1, b: 2, c: { d: 5 } }, { a: 1, b: 2, c: 3 }), "Override object with scalar value").to.throw();
+            // don't override scalar with array
+            code_1.expect(() => lib.mergeStrict({ a: 1, b: 2, c: 3 }, { a: 1, b: 2, c: [5] }), "Override scalar value with array").to.throw();
+            // don't override array with scalar
+            code_1.expect(() => lib.mergeStrict({ a: 1, b: 2, c: [5] }, { a: 1, b: 2, c: 3 }), "Override array with scalar value").to.throw();
+            // don't override array with object
+            code_1.expect(() => lib.mergeStrict({ a: 1, b: 2, c: [5] }, { a: 1, b: 2, c: { d: 5 } }), "Override array with object").to.throw();
+            // don't override object with array
+            code_1.expect(() => lib.mergeStrict({ a: 1, b: 2, c: { d: 5 } }, { a: 1, b: 2, c: [5] }), "Override object with array").to.throw();
+            code_1.expect(lib.mergeStrict({ a: 1, c: 5 }, { a: 1, b: [2], c: 6 })).to.equal({ a: 1, b: [2], c: 6 });
+        });
+    });
+    describe("equals", () => {
+        const map = [
+            [0, 0, true],
+            [0, null, false],
+            [0, false, false],
+            [0, undefined, false]
+        ];
+        map.forEach(([a, b, result]) => {
+            it("expect equals(" + a + ")(" + b + ") to return " + result, () => {
+                code_1.expect(lib.equals(a)(b)).to.equal(result);
+            });
+        });
+    });
+    describe("isFunction", () => {
+        const map = [
+            [() => { }, true],
+            [function () { }, true],
+            [Date, true],
+            [5, false]
+        ];
+        map.forEach(([a, result]) => {
+            it("expect isFunction(" + a + ") to return " + result, () => {
+                code_1.expect(lib.isFunction(a)).to.equal(result);
+            });
+        });
+    });
+    describe("walkSync", () => {
+        code_1.expect([...lib.walkSync(__dirname + "/mocks/multi-csv")]).to.equal([
+            __dirname + "/mocks/multi-csv/nested/other.txt",
+            __dirname + "/mocks/multi-csv/other.txt",
+            __dirname + "/mocks/multi-csv/sample.1.csv",
+            __dirname + "/mocks/multi-csv/sample.2.csv"
+        ]);
     });
 });

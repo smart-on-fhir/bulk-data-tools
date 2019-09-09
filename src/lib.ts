@@ -80,7 +80,7 @@ export function readableFileSize(bytes: number, options?: BulkDataTools.IReadabl
  */
 export function intVal(x: BulkDataTools.Numeric, defaultValue?: BulkDataTools.Numeric): number {
     let out = parseInt(x + "", 10);
-    if ( isNaN(out) || !isFinite(out) ) {
+    if (isNaN(out)) {
         out = defaultValue === undefined ? 0 : intVal(defaultValue);
     }
     return out;
@@ -102,10 +102,26 @@ export function floatVal(x: BulkDataTools.Numeric, defaultValue?: BulkDataTools.
     return out;
 }
 
+/**
+ * Converts the input argument @x to unsigned (positive) integer. Negative
+ * numbers are converted to their absolute value.
+ * @param x The value to convert. Should be a number or numeric string.
+ * @param defaultValue The default value that is returned in case the conversion
+ * is not possible. Note that this will also be converted to unsigned integer.
+ * Defaults to 0.
+ */
 export function uInt(x: BulkDataTools.Numeric, defaultValue?: BulkDataTools.Numeric): number {
     return Math.max(intVal( x, defaultValue ), 0);
 }
 
+/**
+ * Converts the input argument @x to unsigned (positive) float. Negative
+ * numbers are converted to their absolute value.
+ * @param x The value to convert. Should be a number or numeric string.
+ * @param defaultValue The default value that is returned in case the conversion
+ * is not possible. Note that this will also be converted to unsigned float.
+ * Defaults to 0.
+ */
 export function uFloat(x: BulkDataTools.Numeric, defaultValue?: BulkDataTools.Numeric): number {
     return Math.max(floatVal( x, defaultValue ), 0);
 }
@@ -114,16 +130,23 @@ export function uFloat(x: BulkDataTools.Numeric, defaultValue?: BulkDataTools.Nu
  * Tests if the given argument is an object
  * @param x The value to test
  */
-export function isObject(x: any): boolean
-{
+export function isObject(x: any): boolean {
     return !!x && typeof x == "object";
 }
 
-export function equals(value: any) {
+/**
+ * Returns a function that will return true if called with argument equal to @value.
+ * @param value The value to compare with.
+ */
+export function equals(value: any): (x: any) => boolean {
     return (x: any) => x === value;
 }
 
-export function isFunction(x: any) {
+/**
+ * Tests if the given argument is a function
+ * @param x The value to test
+ */
+export function isFunction(x: any): boolean {
     return typeof x == "function";
 }
 
@@ -136,8 +159,7 @@ export function isFunction(x: any) {
  * @param {String} [path=""] The path (eg. "a.b.4.c")
  * @returns {*} Whatever is found in the path or undefined
  */
-export function getPath(obj: BulkDataTools.IAnyObject, path: string = "")
-{
+export function getPath(obj: BulkDataTools.IAnyObject, path: string = ""): any {
     return path.split(".").reduce((out, key) => out ? out[key] : undefined, obj);
 }
 
@@ -147,8 +169,7 @@ export function getPath(obj: BulkDataTools.IAnyObject, path: string = "")
  * @param {*} path
  * @param {*} value
  */
-export function setPath(obj: BulkDataTools.IAnyObject, path: string | string[] | number, value: any): void
-{
+export function setPath(obj: BulkDataTools.IAnyObject, path: string | string[] | number, value: any): void {
     const segments = Array.isArray(path) ? path : String(path).split(".");
 
     if (!segments.length) {
@@ -200,7 +221,7 @@ export function setPath(obj: BulkDataTools.IAnyObject, path: string | string[] |
  * @param str The input string
  * @param length The target length of the result string
  */
-export function strPad(str: string, length: number = 0) {
+export function strPad(str: string, length: number = 0): string {
     let strLen = str.length;
     while (strLen < length) {
         str += " ";
@@ -226,7 +247,9 @@ export function* readLine(filePath: string): IterableIterator<string> {
     let eolPos;
     let blob = "";
 
+    // $lab:coverage:off$
     while (true) {
+    // $lab:coverage:on$
         eolPos = blob.indexOf("\n");
 
         // buffered line
@@ -252,8 +275,6 @@ export function* readLine(filePath: string): IterableIterator<string> {
     }
 }
 
-type FileFilter = RegExp | ((file: string) => boolean);
-
 /**
  * Walk a directory recursively and find files that match the @filter if its a
  * RegExp, or for which @filter returns true if its a function.
@@ -261,7 +282,7 @@ type FileFilter = RegExp | ((file: string) => boolean);
  * @param {RegExp|Function} [filter]
  * @returns {IterableIterator<String>}
  */
-export function* filterFiles(dir: string, filter?: FileFilter): IterableIterator<string> {
+export function* filterFiles(dir: string, filter?: BulkDataTools.FileFilter): IterableIterator<string> {
     const files = walkSync(dir);
     for (const file of files) {
         if (filter instanceof RegExp && !filter.test(file)) {
@@ -299,10 +320,8 @@ export function* walkSync(dir: string): IterableIterator<string> {
  * files are ignored.
  *
  * @param {String} dir A path to a directory
- * @returns {IterableIterator<JSON>}
  */
-export function* jsonEntries(dir: string)
-{
+export function* jsonEntries(dir: string): IterableIterator<BulkDataTools.IAnyObject> {
     const files = walkSync(dir);
 
     for (const file of files) {
@@ -330,8 +349,7 @@ export function* jsonEntries(dir: string)
  * to each key. Please do not use this argument. The function will pass it to
  * itself on recursive calls.
  */
-export function flatObjectKeys(obj: BulkDataTools.IAnyObject, _prefix?: string): string[]
-{
+export function flatObjectKeys(obj: BulkDataTools.IAnyObject, _prefix?: string): string[] {
     let out: string[] = [];
 
     for (const key in obj) {
@@ -378,8 +396,7 @@ export function escapeDelimitedValue(value: any, delimiter: string = ","): strin
  * path in the other object points to an object (or the opposite).
  * @returns Returns the extended first argument
  */
-export function mergeStrict(obj1: BulkDataTools.IAnyObject, obj2: BulkDataTools.IAnyObject): BulkDataTools.IAnyObject
-{
+export function mergeStrict(obj1: BulkDataTools.IAnyObject, obj2: BulkDataTools.IAnyObject): BulkDataTools.IAnyObject {
     for (const key in obj2) {
         const source         = obj2[key];
         const target         = obj1[key];
@@ -423,8 +440,7 @@ export function mergeStrict(obj1: BulkDataTools.IAnyObject, obj2: BulkDataTools.
  * @param delimiter The delimiter to use (defaults to ",")
  * @returns The cells as array of strings
  */
-export function parseDelimitedLine(line: string, delimiter: string = ","): string[]
-{
+export function parseDelimitedLine(line: string, delimiter: string = ","): string[] {
     const out: string[] = [];
     const len: number   = line.length;
 
@@ -447,7 +463,7 @@ export function parseDelimitedLine(line: string, delimiter: string = ","): strin
             }
 
             // Escaped quote - continue string
-            if (expect === char && line[idx] === char) {
+            if (line[idx] === char) {
                 buffer += char;
                 idx++;
                 break;
@@ -482,33 +498,11 @@ export function parseDelimitedLine(line: string, delimiter: string = ","): strin
         buffer = "";
     }
 
-    return out.map(s => s.trim());
-}
-
-/**
- * Given an object, loops it recursively and collects all the keys.
- * @param json The input object to parse
- * @returns Returns an object that contains all the keys of the input object
- * and all the values are equal to 1.
- */
-function copyKeys(json: BulkDataTools.IAnyObject): BulkDataTools.IAnyObject
-{
-    function loop(data: BulkDataTools.IAnyObject) {
-        const out: BulkDataTools.IAnyObject = {};
-
-        for (const key in data) {
-            const value = data[key];
-            if (isObject(value)) {
-                out[key] = loop(value);
-            } else {
-                out[key] = 1;
-            }
-        }
-
-        return out;
+    if (expect) {
+        throw new SyntaxError(`Syntax error - unterminated string. Expecting '"'`);
     }
 
-    return loop(json);
+    return out.map(s => s.trim());
 }
 
 /**

@@ -1,17 +1,9 @@
+"use strict";
 /// <reference path="../index.d.ts" />
-
-import { appendFileSync } from "fs";
-import Collection from "./Collection";
-import {
-    filterFiles,
-    readLine,
-    getPath,
-    parseDelimitedLine,
-    delimitedHeaderFromArray,
-    escapeDelimitedValue
-} from "./lib";
-
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = require("fs");
+const Collection_1 = require("./Collection");
+const lib_1 = require("./lib");
 /**
  * This class represents a collection in delimited format.
  * - An instance can be created from different kinds of input using the static
@@ -21,8 +13,7 @@ import {
  * iterators and reading files one line at a time.
  * - The `entries` iterator will yield json objects for each line.
  */
-export default class Delimited extends Collection
-{
+class DelimitedCollection extends Collection_1.default {
     /**
      * Converts the contents of the collection to array of "values".
      * The values are json objects representing each line, excluding the header.
@@ -37,11 +28,9 @@ export default class Delimited extends Collection
      * ```
      * @alias `toJSON`
      */
-    public toArray(): BulkDataTools.IAnyObject[]
-    {
+    toArray() {
         return [...this._entries()];
     }
-
     /**
      * Converts the instance to NDJSON string.
      *
@@ -55,8 +44,7 @@ export default class Delimited extends Collection
      * ```
      * @param eol The new line character to use. Defaults to `\r\n`.
      */
-    public toNDJSON(eol: string = "\r\n"): string
-    {
+    toNDJSON(eol = "\r\n") {
         let out = "", len = 0;
         for (const item of this.entries()) {
             if (++len > 1) {
@@ -66,7 +54,6 @@ export default class Delimited extends Collection
         }
         return out;
     }
-
     /**
      * Serializes the contents of the collection to a string. The result can be
      * a CSV, TSV or other delimited format depending on the options. The
@@ -82,21 +69,17 @@ export default class Delimited extends Collection
      * have the same structure and only use the first one to compute the header.
      * Defaults to `false`.
      */
-    public toString(options: BulkDataTools.IDelimitedFormatOptions = {}): string
-    {
+    toString(options = {}) {
         const delimiter = options.delimiter || ",";
         const eol = options.eol || "\r\n";
-        const header = delimitedHeaderFromArray(this.entries(), { fast: !options.strictHeader });
-
-        let out = header.map(cell => escapeDelimitedValue(cell, delimiter)).join(delimiter);
+        const header = lib_1.delimitedHeaderFromArray(this.entries(), { fast: !options.strictHeader });
+        let out = header.map(cell => lib_1.escapeDelimitedValue(cell, delimiter)).join(delimiter);
         for (const entry of this.entries()) {
-            const row = header.map(cell => escapeDelimitedValue(getPath(entry, cell), delimiter));
+            const row = header.map(cell => lib_1.escapeDelimitedValue(lib_1.getPath(entry, cell), delimiter));
             out += `${eol}${row.join(delimiter)}`;
         }
-
         return out;
     }
-
     /**
      * Converts the contents of the collection to an array of strings. The
      * result strings can be in CSV, TSV or other delimited format depending on
@@ -111,24 +94,17 @@ export default class Delimited extends Collection
      * have the same structure and only use the first one to compute the header.
      * Defaults to `false`.
      */
-    public toStringArray(options: BulkDataTools.IDelimitedFormatOptions = {}): string[]
-    {
+    toStringArray(options = {}) {
         const delimiter = options.delimiter || ",";
-        const header = delimitedHeaderFromArray(this.entries(), { fast: !options.strictHeader });
-
+        const header = lib_1.delimitedHeaderFromArray(this.entries(), { fast: !options.strictHeader });
         const out = [
-            header.map(cell => escapeDelimitedValue(cell, delimiter)).join(delimiter)
+            header.map(cell => lib_1.escapeDelimitedValue(cell, delimiter)).join(delimiter)
         ];
-
         for (const entry of this.entries()) {
-            out.push(
-                header.map(cell => escapeDelimitedValue(getPath(entry, cell), delimiter)).join(delimiter)
-            );
+            out.push(header.map(cell => lib_1.escapeDelimitedValue(lib_1.getPath(entry, cell), delimiter)).join(delimiter));
         }
-
         return out;
     }
-
     /**
      * Writes the collection to a file.
      * @param path Absolute path to file.
@@ -136,36 +112,23 @@ export default class Delimited extends Collection
      * @param [options.delimiter] The delimiter to use. Defaults to ",".
      * @param [options.eol] The new line character to use. Defaults to "\r\n".
      */
-    public toFile(path: string, options: BulkDataTools.IDelimitedFormatOptions = {}): Collection
-    {
+    toFile(path, options = {}) {
         const delimiter = options.delimiter || ",";
         const eol = options.eol || "\r\n";
-
         let header;
         for (const entry of this.entries()) {
             if (!header) {
-                header = delimitedHeaderFromArray([entry], { fast: true });
-                appendFileSync(
-                    path,
-                    header.map(
-                        h => escapeDelimitedValue(h, delimiter)
-                    ).join(delimiter)
-                );
+                header = lib_1.delimitedHeaderFromArray([entry], { fast: true });
+                fs_1.appendFileSync(path, header.map(h => lib_1.escapeDelimitedValue(h, delimiter)).join(delimiter));
             }
-
-            const line = header.map(
-                h => escapeDelimitedValue(getPath(entry, h), delimiter)
-            ).join(delimiter);
-
-            appendFileSync(path, `${eol}${line}`);
+            const line = header.map(h => lib_1.escapeDelimitedValue(lib_1.getPath(entry, h), delimiter)).join(delimiter);
+            fs_1.appendFileSync(path, `${eol}${line}`);
         }
         return this;
     }
-
     // =========================================================================
     // Input Methods
     // =========================================================================
-
     /**
      * If we have the entire csv or tsv as a string, we can create an instance
      * like so:
@@ -178,11 +141,9 @@ export default class Delimited extends Collection
      * @param [options] The options for parsing the input string
      * @param [options.delimiter=","] The delimiter to use
      */
-    public static fromString(input: string, options: BulkDataTools.IDelimitedFormatOptions = {}): Delimited
-    {
-        return Delimited.fromStringArray(input.split(/\r?\n/), options);
+    static fromString(input, options = {}) {
+        return DelimitedCollection.fromStringArray(input.split(/\r?\n/), options);
     }
-
     /**
      * If we have the entire collection as an array of string lines, we can
      * create an instance like so:
@@ -194,33 +155,26 @@ export default class Delimited extends Collection
      * The fist line is used as header!
      * @param arr An array of strings that can be parsed as CSV or TSV
      */
-    public static fromStringArray(arr: string[], options: BulkDataTools.IDelimitedFormatOptions = {}): Delimited
-    {
+    static fromStringArray(arr, options = {}) {
         const delimiter = options.delimiter || ",";
-
         // Create the output instance
-        const out = new Delimited();
-
+        const out = new DelimitedCollection();
         // Remove empty lines
         const lines = arr.map(l => l.trim()).filter(Boolean);
-
         if (lines.length > 0) {
-
             // Use the first line as header
-            const header = parseDelimitedLine(lines.shift() as string, delimiter);
-
+            const header = lib_1.parseDelimitedLine(lines.shift(), delimiter);
             // lines will exclude the first line (assumed to be the header)
-            out.setLines(function *() {
+            out.setLines(function* () {
                 for (const l of lines) {
-                    yield parseDelimitedLine(l, delimiter).map(c => c.trim()).join(delimiter);
+                    yield lib_1.parseDelimitedLine(l, delimiter).map(c => c.trim()).join(delimiter);
                 }
             });
-
             // Entries are the json objects representing each line
-            out.setEntries(function *() {
+            out.setEntries(function* () {
                 for (const l of lines) {
-                    const entry: BulkDataTools.IAnyObject = {};
-                    const line = parseDelimitedLine(l, delimiter);
+                    const entry = {};
+                    const line = lib_1.parseDelimitedLine(l, delimiter);
                     header.forEach((key, index) => {
                         entry[key] = line[index];
                     });
@@ -228,10 +182,8 @@ export default class Delimited extends Collection
                 }
             });
         }
-
         return out;
     }
-
     /**
      * If we happen to have the entire csv as array of objects, we can create an
      * instance like so:
@@ -244,38 +196,30 @@ export default class Delimited extends Collection
      * serialization in the `lines` iterator.
      * @param arr An array of objects that can be serialized as JSON
      */
-    public static fromArray(arr: BulkDataTools.IAnyObject[], options: BulkDataTools.IDelimitedFormatOptions = {}): Delimited
-    {
+    static fromArray(arr, options = {}) {
         const delimiter = options.delimiter || ",";
-
-        const out = new Delimited();
-
-        const header = delimitedHeaderFromArray(arr, { fast: !options.strictHeader });
-
+        const out = new DelimitedCollection();
+        const header = lib_1.delimitedHeaderFromArray(arr, { fast: false });
         // out.setEntries(() => arr.values());
-        out.setEntries(function *() {
+        out.setEntries(function* () {
             for (const entry of arr) {
                 const row = {};
-                header.forEach(key => row[key] = getPath(entry, key));
+                header.forEach(key => row[key] = lib_1.getPath(entry, key));
                 yield row;
                 // yield header
                 //     .map(key => getPath(entry, key))
-                    // .join(delimiter);
+                // .join(delimiter);
             }
         });
-
-        out.setLines(function *() {
-            console.log(header, arr);
+        out.setLines(function* () {
             for (const entry of arr) {
                 yield header
-                    .map(key => escapeDelimitedValue(getPath(entry, key), delimiter))
+                    .map(key => lib_1.escapeDelimitedValue(lib_1.getPath(entry, key), delimiter))
                     .join(delimiter);
             }
         });
-
         return out;
     }
-
     /**
      * Creates and returns an instance from directory path. This will walk
      * (recursively) through the directory and collect all the files having
@@ -288,50 +232,44 @@ export default class Delimited extends Collection
      * ```
      * @param path Absolute path to directory
      */
-    public static fromDirectory(path: string, options: BulkDataTools.IDelimitedFormatOptions = {}): Delimited
-    {
+    static fromDirectory(path, options = {}) {
         const delimiter = options.delimiter || ",";
         const extension = String(options.extension || "csv").replace(/^\.*/, ".");
-
-        const out = new Delimited();
-
-        function *lines(): IterableIterator<string>
-        {
-            const files = filterFiles(path, new RegExp(extension + "$", "i"));
+        const out = new DelimitedCollection();
+        function* lines() {
+            const files = lib_1.filterFiles(path, new RegExp(extension + "$", "i"));
             for (const filePath of files) {
                 try {
-                    const ndjson = Delimited.fromFile(filePath, { delimiter });
+                    const ndjson = DelimitedCollection.fromFile(filePath, { delimiter });
                     const _lines = ndjson.lines();
                     for (const line of _lines) {
                         yield line;
                     }
-                } catch (e) {
-                    throw new Error(`File: ${filePath} - ${e}`);
                 }
-             }
-        }
-
-        function *entries(): IterableIterator<BulkDataTools.IAnyObject>
-        {
-            const files = filterFiles(path, new RegExp(extension + "$", "i"));
-            for (const filePath of files) {
-                try {
-                    const ndjson = Delimited.fromFile(filePath, { delimiter });
-                    const _entries = ndjson.entries();
-                    for (const entry of _entries) {
-                        yield entry;
-                    }
-                } catch (e) {
+                catch (e) {
                     throw new Error(`File: ${filePath} - ${e}`);
                 }
             }
         }
-
+        function* entries() {
+            const files = lib_1.filterFiles(path, new RegExp(extension + "$", "i"));
+            for (const filePath of files) {
+                try {
+                    const ndjson = DelimitedCollection.fromFile(filePath, { delimiter });
+                    const _entries = ndjson.entries();
+                    for (const entry of _entries) {
+                        yield entry;
+                    }
+                }
+                catch (e) {
+                    throw new Error(`File: ${filePath} - ${e}`);
+                }
+            }
+        }
         out.setLines(lines);
         out.setEntries(entries);
         return out;
     }
-
     /**
      * Creates and returns an instance from a file path. The `lines` and
      * `entries` iterators will read the file one line at a time. Example:
@@ -347,37 +285,32 @@ export default class Delimited extends Collection
      * ```
      * @param path Absolute path to CSV or TSV file
      */
-    public static fromFile(path: string, options: BulkDataTools.IDelimitedFormatOptions = {}): Delimited
-    {
+    static fromFile(path, options = {}) {
         const delimiter = options.delimiter || ",";
-
-        function *lines(): IterableIterator<string>
-        {
-            const _lines = readLine(path);
+        function* lines() {
+            const _lines = lib_1.readLine(path);
             let headerSkip;
             for (let line of _lines) {
                 if (!headerSkip) {
                     headerSkip = 1;
                     continue;
                 }
-                const arr = parseDelimitedLine(line.trim(), delimiter);
+                const arr = lib_1.parseDelimitedLine(line.trim(), delimiter);
                 line = arr.map(c => c.trim()).join(delimiter);
-                if (line) {
-                    yield line;
-                }
+                // if (line) {
+                yield line;
+                // }
             }
         }
-
-        function *entries(): IterableIterator<BulkDataTools.IAnyObject>
-        {
+        function* entries() {
             let header;
-            for (const line of readLine(path)) {
-                const arr = parseDelimitedLine(line.trim(), delimiter);
+            for (const line of lib_1.readLine(path)) {
+                const arr = lib_1.parseDelimitedLine(line.trim(), delimiter);
                 if (!header) {
                     header = arr;
                 }
                 else {
-                    const entry: BulkDataTools.IAnyObject = {};
+                    const entry = {};
                     header.forEach((key, index) => {
                         entry[key] = arr[index];
                     });
@@ -385,10 +318,10 @@ export default class Delimited extends Collection
                 }
             }
         }
-
-        const out = new Delimited();
+        const out = new DelimitedCollection();
         out.setLines(lines);
         out.setEntries(entries);
         return out;
     }
 }
+exports.default = DelimitedCollection;

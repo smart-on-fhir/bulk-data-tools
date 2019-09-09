@@ -72,25 +72,23 @@ node bulk_data --input path/to/file.csv --output-type ndjson
 node bulk_data --input path/to/file.ndjson --output-type csv
 ```
 
-**Note** that the examples will output their result to the terminal. You can add
-a `--output <file>` parameter to write the result to file or append `> filename`
-to the command.
+**Note** that the examples will output their result to the terminal. You can
+append ` > filename` to the command to write the result to file.
 
 For the full list of possible conversions see [tests/bin.test.ts](tests/bin.test.ts).
 
 **CLI parameters:**
 
 - `--input` - Path to input directory or file.
-- `--output` - Path to output file.
 - `--input-type` - The type of input (`json`, `ndjson`, `csv`, `tsv`, `auto`).
   Defaults to `auto` which means the input type can be omitted and will be detected
   based in the file extension of the file passed as `--input`.If the `--input` is
   a directory, then `--input-type` is required and cannot be `auto`.
 - `--output-type` - The type of output (`json`, `ndjson`, `csv`, `tsv`).
-- `--eol` - The line separator (CRLF, LF). Defaults to `CRLF`.
-- `--output-delimiter` - The delimiter (e.g. ",", "TAB", ";"...) to use when
-  generating the output. Ignored if --output-type is not "delimited".
-- `--input-delimiter` - The delimiter (e.g. ",", "TAB", ";"...) to use when
-  parsing the input. Ignored if --input-type is not "delimited".
-- `--fast` - Only use the first line in ndjson to compute the header
+- `--eol` - The line separator (CRLF, LF). Defaults to `CRLF`. If the `output-type`
+  is delimited (csv or tsv), use this to specify what should be used as line
+  separator. Defaults to `CRLF` (`\r\n`).
+- `--strict` - If set, loop through every entry to compute the complete csv/tsv
+  header. Otherwise assume that all entries have the same structure and only use
+  the first entry. Only applicable when the `output-type` is csv or tsv.
 

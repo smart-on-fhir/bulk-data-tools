@@ -67,7 +67,7 @@ exports.readableFileSize = readableFileSize;
  */
 function intVal(x, defaultValue) {
     let out = parseInt(x + "", 10);
-    if (isNaN(out) || !isFinite(out)) {
+    if (isNaN(out)) {
         out = defaultValue === undefined ? 0 : intVal(defaultValue);
     }
     return out;
@@ -89,10 +89,26 @@ function floatVal(x, defaultValue) {
     return out;
 }
 exports.floatVal = floatVal;
+/**
+ * Converts the input argument @x to unsigned (positive) integer. Negative
+ * numbers are converted to their absolute value.
+ * @param x The value to convert. Should be a number or numeric string.
+ * @param defaultValue The default value that is returned in case the conversion
+ * is not possible. Note that this will also be converted to unsigned integer.
+ * Defaults to 0.
+ */
 function uInt(x, defaultValue) {
     return Math.max(intVal(x, defaultValue), 0);
 }
 exports.uInt = uInt;
+/**
+ * Converts the input argument @x to unsigned (positive) float. Negative
+ * numbers are converted to their absolute value.
+ * @param x The value to convert. Should be a number or numeric string.
+ * @param defaultValue The default value that is returned in case the conversion
+ * is not possible. Note that this will also be converted to unsigned float.
+ * Defaults to 0.
+ */
 function uFloat(x, defaultValue) {
     return Math.max(floatVal(x, defaultValue), 0);
 }
@@ -105,10 +121,18 @@ function isObject(x) {
     return !!x && typeof x == "object";
 }
 exports.isObject = isObject;
+/**
+ * Returns a function that will return true if called with argument equal to @value.
+ * @param value The value to compare with.
+ */
 function equals(value) {
     return (x) => x === value;
 }
 exports.equals = equals;
+/**
+ * Tests if the given argument is a function
+ * @param x The value to test
+ */
 function isFunction(x) {
     return typeof x == "function";
 }
@@ -196,7 +220,9 @@ function* readLine(filePath) {
     const chunk = Buffer.alloc(CHUNK_SIZE, "", "utf8");
     let eolPos;
     let blob = "";
+    // $lab:coverage:off$
     while (true) {
+        // $lab:coverage:on$
         eolPos = blob.indexOf("\n");
         // buffered line
         if (eolPos > -1) {
@@ -264,7 +290,6 @@ exports.walkSync = walkSync;
  * files are ignored.
  *
  * @param {String} dir A path to a directory
- * @returns {IterableIterator<JSON>}
  */
 function* jsonEntries(dir) {
     const files = walkSync(dir);
@@ -388,7 +413,7 @@ function parseDelimitedLine(line, delimiter = ",") {
                     break;
                 }
                 // Escaped quote - continue string
-                if (expect === char && line[idx] === char) {
+                if (line[idx] === char) {
                     buffer += char;
                     idx++;
                     break;
@@ -418,31 +443,12 @@ function parseDelimitedLine(line, delimiter = ",") {
         out.push(buffer);
         buffer = "";
     }
+    if (expect) {
+        throw new SyntaxError(`Syntax error - unterminated string. Expecting '"'`);
+    }
     return out.map(s => s.trim());
 }
 exports.parseDelimitedLine = parseDelimitedLine;
-/**
- * Given an object, loops it recursively and collects all the keys.
- * @param json The input object to parse
- * @returns Returns an object that contains all the keys of the input object
- * and all the values are equal to 1.
- */
-function copyKeys(json) {
-    function loop(data) {
-        const out = {};
-        for (const key in data) {
-            const value = data[key];
-            if (isObject(value)) {
-                out[key] = loop(value);
-            }
-            else {
-                out[key] = 1;
-            }
-        }
-        return out;
-    }
-    return loop(json);
-}
 /**
  * Loops over an array of objects or arrays (rows) and builds a header that
  * matches the structure of the rows.

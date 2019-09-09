@@ -31,6 +31,7 @@
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
         "forin": false,
         "max-classes-per-file": false,
-        "no-reference": false
+        "no-reference": false,
+        "only-arrow-functions": false
     }
 }

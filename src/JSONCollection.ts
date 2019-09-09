@@ -97,8 +97,8 @@ export default class JSONCollection extends Collection
         {
             for (const filePath of filterFiles(path, /\.json$/i)) {
                 try {
-                    const ndjson = JSONCollection.fromFile(filePath);
-                    const _lines = ndjson.lines();
+                    const json = JSONCollection.fromFile(filePath);
+                    const _lines = json.lines();
                     for (const line of _lines) {
                         yield line;
                     }
@@ -201,17 +201,21 @@ export default class JSONCollection extends Collection
             writeFileSync(path, "");
         }
 
+        writeFileSync(path, "[", { encoding: "utf8", flag: "a" });
+
         let count = 0;
         for (const line of this.lines()) {
             writeFileSync(
                 path,
-                `${++count > 1 ? "\r\n" : ""}${line}`,
+                `${++count > 1 ? "," : ""}${line}`,
                 {
                     encoding: "utf8",
                     flag: "a"
                 }
             );
         }
+
+        writeFileSync(path, "]", { encoding: "utf8", flag: "a" });
 
         return this;
     }

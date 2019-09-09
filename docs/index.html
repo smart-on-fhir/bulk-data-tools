@@ -137,25 +137,23 @@ node bulk_data --input path/to/file.csv --output-type ndjson
 
 <span class="hljs-comment"># Convert NDJSON file to CSV</span>
 node bulk_data --input path/to/file.ndjson --output-type csv</code></pre>
-				<p><strong>Note</strong> that the examples will output their result to the terminal. You can add
-					a <code>--output &lt;file&gt;</code> parameter to write the result to file or append <code>&gt; filename</code>
-				to the command.</p>
+				<p><strong>Note</strong> that the examples will output their result to the terminal. You can
+				append <code>&gt; filename</code> to the command to write the result to file.</p>
 				<p>For the full list of possible conversions see <a href="tests/bin.test.ts">tests/bin.test.ts</a>.</p>
 				<p><strong>CLI parameters:</strong></p>
 				<ul>
 					<li><code>--input</code> - Path to input directory or file.</li>
-					<li><code>--output</code> - Path to output file.</li>
 					<li><code>--input-type</code> - The type of input (<code>json</code>, <code>ndjson</code>, <code>csv</code>, <code>tsv</code>, <code>auto</code>).
 						Defaults to <code>auto</code> which means the input type can be omitted and will be detected
 						based in the file extension of the file passed as <code>--input</code>.If the <code>--input</code> is
 					a directory, then <code>--input-type</code> is required and cannot be <code>auto</code>.</li>
 					<li><code>--output-type</code> - The type of output (<code>json</code>, <code>ndjson</code>, <code>csv</code>, <code>tsv</code>).</li>
-					<li><code>--eol</code> - The line separator (CRLF, LF). Defaults to <code>CRLF</code>.</li>
-					<li><code>--output-delimiter</code> - The delimiter (e.g. &quot;,&quot;, &quot;TAB&quot;, &quot;;&quot;...) to use when
-					generating the output. Ignored if --output-type is not &quot;delimited&quot;.</li>
-					<li><code>--input-delimiter</code> - The delimiter (e.g. &quot;,&quot;, &quot;TAB&quot;, &quot;;&quot;...) to use when
-					parsing the input. Ignored if --input-type is not &quot;delimited&quot;.</li>
-					<li><code>--fast</code> - Only use the first line in ndjson to compute the header</li>
+					<li><code>--eol</code> - The line separator (CRLF, LF). Defaults to <code>CRLF</code>. If the <code>output-type</code>
+						is delimited (csv or tsv), use this to specify what should be used as line
+					separator. Defaults to <code>CRLF</code> (<code>\r\n</code>).</li>
+					<li><code>--strict</code> - If set, loop through every entry to compute the complete csv/tsv
+						header. Otherwise assume that all entries have the same structure and only use
+					the first entry. Only applicable when the <code>output-type</code> is csv or tsv.</li>
 				</ul>
 			</div>
 		</div>
@@ -173,13 +171,13 @@ node bulk_data --input path/to/file.ndjson --output-type csv</code></pre>
 						<a href="classes/collection.html" class="tsd-kind-icon">Collection</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/delimited.html" class="tsd-kind-icon">Delimited</a>
+						<a href="classes/delimitedcollection.html" class="tsd-kind-icon">Delimited<wbr>Collection</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/jsoncollection.html" class="tsd-kind-icon">JSONCollection</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/ndjson.html" class="tsd-kind-icon">NDJSON</a>
+						<a href="classes/ndjsoncollection.html" class="tsd-kind-icon">NDJSONCollection</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#delimitedheaderfromarray" class="tsd-kind-icon">delimited<wbr>Header<wbr>From<wbr>Array</a>
