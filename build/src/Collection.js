@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../index.d.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This class represents a collection of data entries. An instance can be

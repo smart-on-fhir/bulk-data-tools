@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../index.d.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const Path = require("path");
