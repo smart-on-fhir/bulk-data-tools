@@ -29,7 +29,7 @@ app
     // If set, loop through every entry to compute the complete csv/tsv header.
     // Otherwise assume that all entries have the same structure and only use the
     // first entry. Only applicable when the `output-type` is csv or tsv.
-    .option("--strict", "Only use the first line in ndjson or json arrays to compute the delimited header")
+    // .option("--strict", "Only use the first line in ndjson or json arrays to compute the delimited header")
 
     .parse(process.argv);
 
@@ -121,14 +121,14 @@ function main() {
                 process.stdout.write(
                     DelimitedCollection.fromArray(input.toArray()).toString({
                         delimiter: ",",
-                        strictHeader: app.strict,
+                        // strictHeader: app.strict,
                         eol
                     })
                 );
             } else {
                 process.stdout.write(input.toString({
                     delimiter: ",",
-                    strictHeader: app.strict,
+                    // strictHeader: app.strict,
                     eol
                 }));
             }
