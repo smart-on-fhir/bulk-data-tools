@@ -63,51 +63,76 @@
 				<a href="#bulk-data-tools" id="bulk-data-tools" style="color: inherit; text-decoration: none;">
 					<h1>bulk-data-tools</h1>
 				</a>
+				<p>This is a NodeJS library for working with bulk data in different formats and mostly
+					for converting the data between those formats. Some utility functions for reading
+				directories, parsing and others are also included.</p>
 				<a href="#converting-data-between-different-formats" id="converting-data-between-different-formats" style="color: inherit; text-decoration: none;">
 					<h2>Converting data between different formats</h2>
 				</a>
-				<p>The input can be ane of:</p>
-				<ul>
-					<li><code>String</code><ul>
-							<li>JSON string (e.g. the result of reading a <code>.json</code> file)</li>
-							<li>NDJSON string (e.g. the result of reading a <code>.ndjson</code> file)</li>
-							<li>String in some delimited format (e.g. the result of reading a <code>.csv</code> or <code>.tsv</code> file)</li>
-							<li>Absolute path to file (json, ndjson, csv or tsv)</li>
-							<li>Absolute path to directory containing some of the files above</li>
+				<ol>
+					<li>We handle 4 basic data formats - <code>json</code>, <code>ndjson</code>, <code>csv</code> and <code>tsv</code>. There are
+						classes to represent collections in each data format:<ul>
+							<li><code>JSONCollection</code> - represents a collection of zero or more JSON objects</li>
+							<li><code>NDJSONCollection</code> - represents a collection of zero or more NDJSON objects</li>
+							<li><code>DelimitedCollection</code> - represents a collection of zero or more CSV or TSV objects</li>
 						</ul>
 					</li>
-					<li><code>Object</code><ul>
-							<li>Any object or array that can be serialized as JSON</li>
+					<li>The data can be feed into the library in multiple ways:<ul>
+							<li>Can be passed as a string</li>
+							<li>Can be passed as an array of objects</li>
+							<li>Can be passed as an array of strings</li>
+							<li>Can be read from a file</li>
+							<li>Can be read from every file in a directory</li>
 						</ul>
 					</li>
-				</ul>
-				<a href="#working-with-files" id="working-with-files" style="color: inherit; text-decoration: none;">
-					<h2>Working with files</h2>
-				</a>
-				<p>The library provides a few methods that can be very useful for reading and parsing large files.</p>
-				<ul>
-					<li>To read an entire file use one of the built-in node function.</li>
-					<li>To read a file by iterating over the lines use the <code>readLine</code> function.</li>
-					<li>To read a file as stream use the .</li>
-				</ul>
+					<li>Once loaded, the data can be exported to:<ul>
+							<li>string - format dependent (json, ndjson, csv or tsv)</li>
+							<li>array of objects (lines)</li>
+							<li>array of strings (format dependent lines)</li>
+							<li>written to file</li>
+						</ul>
+					</li>
+				</ol>
+				<p>To convert the data follow these simple steps (example from CSV to anything):</p>
+				<pre><code class="language-js"><span class="hljs-comment">// 1. Create a collection for the input data - one of:</span>
+<span class="hljs-keyword">const</span> input = DelimitedCollection.fromString();      <span class="hljs-comment">// parse string as CSV</span>
+<span class="hljs-keyword">const</span> input = DelimitedCollection.fromStringArray(); <span class="hljs-comment">// parse strings as CSV rows</span>
+<span class="hljs-keyword">const</span> input = DelimitedCollection.fromArray();       <span class="hljs-comment">// load from row objects</span>
+<span class="hljs-keyword">const</span> input = DelimitedCollection.fromFile();        <span class="hljs-comment">// load from file</span>
+<span class="hljs-keyword">const</span> input = DelimitedCollection.fromDirectory();   <span class="hljs-comment">// load from directory</span>
+
+<span class="hljs-comment">// 2. Then "export" it to whatever you need:</span>
+<span class="hljs-keyword">const</span> output = input.toString();      <span class="hljs-comment">// CSV string</span>
+<span class="hljs-keyword">const</span> output = input.toStringArray(); <span class="hljs-comment">// CSV string rows</span>
+<span class="hljs-keyword">const</span> output = input.toArray();       <span class="hljs-comment">// CSV row objects</span>
+<span class="hljs-keyword">const</span> output = input.toJSON();        <span class="hljs-comment">// JSON string</span>
+<span class="hljs-keyword">const</span> output = input.toNDJSON();      <span class="hljs-comment">// NDJSON string</span>
+<span class="hljs-keyword">const</span> output = input.toFile();        <span class="hljs-comment">// CSV file</span></code></pre>
 				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
 					<h2>Examples</h2>
 				</a>
 				<a href="#recursively-read-a-directory-and-update-all-the-json-files" id="recursively-read-a-directory-and-update-all-the-json-files" style="color: inherit; text-decoration: none;">
 					<h3>Recursively read a directory and update all the json files</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> files = filterFiles(<span class="hljs-string">"/path/to/dir"</span>, /\.json$/i);
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> files = lib.filterFiles(<span class="hljs-string">"/path/to/dir"</span>, /\.json$/i);
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> file <span class="hljs-keyword">of</span> files) {
     <span class="hljs-keyword">const</span> json = <span class="hljs-built_in">JSON</span>.parse(fs.readFileSync(file, <span class="hljs-string">"utf8"</span>));
     json.lastModified = <span class="hljs-built_in">Date</span>.now();
     fs.writeFileSync(file, <span class="hljs-built_in">JSON</span>.stringify(json));
 }</code></pre>
-				<a href="#recursively-read-a-directory-parse-all-the-ndjson-files-and-combine-them-into-another-ndjson-file" id="recursively-read-a-directory-parse-all-the-ndjson-files-and-combine-them-into-another-ndjson-file" style="color: inherit; text-decoration: none;">
-					<h3>Recursively read a directory, parse all the ndjson files and combine them into another ndjson file</h3>
+				<a href="#read-big-file-line-by-line-without-loading-it-into-memory" id="read-big-file-line-by-line-without-loading-it-into-memory" style="color: inherit; text-decoration: none;">
+					<h3>Read big file line by line without loading it into memory</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> entries = <span class="hljs-keyword">new</span> NDJSONDirectory(<span class="hljs-string">"/path/to/dir"</span>).entries;
+				<a href="#recursively-read-a-directory-parse-all-the-csv-files-and-combine-them-into-one-ndjson-file" id="recursively-read-a-directory-parse-all-the-csv-files-and-combine-them-into-one-ndjson-file" style="color: inherit; text-decoration: none;">
+					<h3>Recursively read a directory, parse all the csv files and combine them into one ndjson file</h3>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> ndjson = DelimitedCollection.fromDirectory(<span class="hljs-string">"/path/to/dir"</span>);
+
+<span class="hljs-comment">// Note that we DO NOT use toJSON() because the result might be big. Instead, we</span>
+<span class="hljs-comment">// iterate over entries() which will handle rows one by one and will not consume</span>
+<span class="hljs-comment">// a lot of memory!</span>
 <span class="hljs-keyword">let</span> lineCount = <span class="hljs-number">0</span>;
-<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> entries) {
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> ndjson.entries()) {
     fs.appendFileSync(
         path,
         (++lineCount === <span class="hljs-number">1</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">"\r\n"</span>) + <span class="hljs-built_in">JSON</span>.stringify(entry)
