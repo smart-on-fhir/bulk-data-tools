@@ -1,8 +1,31 @@
 # bulk-data-tools
 
-This is a NodeJS library for working with bulk data in different formats and mostly
-for converting the data between those formats. Some utility functions for reading
-directories, parsing and others are also included.
+This is a NodeJS library for working with bulk data in different formats and mostly for converting the data between those formats. Some utility functions for reading directories, parsing and others are also included.
+
+## Collections
+In order to simplify conversions between data formats we handle the data through collection instances. A collection is an abstract representation of the underlying data, regardless of how that data was obtained. The collections have `entries` and `lines` iterator methods that will iterate over the entries without having to maintain everything in memory. The `entries()` method will yield JSON objects and the `lines()` method yields format specific strings.
+
+### NDJSONCollection
+Represents an NDJSON object. These collections have one entry for each input line. If created from a directory that contains multiple NDJSON files, then all those files will be combined into single collection.
+
+### JSONCollection
+Represents a JSON object. Typically these collections have one entry. If created from a directory that contains multiple JSON files or from array containing multiple objects, then all those files/objects will be combined as entries of single collection.
+
+### DelimitedCollection
+Represents a Delimited (CSV, TSV, etc.) object. These collections have one entry for each input line.
+
+## Memory Restrictions
+Working with bulk data implies that we have to deal with lots of files (or with big ones). The code of this library is written in a way that provides a balance between performance and simplicity.
+
+In some cases we assume that the input or output might be big and use iterators to handle the data one entry at a time. Such cases are:
+- Reading directories using `Collection.fromDirectory(...)`
+- Reading NDJSON, CSV, TSV or other delimited file format
+- Exporting to NDJSON, CSV, TSV or other delimited file
+
+In other cases we know that the data is not that big:
+- `Collection.fromString(...)`, `Collection.fromStringArray(...)`, `Collection.fromArray(...)` implies that the string or array argument is already available in memory
+- `Collection.toString(...)`, `Collection.toStringArray(...)`, `Collection.toArray(...)`... implies that the caller requires the result as a whole (in memory)
+
 
 ## Converting data between different formats
 
@@ -17,7 +40,7 @@ directories, parsing and others are also included.
     - Can be passed as an array of strings
     - Can be read from a file
     - Can be read from every file in a directory
-3. Once loaded, the data can be exported to:
+3. Once a collection is created, the data can be exported to:
     - string - format dependent (json, ndjson, csv or tsv)
     - array of objects (lines)
     - array of strings (format dependent lines)
