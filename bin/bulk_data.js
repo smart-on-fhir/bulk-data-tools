@@ -26,11 +26,6 @@ app
     // should be used as line separator. Defaults to `CRLF` (`\r\n`).
     .option("--eol [value]", "The line separator (CRLF, LF)", "CRLF")
 
-    // If set, loop through every entry to compute the complete csv/tsv header.
-    // Otherwise assume that all entries have the same structure and only use the
-    // first entry. Only applicable when the `output-type` is csv or tsv.
-    // .option("--strict", "Only use the first line in ndjson or json arrays to compute the delimited header")
-
     .parse(process.argv);
 
 
@@ -119,18 +114,10 @@ function main() {
             const input = createInputCollection();
             if (inputType == "ndjson" || inputType == "json") {
                 process.stdout.write(
-                    DelimitedCollection.fromArray(input.toArray()).toString({
-                        delimiter: ",",
-                        // strictHeader: app.strict,
-                        eol
-                    })
+                    DelimitedCollection.fromArray(input.toArray()).toString({ delimiter: ",", eol })
                 );
             } else {
-                process.stdout.write(input.toString({
-                    delimiter: ",",
-                    // strictHeader: app.strict,
-                    eol
-                }));
+                process.stdout.write(input.toString({ delimiter: ",", eol }));
             }
             break;
         }
@@ -140,19 +127,11 @@ function main() {
             const input = createInputCollection();
             if (inputType == "ndjson" || inputType == "json") {
                 process.stdout.write(
-                    DelimitedCollection.fromArray(input.toArray()).toString({
-                        delimiter: "\t",
-                        strictHeader: app.strict,
-                        eol
-                    })
+                    DelimitedCollection.fromArray(input.toArray()).toString({ delimiter: "\t", eol })
                 );
             }
             else {
-                process.stdout.write(input.toString({
-                    delimiter: "\t",
-                    strictHeader: app.strict,
-                    eol
-                }));
+                process.stdout.write(input.toString({ delimiter: "\t", eol }));
             }
             break;
         }

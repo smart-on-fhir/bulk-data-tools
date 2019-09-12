@@ -6,10 +6,10 @@ This is a NodeJS library for working with bulk data in different formats and mos
 In order to simplify conversions between data formats we handle the data through collection instances. A collection is an abstract representation of the underlying data, regardless of how that data was obtained. The collections have `entries` and `lines` iterator methods that will iterate over the entries without having to maintain everything in memory. The `entries()` method will yield JSON objects and the `lines()` method yields format specific strings.
 
 ### NDJSONCollection
-Represents an NDJSON object. These collections have one entry for each input line. If created from a directory that contains multiple NDJSON files, then all those files will be combined into single collection.
+These collections have one entry for each input line. If created from a directory that contains multiple NDJSON files, then all those files will be combined into single collection.
 
 ### JSONCollection
-Represents a JSON object. Typically these collections have one entry. If created from a directory that contains multiple JSON files or from array containing multiple objects, then all those files/objects will be combined as entries of single collection.
+Typically these collections have one entry. If created from a directory that contains multiple JSON files or from array containing multiple objects, then all those files/objects will be combined as entries of single collection.
 
 ### DelimitedCollection
 Represents a Delimited (CSV, TSV, etc.) object. These collections have one entry for each input line.
@@ -24,7 +24,7 @@ In some cases we assume that the input or output might be big and use iterators 
 
 In other cases we know that the data is not that big:
 - `Collection.fromString(...)`, `Collection.fromStringArray(...)`, `Collection.fromArray(...)` implies that the string or array argument is already available in memory
-- `Collection.toString(...)`, `Collection.toStringArray(...)`, `Collection.toArray(...)`... implies that the caller requires the result as a whole (in memory)
+- `Collection.toString(...)`, `Collection.toStringArray(...)`, `Collection.toArray(...)`... implies that the caller requires the result as a whole (in memory).
 
 
 ## Converting data between different formats
@@ -64,6 +64,28 @@ const output = input.toNDJSON();      // NDJSON string
 const output = input.toFile();        // CSV file
 ```
 
+## Utility Functions
+In addition to the collection classes, this library comes with a collection of global function that can be useful for some related tasks. Some interesting examples are:
+
+**Working with CSV and TSV**
+- `parseDelimitedLine` - Splits the line into cells using the provided delimiter (or by comma by default) and returns the cells array. supports quoted strings and escape sequences.
+- `delimitedHeaderFromArray` - Loops over an array of objects or arrays (rows) and builds a header that matches the structure of the rows.
+- `escapeDelimitedValue` - Escapes a value a value for use in delimited formats like CSV or TSV
+    - If it contains a double quote, new line or delimiter (typically a comma), the value is quoted.
+    - any contained quotes are escaped with another quote
+    - undefined is converted to empty string.
+    - everything else is converted to string (but is not quoted)
+
+**Working with files and directories**
+- `walkSync` - List all files in a directory recursively in a synchronous fashion.
+- `filterFiles` - Walk a directory recursively and find files that match the `filter` parameter.
+- `jsonEntries` - Walks a directory recursively in a synchronous fashion and yields JSON objects. Only `.json` and `.ndjson` files are parsed. Yields one JSON object for each line of an NDJSON file and one object for each JSON file. Other files are ignored.
+- `readLine` - Reads a file line by line in a synchronous fashion, without having to store more than one line in the memory (so the file size does not really matter).
+
+**Working with JSON objects**
+- `getPath` - Walks thru an object (or array) and returns the value found at the provided path.
+- `setPath` - Finds a path in the given object and sets its value.
+
 
 ## Examples
 
@@ -78,6 +100,11 @@ for (const file of files) {
 ```
 
 ### Read big file line by line without loading it into memory
+```js
+for (const line of lib.readLine("/path/to/big/file")) {
+    console.log(line);
+}
+```
 
 ### Recursively read a directory, parse all the csv files and combine them into one ndjson file
 ```js
@@ -139,7 +166,4 @@ For the full list of possible conversions see [tests/bin.test.ts](tests/bin.test
 - `--eol` - The line separator (CRLF, LF). Defaults to `CRLF`. If the `output-type`
   is delimited (csv or tsv), use this to specify what should be used as line
   separator. Defaults to `CRLF` (`\r\n`).
-- `--strict` - If set, loop through every entry to compute the complete csv/tsv
-  header. Otherwise assume that all entries have the same structure and only use
-  the first entry. Only applicable when the `output-type` is csv or tsv.
 
