@@ -63,18 +63,50 @@
 				<a href="#bulk-data-tools" id="bulk-data-tools" style="color: inherit; text-decoration: none;">
 					<h1>bulk-data-tools</h1>
 				</a>
-				<p>This is a NodeJS library for working with bulk data in different formats and mostly
-					for converting the data between those formats. Some utility functions for reading
-				directories, parsing and others are also included.</p>
+				<p>This is a NodeJS library for working with bulk data in different formats and mostly for converting the data between those formats. Some utility functions for reading directories, parsing and others are also included.</p>
+				<a href="#a-hrefhttpdocssmarthealthitorgbulk-data-toolsapi-documentationa" id="a-hrefhttpdocssmarthealthitorgbulk-data-toolsapi-documentationa" style="color: inherit; text-decoration: none;">
+					<h2><a href="http://docs.smarthealthit.org/bulk-data-tools">API Documentation</a></h2>
+				</a>
+				<a href="#collections" id="collections" style="color: inherit; text-decoration: none;">
+					<h2>Collections</h2>
+				</a>
+				<p>In order to simplify conversions between data formats we handle the data through collection instances. A collection is an abstract representation of the underlying data, regardless of how that data was obtained. The collections have <code>entries</code> and <code>lines</code> iterator methods that will iterate over the entries without having to maintain everything in memory. The <code>entries()</code> method will yield JSON objects and the <code>lines()</code> method yields format specific strings.</p>
+				<a href="#a-hrefhttpdocssmarthealthitorgbulk-data-toolsclassesndjsoncollectionhtmlndjsoncollectiona" id="a-hrefhttpdocssmarthealthitorgbulk-data-toolsclassesndjsoncollectionhtmlndjsoncollectiona" style="color: inherit; text-decoration: none;">
+					<h3><a href="http://docs.smarthealthit.org/bulk-data-tools/classes/ndjsoncollection.html">NDJSONCollection</a></h3>
+				</a>
+				<p>These collections have one entry for each input line. If created from a directory that contains multiple NDJSON files, then all those files will be combined into single collection.</p>
+				<a href="#a-hrefhttpdocssmarthealthitorgbulk-data-toolsclassesjsoncollectionhtmljsoncollectiona" id="a-hrefhttpdocssmarthealthitorgbulk-data-toolsclassesjsoncollectionhtmljsoncollectiona" style="color: inherit; text-decoration: none;">
+					<h3><a href="http://docs.smarthealthit.org/bulk-data-tools/classes/jsoncollection.html">JSONCollection</a></h3>
+				</a>
+				<p>Typically these collections have one entry. If created from a directory that contains multiple JSON files or from array containing multiple objects, then all those files/objects will be combined as entries of single collection.</p>
+				<a href="#a-hrefhttpdocssmarthealthitorgbulk-data-toolsclassesdelimitedcollectionhtmldelimitedcollectiona" id="a-hrefhttpdocssmarthealthitorgbulk-data-toolsclassesdelimitedcollectionhtmldelimitedcollectiona" style="color: inherit; text-decoration: none;">
+					<h3><a href="http://docs.smarthealthit.org/bulk-data-tools/classes/delimitedcollection.html">DelimitedCollection</a></h3>
+				</a>
+				<p>Represents a Delimited (CSV, TSV, etc.) object. These collections have one entry for each input line.</p>
+				<a href="#memory-restrictions" id="memory-restrictions" style="color: inherit; text-decoration: none;">
+					<h2>Memory Restrictions</h2>
+				</a>
+				<p>Working with bulk data implies that we have to deal with lots of files (or with big ones). The code of this library is written in a way that provides a balance between performance and simplicity.</p>
+				<p>In some cases we assume that the input or output might be big and use iterators to handle the data one entry at a time. Such cases are:</p>
+				<ul>
+					<li>Reading directories using <code>Collection.fromDirectory(...)</code></li>
+					<li>Reading NDJSON, CSV, TSV or other delimited file format</li>
+					<li>Exporting to NDJSON, CSV, TSV or other delimited file</li>
+				</ul>
+				<p>In other cases we know that the data is not that big:</p>
+				<ul>
+					<li><code>Collection.fromString(...)</code>, <code>Collection.fromStringArray(...)</code>, <code>Collection.fromArray(...)</code> implies that the string or array argument is already available in memory</li>
+					<li><code>Collection.toString(...)</code>, <code>Collection.toStringArray(...)</code>, <code>Collection.toArray(...)</code>... implies that the caller requires the result as a whole (in memory).</li>
+				</ul>
 				<a href="#converting-data-between-different-formats" id="converting-data-between-different-formats" style="color: inherit; text-decoration: none;">
 					<h2>Converting data between different formats</h2>
 				</a>
 				<ol>
 					<li>We handle 4 basic data formats - <code>json</code>, <code>ndjson</code>, <code>csv</code> and <code>tsv</code>. There are
 						classes to represent collections in each data format:<ul>
-							<li><code>JSONCollection</code> - represents a collection of zero or more JSON objects</li>
-							<li><code>NDJSONCollection</code> - represents a collection of zero or more NDJSON objects</li>
-							<li><code>DelimitedCollection</code> - represents a collection of zero or more CSV or TSV objects</li>
+							<li><a href="http://docs.smarthealthit.org/bulk-data-tools/classes/jsoncollection.html">JSONCollection</a> - represents a collection of zero or more JSON objects</li>
+							<li><a href="http://docs.smarthealthit.org/bulk-data-tools/classes/ndjsoncollection.html">NDJSONCollection</a> - represents a collection of zero or more NDJSON objects</li>
+							<li><a href="http://docs.smarthealthit.org/bulk-data-tools/classes/delimitedcollection.html">DelimitedCollection</a> - represents a collection of zero or more CSV or TSV objects</li>
 						</ul>
 					</li>
 					<li>The data can be feed into the library in multiple ways:<ul>
@@ -85,7 +117,7 @@
 							<li>Can be read from every file in a directory</li>
 						</ul>
 					</li>
-					<li>Once loaded, the data can be exported to:<ul>
+					<li>Once a collection is created, the data can be exported to:<ul>
 							<li>string - format dependent (json, ndjson, csv or tsv)</li>
 							<li>array of objects (lines)</li>
 							<li>array of strings (format dependent lines)</li>
@@ -108,6 +140,34 @@
 <span class="hljs-keyword">const</span> output = input.toJSON();        <span class="hljs-comment">// JSON string</span>
 <span class="hljs-keyword">const</span> output = input.toNDJSON();      <span class="hljs-comment">// NDJSON string</span>
 <span class="hljs-keyword">const</span> output = input.toFile();        <span class="hljs-comment">// CSV file</span></code></pre>
+				<a href="#utility-functions" id="utility-functions" style="color: inherit; text-decoration: none;">
+					<h2>Utility Functions</h2>
+				</a>
+				<p>In addition to the collection classes, this library comes with a collection of global function that can be useful for some related tasks. Some interesting examples are:</p>
+				<p><strong>Working with CSV and TSV</strong></p>
+				<ul>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#parsedelimitedline">parseDelimitedLine</a> - Splits the line into cells using the provided delimiter (or by comma by default) and returns the cells array. supports quoted strings and escape sequences.</li>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#delimitedheaderfromarray">delimitedHeaderFromArray</a> - Loops over an array of objects or arrays (rows) and builds a header that matches the structure of the rows.</li>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#escapedelimitedvalue">escapeDelimitedValue</a> - Escapes a value a value for use in delimited formats like CSV or TSV<ul>
+							<li>If it contains a double quote, new line or delimiter (typically a comma), the value is quoted.</li>
+							<li>any contained quotes are escaped with another quote</li>
+							<li>undefined is converted to empty string.</li>
+							<li>everything else is converted to string (but is not quoted)</li>
+						</ul>
+					</li>
+				</ul>
+				<p><strong>Working with files and directories</strong></p>
+				<ul>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#walksync">walkSync</a> - List all files in a directory recursively in a synchronous fashion.</li>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#filterfiles">filterFiles</a> - Walk a directory recursively and find files that match the <code>filter</code> parameter.</li>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#jsonentries">jsonEntries</a> - Walks a directory recursively in a synchronous fashion and yields JSON objects. Only <code>.json</code> and <code>.ndjson</code> files are parsed. Yields one JSON object for each line of an NDJSON file and one object for each JSON file. Other files are ignored.</li>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#readline">readLine</a> - Reads a file line by line in a synchronous fashion, without having to store more than one line in the memory (so the file size does not really matter).</li>
+				</ul>
+				<p><strong>Working with JSON objects</strong></p>
+				<ul>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#getpath">getPath</a> - Walks thru an object (or array) and returns the value found at the provided path.</li>
+					<li><a href="http://docs.smarthealthit.org/bulk-data-tools/globals.html#setpath">setPath</a> - Finds a path in the given object and sets its value.</li>
+				</ul>
 				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
 					<h2>Examples</h2>
 				</a>
@@ -123,6 +183,9 @@
 				<a href="#read-big-file-line-by-line-without-loading-it-into-memory" id="read-big-file-line-by-line-without-loading-it-into-memory" style="color: inherit; text-decoration: none;">
 					<h3>Read big file line by line without loading it into memory</h3>
 				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> line <span class="hljs-keyword">of</span> lib.readLine(<span class="hljs-string">"/path/to/big/file"</span>)) {
+    <span class="hljs-built_in">console</span>.log(line);
+}</code></pre>
 				<a href="#recursively-read-a-directory-parse-all-the-csv-files-and-combine-them-into-one-ndjson-file" id="recursively-read-a-directory-parse-all-the-csv-files-and-combine-them-into-one-ndjson-file" style="color: inherit; text-decoration: none;">
 					<h3>Recursively read a directory, parse all the csv files and combine them into one ndjson file</h3>
 				</a>
@@ -176,9 +239,6 @@ node bulk_data --input path/to/file.ndjson --output-type csv</code></pre>
 					<li><code>--eol</code> - The line separator (CRLF, LF). Defaults to <code>CRLF</code>. If the <code>output-type</code>
 						is delimited (csv or tsv), use this to specify what should be used as line
 					separator. Defaults to <code>CRLF</code> (<code>\r\n</code>).</li>
-					<li><code>--strict</code> - If set, loop through every entry to compute the complete csv/tsv
-						header. Otherwise assume that all entries have the same structure and only use
-					the first entry. Only applicable when the <code>output-type</code> is csv or tsv.</li>
 				</ul>
 			</div>
 		</div>

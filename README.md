@@ -2,16 +2,18 @@
 
 This is a NodeJS library for working with bulk data in different formats and mostly for converting the data between those formats. Some utility functions for reading directories, parsing and others are also included.
 
+## [API Documentation](http://docs.smarthealthit.org/bulk-data-tools)
+
 ## Collections
 In order to simplify conversions between data formats we handle the data through collection instances. A collection is an abstract representation of the underlying data, regardless of how that data was obtained. The collections have `entries` and `lines` iterator methods that will iterate over the entries without having to maintain everything in memory. The `entries()` method will yield JSON objects and the `lines()` method yields format specific strings.
 
-### NDJSONCollection
+### [NDJSONCollection](http://docs.smarthealthit.org/bulk-data-tools/classes/ndjsoncollection.html)
 These collections have one entry for each input line. If created from a directory that contains multiple NDJSON files, then all those files will be combined into single collection.
 
-### JSONCollection
+### [JSONCollection](http://docs.smarthealthit.org/bulk-data-tools/classes/jsoncollection.html)
 Typically these collections have one entry. If created from a directory that contains multiple JSON files or from array containing multiple objects, then all those files/objects will be combined as entries of single collection.
 
-### DelimitedCollection
+### [DelimitedCollection](http://docs.smarthealthit.org/bulk-data-tools/classes/delimitedcollection.html)
 Represents a Delimited (CSV, TSV, etc.) object. These collections have one entry for each input line.
 
 ## Memory Restrictions
@@ -31,9 +33,9 @@ In other cases we know that the data is not that big:
 
 1. We handle 4 basic data formats - `json`, `ndjson`, `csv` and `tsv`. There are
     classes to represent collections in each data format:
-    - `JSONCollection` - represents a collection of zero or more JSON objects
-    - `NDJSONCollection` - represents a collection of zero or more NDJSON objects
-    - `DelimitedCollection` - represents a collection of zero or more CSV or TSV objects
+    - [JSONCollection](http://docs.smarthealthit.org/bulk-data-tools/classes/jsoncollection.html) - represents a collection of zero or more JSON objects
+    - [NDJSONCollection](http://docs.smarthealthit.org/bulk-data-tools/classes/ndjsoncollection.html) - represents a collection of zero or more NDJSON objects
+    - [DelimitedCollection](http://docs.smarthealthit.org/bulk-data-tools/classes/delimitedcollection.html) - represents a collection of zero or more CSV or TSV objects
 2. The data can be feed into the library in multiple ways:
     - Can be passed as a string
     - Can be passed as an array of objects
@@ -68,23 +70,23 @@ const output = input.toFile();        // CSV file
 In addition to the collection classes, this library comes with a collection of global function that can be useful for some related tasks. Some interesting examples are:
 
 **Working with CSV and TSV**
-- `parseDelimitedLine` - Splits the line into cells using the provided delimiter (or by comma by default) and returns the cells array. supports quoted strings and escape sequences.
-- `delimitedHeaderFromArray` - Loops over an array of objects or arrays (rows) and builds a header that matches the structure of the rows.
-- `escapeDelimitedValue` - Escapes a value a value for use in delimited formats like CSV or TSV
+- [parseDelimitedLine](http://docs.smarthealthit.org/bulk-data-tools/globals.html#parsedelimitedline) - Splits the line into cells using the provided delimiter (or by comma by default) and returns the cells array. supports quoted strings and escape sequences.
+- [delimitedHeaderFromArray](http://docs.smarthealthit.org/bulk-data-tools/globals.html#delimitedheaderfromarray) - Loops over an array of objects or arrays (rows) and builds a header that matches the structure of the rows.
+- [escapeDelimitedValue](http://docs.smarthealthit.org/bulk-data-tools/globals.html#escapedelimitedvalue) - Escapes a value a value for use in delimited formats like CSV or TSV
     - If it contains a double quote, new line or delimiter (typically a comma), the value is quoted.
     - any contained quotes are escaped with another quote
     - undefined is converted to empty string.
     - everything else is converted to string (but is not quoted)
 
 **Working with files and directories**
-- `walkSync` - List all files in a directory recursively in a synchronous fashion.
-- `filterFiles` - Walk a directory recursively and find files that match the `filter` parameter.
-- `jsonEntries` - Walks a directory recursively in a synchronous fashion and yields JSON objects. Only `.json` and `.ndjson` files are parsed. Yields one JSON object for each line of an NDJSON file and one object for each JSON file. Other files are ignored.
-- `readLine` - Reads a file line by line in a synchronous fashion, without having to store more than one line in the memory (so the file size does not really matter).
+- [walkSync](http://docs.smarthealthit.org/bulk-data-tools/globals.html#walksync) - List all files in a directory recursively in a synchronous fashion.
+- [filterFiles](http://docs.smarthealthit.org/bulk-data-tools/globals.html#filterfiles) - Walk a directory recursively and find files that match the `filter` parameter.
+- [jsonEntries](http://docs.smarthealthit.org/bulk-data-tools/globals.html#jsonentries) - Walks a directory recursively in a synchronous fashion and yields JSON objects. Only `.json` and `.ndjson` files are parsed. Yields one JSON object for each line of an NDJSON file and one object for each JSON file. Other files are ignored.
+- [readLine](http://docs.smarthealthit.org/bulk-data-tools/globals.html#readline) - Reads a file line by line in a synchronous fashion, without having to store more than one line in the memory (so the file size does not really matter).
 
 **Working with JSON objects**
-- `getPath` - Walks thru an object (or array) and returns the value found at the provided path.
-- `setPath` - Finds a path in the given object and sets its value.
+- [getPath](http://docs.smarthealthit.org/bulk-data-tools/globals.html#getpath) - Walks thru an object (or array) and returns the value found at the provided path.
+- [setPath](http://docs.smarthealthit.org/bulk-data-tools/globals.html#setpath) - Finds a path in the given object and sets its value.
 
 
 ## Examples
