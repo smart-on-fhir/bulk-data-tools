@@ -2,6 +2,13 @@
 
 This is a NodeJS library for working with bulk data in different formats and mostly for converting the data between those formats. Some utility functions for reading directories, parsing and others are also included.
 
+## Installation and Usage
+The library is written in TypeScript and then compiled to JavaScript. It is not currently published to NPM so it should be used via GitHub:
+```sh
+git clone https://github.com/smart-on-fhir/bulk-data-tools.git
+```
+Then `require` what you need from the `build/src` folder or import it directly from `/src` if you are using TypeScript.
+
 ## [API Documentation](http://docs.smarthealthit.org/bulk-data-tools)
 
 ## Collections
